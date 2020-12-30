@@ -1,0 +1,48 @@
+﻿@using {{Namespace_Here}}.Authorization
+@using {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Models.{{Entity_Name_Plural_Here}}
+@using {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Startup
+@using {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Models.Common.Modals
+@model {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableViewModel
+
+@section Scripts
+    {
+    <script abp-src="/view-resources/Areas/{{App_Area_Name_Here}}/Views/{{Entity_Name_Plural_Here}}/_{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal.js" asp-append-version="true"></script>
+}
+
+@await Html.PartialAsync("~/Areas/{{App_Area_Name_Here}}/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Pick{{NP_Foreign_Entity_Name_Here}}")))
+
+
+
+<div class="{{Container_Class_Here}}{{Container_Class_V2_Here}}{{Container_Class_V3_Here}}">
+    <div class="{{Portlet_Class_Here}}{{Card_Class_Here}}">
+        <div class="{{Portlet_Body_Class_Here}}{{Card_Body_Class_Here}}">
+            <div class="{{Form_Class_Here}}">
+                <div class="row align-items-center mb-4">
+                    <div class="col-xl-12">
+                        <div class="kt-group align-items-center">
+                            <div class="input-group">
+                                <input type="text" id="{{NP_Foreign_Entity_Name_Here}}TableFilter" class="form-control m-input" placeholder="@L("SearchWithThreeDot")" value="@Model.FilterText">
+                                <span class="input-group-btn">
+                                    <button id="Get{{NP_Foreign_Entity_Name_Here}}Button" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <table id="{{NP_Foreign_Entity_Name_Here}}Table" class="display table table-striped table-bordered table-hover dt-responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th>@L("Actions")</th>
+                            <th>@L("{{NP_Display_Property_Name_Here}}")</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@await Html.PartialAsync("~/Areas/{{App_Area_Name_Here}}/Views/Common/Modals/_ModalFooterWithClose.cshtml")

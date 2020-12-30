@@ -1,0 +1,25 @@
+<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="'DemoUiComponents' | localize">
+        </sub-header>
+
+        <div [class]="containerClass">
+            <div class="col-lg-12 alert alert-success">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                {{"DemoUiComponents_Info" | localize}}<br />
+                <a href="https://keenthemes.com/metronic/" class="alert-link"
+                    target="_blank">{{"DemoUiComponents_Info_Metronic_Link_Text" | localize}}</a>
+            </div>
+
+            <demo-ui-date-time #demoUiDateTime></demo-ui-date-time>
+
+            <demo-ui-file-upload #demoUiFileUpload></demo-ui-file-upload>
+
+            <demo-ui-selection #demoUiSelection></demo-ui-selection>
+
+            <demo-ui-input-mask #demoUiInputMask></demo-ui-input-mask>
+
+            <demo-ui-editor #demoUiEditor></demo-ui-editor>
+        </div>
+    </div>
+</div>

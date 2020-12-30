@@ -1,0 +1,78 @@
+<div id="kt_header_mobile" class="header-mobile ">
+    <a routerLink="/" target="_blank">
+        <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" [src]="defaultLogo" alt="logo" height="28" />
+        <img *ngIf="appSession.tenant && appSession.tenant.logoId"
+            [src]="remoteServiceBaseUrl + '/TenantCustomization/GetTenantLogo?skin=' + currentTheme.baseSettings.menu.asideSkin + '&tenantId=' + appSession.tenant.id + '&id=' + appSession.tenant.logoId"
+            alt="logo" height="38" />
+    </a>
+    <div class="d-flex align-items-center">
+        <button class="btn p-0 burger-icon burger-icon-left ml-4" id="kt_header_mobile_toggle">
+            <span></span>
+        </button>
+        <button ktToggle [options]="userMenuToggleOptions" class="btn btn-icon btn-hover-transparent-white p-0 ml-3" id="kt_header_mobile_topbar_toggle">
+            <span class="svg-icon svg-icon-xl">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                    height="24px" viewBox="0 0 24 24" version="1.1">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <polygon points="0 0 24 0 24 24 0 24"></polygon>
+                        <path
+                            d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z"
+                            fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
+                        <path
+                            d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z"
+                            fill="#000000" fill-rule="nonzero"></path>
+                    </g>
+                </svg>
+            </span>
+        </button>
+    </div>
+</div>
+
+<div [@routerTransition] class="d-flex flex-column flex-root">
+    <div class="d-flex flex-row flex-column-fluid page">
+        <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+            <div id="kt_header" ktHeader #ktHeader class="header header-fixed " data-ktheader-minimize="on">
+                <div [class]="containerClass + ' d-flex align-items-stretch justify-content-between'">
+                    <div class="d-flex align-items-stretch mr-3">
+                        <theme2-brand></theme2-brand>
+                        <top-bar-menu></top-bar-menu>
+                    </div>
+                    <div class="topbar">
+                        <div class="topbar-item mobile-subscription-warning" *ngIf="!isMobileDevice() && subscriptionStatusBarVisible()">
+                            <subscription-notification-bar></subscription-notification-bar>
+                        </div>
+                        <active-delegated-users-combo
+                            [customStyle]="'btn btn-hover-transparent-white btn-dropdown btn-lg mr-1'">
+                        </active-delegated-users-combo>
+                        <quick-theme-selection
+                            [customStyle]="'btn btn-icon btn-hover-transparent-white btn-dropdown btn-lg mr-1'">
+                        </quick-theme-selection>
+                        <language-switch-dropdown
+                            [customStyle]="'btn btn-icon btn-hover-transparent-white btn-dropdown btn-lg mr-1'">
+                        </language-switch-dropdown>
+                        <header-notifications
+                            [customStyle]="'btn btn-icon btn-hover-transparent-white btn-dropdown btn-lg mr-1'">
+                        </header-notifications>
+                        <chat-toggle-button
+                            [customStyle]="'btn btn-icon btn-hover-transparent-white btn-dropdown btn-lg mr-1'">
+                        </chat-toggle-button>
+                        <user-menu [iconOnly]="true"
+                            [togglerCssClass]="'btn btn-icon btn-hover-transparent-white d-flex align-items-center btn-lg px-md-2 w-md-auto'"
+                            [textCssClass]="'text-white opacity-90 font-weight-bolder font-size-base d-none d-md-inline mr-4'"
+                            [symbolCssClass]="'symbol symbol-35'"
+                            [symbolTextCssClass]="'symbol-label text-white font-size-h5 font-weight-bold bg-white-o-30'">
+                        </user-menu>
+                    </div>
+                </div>
+                <div class="p-3 mobile-subscription-warning d-print-none" *ngIf="isMobileDevice() && subscriptionStatusBarVisible()">
+                    <subscription-notification-bar></subscription-notification-bar>
+                </div>
+            </div>
+
+            <div style="flex:1">
+                <router-outlet></router-outlet>
+            </div>
+            <footer-bar></footer-bar>
+        </div>
+    </div>
+</div>

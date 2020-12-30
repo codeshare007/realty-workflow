@@ -1,0 +1,9 @@
+<input type="text"
+       #datePickerRef
+       name="datePicker"
+       class="form-control"
+       bsDatepicker
+       datePickerMomentModifier
+       [(date)]="date"
+       (dateChange)="onDateChange($event)"
+       [bsConfig]="{ adaptivePosition: true }" />

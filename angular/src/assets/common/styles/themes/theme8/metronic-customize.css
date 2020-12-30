@@ -1,0 +1,68 @@
+ul.menu-nav > li > a.menu-link > i.menu-link-icon {
+    margin-top: 15px;
+    color: #fff;
+}
+
+ul.menu-nav > li > a.menu-link > i.menu-hor-arrow {
+    margin-top: 18px !important;
+    color: #fff;
+}
+
+.content {
+    padding: 0px;
+}
+
+.content > .container,
+.content > .container-fluid {
+    padding: 40px;
+}
+
+.subheader > .container {
+    padding: 0px;
+}
+
+.unread-notification-count {
+    position: absolute;
+    top: 5px;
+    left: 23px;
+  }
+
+  .unread-chat-message-count {
+    position: absolute;
+    top: -6px;
+    left: 13px;
+  }
+
+.menuSearchBarInput{
+  height: 50px;
+}
+
+.unread-chat-message-count {
+    position: absolute;
+    top: -6px;
+    left: 13px;
+}
+
+.subscription-warning * {
+    color: #fff;
+}
+
+.mobile-subscription-warning {
+    background-color: #f9f9fc;
+}
+
+.menuSearchBarInput{
+    height: 50px;
+}
+
+menu-search-bar {
+    min-width: 100px !important;
+}
+
+p-autoComplete{
+    padding: 10px;
+}
+
+.menuSearchBarContainer{
+    width: calc(100% - 20px);
+}

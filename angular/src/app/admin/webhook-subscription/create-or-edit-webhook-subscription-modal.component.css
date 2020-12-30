@@ -1,0 +1,11 @@
+#additional-header-list {
+    height: auto;
+    overflow-y: auto;
+    background-color: #e5e5e5;
+    padding: 5px;
+    resize: vertical;
+}
+
+#additional-header-list .alert-text {
+    overflow: auto;
+}

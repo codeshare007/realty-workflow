@@ -1,0 +1,13 @@
+﻿using Abp.Application.Services.Dto;
+using System;
+
+namespace {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Dtos
+{
+    public class GetAll{{Entity_Name_Plural_Here}}ForExcelInput
+    {
+		public string Filter { get; set; }
+
+{{Property_Filters_Here}}
+{{NP_Filters_Here}}
+    }
+}

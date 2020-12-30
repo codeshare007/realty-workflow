@@ -1,0 +1,60 @@
+<div appBsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}"
+     *ngIf="!loading">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div *ngIf="active">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="dynamicPropertyId">{{"Edit" | localize}} {{"DynamicProperty" | localize}}</span>
+                        <span *ngIf="!dynamicPropertyId">{{"AddNewDynamicProperty" | localize}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')"
+                            [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group col-12">
+                        <div class="form-group">
+                            <label for="Name">{{"PropertyName" | localize}} *</label>
+                            <input class="form-control" type="text" name="Name"
+                                   [(ngModel)]="dynamicProperty.propertyName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Name">{{"InputType" | localize}} *</label>
+                            <select class="form-control" [(ngModel)]="dynamicProperty.inputType">
+                                <option *ngFor="let inputType of allIputTypes" [value]="inputType">{{ inputType }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="Name">{{"Permission" | localize}} </label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" disabled="disabled"
+                                       value="{{dynamicProperty.permission}}">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button" (click)="openPermissionTreeModal()">
+                                        <i class="fa fa-hand-pointer" style="color: white"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                            (click)="close()">{{"Cancel" | localize}}</button>
+
+                    <button type="button" class="btn btn-primary font-weight-bold" (click)="save()"
+                            [disabled]="!dynamicProperty.propertyName || !dynamicProperty.inputType"
+                            [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{"Save" | localize}}</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<permission-tree-modal #permissionFilterTreeModal (onModalclose)="onPermissionSelected($event)" [singleSelect]="true"
+                       [dontAddOpenerButton]="true">
+</permission-tree-modal>

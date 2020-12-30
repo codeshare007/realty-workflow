@@ -1,0 +1,22 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# IDEs and editors
+.vs/
+.idea/
+/aspnet-core/src/Realty.Web.Mvc/Properties/PublishProfiles/FolderProfile.pubxml
+aspnet-core/test/JMeter/AspNetZeroDotNetCoreSimpleTest.jmx
+/aspnet-core/build/outputs
+
+# User-specific files
+*.suo
+*.user
+*.sln.docstates
+aspnet-core/DeleteBinsAndObjs.bat
+
+*.pubxml
+aspnet-core/src/Realty.Web.Host/healthchecksdb
+aspnet-core/src/Realty.Web.Public/healthchecksdb
+aspnet-core/src/Realty.Web.Mvc/healthchecksdb
+*.pfx
+/aspnet-core/src/Realty.Web.Host/connection-strings.json
+/aspnet-core/src/Realty.Web.Host/App_Data/Documents/

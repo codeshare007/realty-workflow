@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:base="clr-namespace:Realty.ViewModels.Base;assembly=Realty.Mobile.Shared"
+             xmlns:extensions="clr-namespace:Realty.Extensions.MarkupExtensions;assembly=Realty.Mobile.Shared"
+             x:Class="Realty.Views.EmailActivationView"
+             base:ViewManager.AutoWireViewModel="true"
+             Title="{extensions:Translate EmailActivation}">
+    <ContentPage.Content>
+        <Grid
+            RowSpacing="0"
+            ColumnSpacing="0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.10*"/>
+                <ColumnDefinition Width="0.80*"/>
+                <ColumnDefinition Width="0.10*"/>
+            </Grid.ColumnDefinitions>
+
+            <Frame  Grid.Row="0"
+                    Grid.Column="1"
+                    Style="{StaticResource RoundedFrame}">
+
+                <StackLayout VerticalOptions="StartAndExpand" Spacing="0">
+
+                    <Label Text="{extensions:Translate SendEmailActivationLink_Information}"  />
+                    <Entry Text="{Binding EmailAddress}"  
+                           Keyboard="{StaticResource NoCapitalizationKeyboard}"/>
+
+                    <Button Text="{extensions:Translate Submit}" Command="{Binding SendEmailActivationCommand}"
+                            Margin="0,10,0,0"
+                            IsEnabled="{Binding IsEmailActivationEnabled}"
+                            Style="{StaticResource ActionButton}"/>
+
+                </StackLayout>
+            </Frame>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

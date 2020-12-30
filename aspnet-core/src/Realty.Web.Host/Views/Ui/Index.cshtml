@@ -1,0 +1,40 @@
+﻿@using Abp.Web.Security.AntiForgery
+@using Microsoft.AspNetCore.Http
+@using Realty.Authorization
+@using Realty.Web.Common
+@model Realty.Web.Models.Ui.HomePageModel
+@inject IAbpAntiForgeryManager AbpAntiForgeryManager
+@{
+    AbpAntiForgeryManager.SetCookie(Context, cookieOptions: new CookieOptions()
+    {
+        SameSite = SameSiteMode.Strict,
+        Secure = true
+    });
+}
+<head>
+    <title>Realty</title>
+
+    <link href="~/view-resources/Views/Ui/Index.css" rel="stylesheet" asp-append-version="true"/>
+</head>
+<div class="main-content">
+    <div class="user-name">@L("YouAreAlreadyLoggedInWithUser") : @Html.Raw(Model.GetShownLoginName())</div>
+    <div>
+        <ul class="content-list">
+            @if (WebConsts.SwaggerUiEnabled)
+            {
+                <li><a href="@WebConsts.SwaggerUiEndPoint">Swagger UI</a></li>
+            }
+            @if (WebConsts.HangfireDashboardEnabled && IsGranted(AppPermissions.Pages_Administration_HangfireDashboard))
+            {
+                <li><a href="@WebConsts.HangfireDashboardEndPoint">Hangfire</a></li>
+            }
+            @if (WebConsts.GraphQL.Enabled && WebConsts.GraphQL.PlaygroundEnabled)
+            {
+                <li><a href="@WebConsts.GraphQL.PlaygroundEndPoint">GraphQL Playground</a></li>
+            }
+        </ul>
+    </div>
+    <div class="logout">
+        <a href="@Url.Action("Logout", "Ui", new {area = string.Empty})">@L("Logout")</a>
+    </div>
+</div>

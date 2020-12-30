@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:      
+
+  mycompanyname.abpzerotemplate.web.host:
+    image: ${DOCKER_REGISTRY-}mycompanynameabpzerotemplatewebhost
+    container_name: mycompanynameabpzerotemplatewebhost_container
+    build:
+      context: .
+      dockerfile: ../../src/Realty.Web.Host/Dockerfile
+    environment:
+      - ConnectionStrings__Default=Server=mssqlDb;Database=RealtyDb;User=sa;Password=Super_Encrypted_Passw0rd!
+      - Abp__RedisCache__ConnectionString=localhost:6379
+    ports:
+      - "44301:443"
+    networks:
+      - mycompanyname.abpzerotemplate
+
+networks:
+  mycompanyname.abpzerotemplate:
+    external:
+      name: mycompanyname.abpzerotemplate

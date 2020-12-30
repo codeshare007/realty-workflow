@@ -1,0 +1,32 @@
+.table-no-header {
+    .ui-table {
+        .ui-table-thead {
+            >tr>th {
+                background-color: #fff;
+                height:1px;
+                line-height: 1px;
+                padding: 0 !important;
+            }
+        }
+
+        .ui-table-tbody {
+            >tr:nth-child(even) {
+                background-color: #f9fcff;
+            }
+
+            > tr {
+                td {
+                    a {
+                        &.btn.btn-light:hover:not(.btn-text):not(:disabled):not(.disabled) i {
+                            color: #3699ff;
+                        }
+                        i {
+                            color: #3699ff;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}

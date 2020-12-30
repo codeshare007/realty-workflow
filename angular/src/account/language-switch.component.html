@@ -1,0 +1,5 @@
+<div *ngIf="languages.length > 1" class="ml-1 mx-auto">
+    <div class="btn language-switch-btn btn-clean btn-icon p-0 m-0" *ngFor="let language of languages" (click)="changeLanguage(language)" title="{{language.displayName}}">
+        <i class="{{language.icon}}" [attr.aria-label]="language.displayName"></i>
+    </div>
+</div>

@@ -1,0 +1,199 @@
+<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="'Subscription' | localize">
+        </sub-header>
+
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <tabset>
+                        <tab class="p-5" heading="{{'SubscriptionInformation' | localize}}">
+                            <form class="form">
+                                <input type="hidden" Name="PaymentPeriodType" value="@tenant.PaymentPeriodType" />
+                                <input type="hidden" Name="Gateway" value="@SubscriptionPaymentGatewayType.Paypal" />
+
+                                <div class="form-group row">
+                                    <label
+                                        class="col-sm-4 control-label font-weight-bold text-right">{{"Edition" | localize}}</label>
+                                    <div class="col-sm-8">
+                                        <p *ngIf="tenant.edition">
+                                            {{tenant.edition.displayName}}
+                                            <span *ngIf="tenant.edition.isFree"
+                                                class="label label-success label-inline">{{"Free" | localize}}</span>
+                                            <span *ngIf="tenant.isInTrialPeriod"
+                                                class="label label-warning label-inline">{{"Trial" | localize}}</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label
+                                        class="col-sm-4 control-label font-weight-bold text-right">{{"SubscriptionStartDate" | localize}}</label>
+                                    <div class="col-sm-8">
+                                        <p>{{ tenant.creationTimeString }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label
+                                        class="col-sm-4 control-label font-weight-bold text-right">{{"SubscriptionEndDate" | localize}}</label>
+                                    <div class="col-sm-8">
+                                        <p *ngIf="tenant.edition">
+                                            <span>{{tenant.subscriptionDateString}}</span>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-4 control-label"></label>
+                                    <div class="col-sm-8">
+                                        <a *ngIf="!hasRecurringSubscription() && tenant.edition && !tenant.edition.isFree && !tenant.isInTrialPeriod"
+                                            [routerLink]="['/account/extend']"
+                                            [queryParams]="{ editionPaymentType: editionPaymentType.Extend}"
+                                            class="btn btn-info">
+                                            {{"Extend" | localize}}
+                                        </a>
+                                        <a *ngIf="tenant.isInTrialPeriod" [routerLink]="['/account/buy']"
+                                            [queryParams]="{editionPaymentType: editionPaymentType.BuyNow, editionId: tenant.edition.id, tenantId: tenant.id }"
+                                            class="btn btn-info">
+                                            {{"BuyNow" | localize}}
+                                        </a>
+                                        <a *ngIf="tenant.edition && !tenant.edition.isHighestEdition && !tenant.isInTrialPeriod"
+                                            [routerLink]="['/account/select-edition']" class="btn btn-warning">
+                                            {{"Upgrade" | localize}}
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row"
+                                    [hidden]="tenant.subscriptionPaymentType != subscriptionPaymentType.RecurringAutomatic">
+                                    <label class="col-md-4 control-label"></label>
+                                    <div class="col-md-8">
+                                        <button class="btn btn-secondary" (click)="disableRecurringPayments()">
+                                            {{"DisableRecurringPayments" | localize}}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row"
+                                    [hidden]="tenant.subscriptionPaymentType != subscriptionPaymentType.RecurringManual">
+                                    <label class="col-md-4 control-label"></label>
+                                    <div class="col-md-8">
+                                        <button class="btn btn-info" (click)="enableRecurringPayments()">
+                                            {{"EnableRecurringPayments" | localize}}
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </tab>
+                        <tab class="p-5" heading="{{'PaymentHistory' | localize}}">
+                            <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                                <p-table #dataTable sortMode="multiple" (onLazyLoad)="getPaymentHistory($event)"
+                                    [value]="primengTableHelper.records"
+                                    rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                    [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                    [responsive]="primengTableHelper.isResponsive">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th style="width: 130px">{{'Invoice' | localize}}</th>
+                                            <th style="width: 150px" pSortableColumn="creationTime">
+                                                {{'ProcessTime' | localize}}
+                                                <p-sortIcon field="creationTime"></p-sortIcon>
+                                            </th>
+                                            <th style="width: 150px" pSortableColumn="editionDisplayName">
+                                                {{'Edition' | localize}}
+                                                <p-sortIcon field="editionDisplayName"></p-sortIcon>
+                                            </th>
+                                            <th style="width: 150px" pSortableColumn="gateway">
+                                                {{'Gateway' | localize}}
+                                                <p-sortIcon field="gateway"></p-sortIcon>
+                                            </th>
+                                            <th style="width: 100px" pSortableColumn="amount">
+                                                {{'Amount' | localize}}
+                                                <p-sortIcon field="amount"></p-sortIcon>
+                                            </th>
+                                            <th style="width: 150px" pSortableColumn="status">
+                                                {{'Status' | localize}}
+                                                <p-sortIcon field="status"></p-sortIcon>
+                                            </th>
+                                            <th style="width: 150px" pSortableColumn="paymentPeriodType">
+                                                {{'Period' | localize}}
+                                                <p-sortIcon field="paymentPeriodType"></p-sortIcon>
+                                            </th>
+                                            <th style="width: 100px">{{'DayCount' | localize}}</th>
+                                            <th style="width: 250px;">{{'PaymentId' | localize}}</th>
+                                            <th style="width: 150px" pSortableColumn="invoiceNo">
+                                                {{'InvoiceNo' | localize}}
+                                                <p-sortIcon field="invoiceNo"></p-sortIcon>
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-record="$implicit">
+                                        <tr>
+                                            <td style="width: 130px">
+                                                <button type="button" class="btn btn-sm btn-primary"
+                                                    (click)="createOrShowInvoice(record.id, record.invoiceNo)">{{'ShowInvoice' | localize}}</button>
+                                            </td>
+                                            <td style="width: 150px">
+                                                <span class="ui-column-title">{{'ProcessTime' | localize}}</span>
+                                                <span
+                                                    *ngIf="record.creationTime">{{record.creationTime | momentFormat:'L'}}</span>
+                                                <span *ngIf="!record.creationTime">-</span>
+                                            </td>
+                                            <td style="width: 150px">
+                                                <span class="ui-column-title">{{'Edition' | localize}}</span>
+                                                {{record.editionDisplayName}}
+                                            </td>
+                                            <td style="width: 150px">
+                                                <span class="ui-column-title">{{'Gateway' | localize}}</span>
+                                                {{'SubscriptionPaymentGatewayType_' + record.gateway | localize}}
+                                            </td>
+                                            <td style="width: 100px">
+                                                <span class="ui-column-title">{{'Amount' | localize}}</span>
+                                                {{appSession.application.currencySign}}
+                                                {{record.amount | number : '1.2-2'}}
+                                            </td>
+                                            <td style="width: 150px">
+                                                <span class="ui-column-title">{{'Status' | localize}}</span>
+                                                {{'SubscriptionPaymentStatus_' + record.status | localize}}
+                                            </td>
+                                            <td style="width: 150px">
+                                                <span class="ui-column-title">{{'Period' | localize}}</span>
+                                                {{'PaymentPeriodType_' + record.paymentPeriodType | localize}}
+                                            </td>
+                                            <td style="width: 100px">
+                                                <span class="ui-column-title">{{'DayCount' | localize}}</span>
+                                                {{record.dayCount}}
+                                            </td>
+                                            <td style="width: 250px;">
+                                                <span class="ui-column-title">{{'PaymentId' | localize}}</span>
+                                                {{record.paymentId}}
+                                            </td>
+                                            <td style="width: 150px">
+                                                <span class="ui-column-title">{{'InvoiceNo' | localize}}</span>
+                                                {{record.invoiceNo}}
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                                <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                    {{'NoData' | localize}}
+                                </div>
+                                <div class="primeng-paging-container">
+                                    <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                        (onPageChange)="getPaymentHistory($event)"
+                                        [totalRecords]="primengTableHelper.totalRecordsCount"
+                                        [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                    </p-paginator>
+                                    <span class="total-records-count">
+                                        {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                                    </span>
+                                </div>
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

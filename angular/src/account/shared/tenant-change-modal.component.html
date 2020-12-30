@@ -1,0 +1,88 @@
+<div appBsModal #tenantChangeModal="bs-modal"
+     (onShown)="onShown()"
+     class="modal fade"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="tenantChangeModal"
+     aria-hidden="true"
+     [config]="{backdrop: 'static'}">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form *ngIf="active" #changeTenantForm="ngForm" novalidate (ngSubmit)="save()" class="form form-label-right">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span>{{"ChangeTenant" | localize}}</span>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="close()">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group row text-left mb-0">
+                        <label class="col-4 col-form-label">{{"SwitchToTenant" | localize}}</label>
+                        <div class="col">
+                            <span class="switch switch-icon">
+                                <label>
+                                    <input checked="checked"
+                                           name="SwitchToTenant"
+                                           type="checkbox"
+                                           [(ngModel)]="isSwitchToTenant"
+                                           (change)="switchToTenant($event)"
+                                           value="{{isSwitchToTenant ? 'true' : 'false'}}">
+                                    <span></span>
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-0">
+                        <label class="col-4 col-form-label">
+                            <label>{{"TenancyName" | localize}}</label>
+                        </label>
+                        <label class="col">
+                            <input #tenancyNameInput="ngModel"
+                                   type="text"
+                                   id="tenancyNameInput"
+                                   name="tenancyNameInput"
+                                   class="form-control"
+                                   [ngClass]="{'edited':tenancyName}"
+                                   [(ngModel)]="tenancyName"
+                                   [disabled]="!isSwitchToTenant"
+                                   required
+                                   placeholder="{{isSwitchToTenant ? ('EnterTenancyName' | localize) : ''}}"
+                                   maxlength="64">
+
+                            <span *ngIf="isSwitchToTenant && !tenancyNameInput.pristine && !tenancyName"
+                                  class="form-text text-danger text-left">
+                                {{"TenancyNameRequired" | localize}}
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving"
+                            type="button"
+                            class="btn btn-light-primary font-weight-bold"
+                            (click)="close()">
+                        {{"Cancel" | localize}}
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary font-weight-bold save-button"
+                            [disabled]="!changeTenantForm.form.valid"
+                            [buttonBusy]="saving"
+                            [busyText]="l('ProcessingWithThreeDot')">
+                        <i class="fa fa-arrow-circle-right"></i>
+                        <span>{{submitButtonText}}</span>
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

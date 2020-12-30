@@ -1,0 +1,118 @@
+<div class="content d-flex flex-column flex-column-fluid my-5" id="kt_content">
+    <div class="d-flex flex-column-fluid">
+        <div [class]="containerClass">
+            <div class="card card-custom overflow-hidden">
+                <div class="card-body p-0">
+                    <div class="row justify-content-center py-8 px-8 py-md-27 px-md-0">
+                        <div class="col-md-9">
+                            <div class="d-flex justify-content-between pb-10 pb-md-20 flex-column flex-md-row">
+                                <h1 class="display-4 font-weight-boldest mb-10">
+                                    {{'Invoice' | localize}}
+                                </h1>
+                                <div class="d-flex flex-column align-items-md-end px-0">
+                                    <!--begin::Logo-->
+                                    <a href="#" class="mb-5">
+                                        <img [src]="companyLogo" alt="" />
+                                    </a>
+                                    <!--end::Logo-->
+                                    <span class="d-flex flex-column align-items-md-end opacity-70">
+                                        <span>
+                                            {{invoiceInfo.hostLegalName}}
+                                        </span>
+                                        <span *ngFor="let addressLine of invoiceInfo.hostAddress">
+                                            <br />{{addressLine}}
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="border-bottom w-100"></div>
+                            <div class="d-flex justify-content-between pt-6">
+                                <div class="d-flex flex-column flex-root">
+                                    <span class="font-weight-bolder mb-2">{{'Date' | localize}}</span>
+                                    <span
+                                        class="opacity-70">{{invoiceInfo.invoiceDate | momentFormat:'YYYY-MM-DD'}}</span>
+                                </div>
+                                <div class="d-flex flex-column flex-root">
+                                    <span class="font-weight-bolder mb-2">{{'Invoice' | localize}}</span>
+                                    <span class="opacity-70">#{{invoiceInfo.invoiceNo}}</span>
+                                </div>
+                                <div class="d-flex flex-column flex-root">
+                                    <span class="font-weight-bolder mb-2">{{'InvoiceTo' | localize}}</span>
+                                    <span class="opacity-70">
+                                        <span *ngFor="let addressLine of invoiceInfo.tenantAddress">
+                                            <br />{{addressLine}}
+                                        </span>
+                                        <br />{{"Tax/VatNo" | localize}}: {{invoiceInfo.tenantTaxNo}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center py-8 px-8 py-md-10 px-md-0">
+                        <div class="col-md-9">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="pl-0 font-weight-bold text-muted text-uppercase">#</th>
+                                            <th class="text-right font-weight-bold text-muted text-uppercase">
+                                                {{"Edition" | localize}}</th>
+                                            <th class="text-right font-weight-bold text-muted text-uppercase">
+                                                {{"Amount" | localize}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="pl-0 pt-7">1</td>
+                                            <td class="pl-0 pt-7">{{invoiceInfo.editionDisplayName}}</td>
+                                            <td class="text-right pl-0 pt-7">
+                                                {{appSession.application.currencySign}}{{invoiceInfo.amount | number: '1.2-2'}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center bg-gray-100 py-8 px-8 py-md-10 px-md-0">
+                        <div class="col-md-9">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="pl-0 font-weight-bold text-muted  text-uppercase">&nbsp;</th>
+                                            <th class="font-weight-bold text-muted text-uppercase">&nbsp;</th>
+                                            <th class="font-weight-bold text-muted text-uppercase">&nbsp;</th>
+                                            <th class="text-right pr-0 font-weight-bold text-muted text-uppercase">
+                                                {{"Total" | localize}}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="font-weight-bolder">
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td class="text-danger text-right font-size-h3 font-weight-boldest">
+                                                {{appSession.application.currencySign}}{{invoiceInfo.amount | number: '1.2-2'}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center py-8 px-8 py-md-10 px-md-0">
+                        <div class="col-md-9">
+                            <div class="d-flex justify-content-between">
+                                <button type="button" class="btn btn-primary font-weight-bold" onclick="window.print();">
+                                    {{"Print" | localize}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

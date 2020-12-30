@@ -1,0 +1,37 @@
+<div appBsModal #entityChangeDetailModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="entityChangeDetailModal"
+     aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div *ngIf="entityChange" class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{"Detail" | localize}} - {{entityChange.entityTypeFullName | localize}}</span> <br />
+                    <small [innerHTML]="l('CreatedAtByUser', entityChange.changeTime, entityChange.userName)"></small>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                     <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="EntityPropertyChangesTable" class="display table table-striped table-bordered table-hover dt-responsive">
+                    <thead>
+                        <tr>
+                            <th>{{"Property" | localize}}</th>
+                            <th>{{"OriginalValue" | localize}}</th>
+                            <th>{{"NewValue" | localize}}</th>
+                        </tr>
+                        <tr *ngFor="let propertyChange of entityPropertyChanges">
+                            <td><strong>{{propertyChange.propertyName}}</strong></td>
+
+                            <td>{{getPropertyChangeValue(propertyChange.originalValue, propertyChange.propertyTypeFullName)}}</td>
+                            <td>{{getPropertyChangeValue(propertyChange.newValue, propertyChange.propertyTypeFullName)}}</td>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" (click)="close()">{{"Close" | localize}}</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,244 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Datetime_Init_Looped_Template_Here}}",
+			"condition" : "{{Project_Version_Here}} >= 060000 && {{Project_Version_Here}} < 070200 && {{Property_CreateOrEdit_Here}} == true && {{Property_Is_Nullable_Here}} == false",
+			"templates" : [
+					{
+					"type" : "DateTime",
+					"content" : "
+            this.{{entity_Name_Here}}.{{property_Name_Here}} = moment().startOf('day');"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Property_Datetime_Init_Looped_Template_Here_After_070200}}",
+			"condition" : "{{Project_Version_Here}} >= 070200 && {{Property_CreateOrEdit_Here}} == true",
+			"templates" : [
+					{
+					"type" : "DateTime",
+					"content" : "
+            this.{{entity_Name_Here}}.{{property_Name_Here}} = moment().startOf('day');"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Property_Nullable_Datetime_SetNull_Looped_Template_Here}}",
+			"condition" : "{{Project_Version_Here}} >= 060000 && {{Project_Version_Here}} < 070200 && {{Property_CreateOrEdit_Here}} == true && {{Property_Is_Nullable_Here}} == true",
+			"templates" : [
+					{
+					"type" : "DateTime",
+					"content" : "    this.{{property_Name_Here}} = null;
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Property_Nullable_Datetime_Dec_Looped_Template_Here}}",
+			"condition" : "{{Project_Version_Here}} >= 060000 && {{Project_Version_Here}} < 070200 && {{Property_CreateOrEdit_Here}} == true && {{Property_Is_Nullable_Here}} == true",
+			"templates" : [
+					{
+					"type" : "DateTime",
+					"content" : "
+    {{property_Name_Here}}: Date;"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Property_Nullable_Datetime_Init_Looped_Template_Here}}",
+			"condition" : "{{Project_Version_Here}} >= 060000 && {{Project_Version_Here}} < 070200 && {{Property_CreateOrEdit_Here}} == true && {{Property_Is_Nullable_Here}} == true",
+			"templates" : [
+					{
+					"type" : "DateTime",
+					"content" : "
+                if (this.{{entity_Name_Here}}.{{property_Name_Here}}) {
+					this.{{property_Name_Here}} = this.{{entity_Name_Here}}.{{property_Name_Here}}.toDate();
+                }"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Property_Nullable_Datetime_GetValue_Looped_Template_Here}}",
+			"condition" : "{{Project_Version_Here}} >= 060000 && {{Project_Version_Here}} < 070200 && {{Property_CreateOrEdit_Here}} == true && {{Property_Is_Nullable_Here}} == true",
+			"templates" : [
+					{
+					"type" : "DateTime",
+					"content" : "
+        if (this.{{property_Name_Here}}) {
+            if (!this.{{entity_Name_Here}}.{{property_Name_Here}}) {
+                this.{{entity_Name_Here}}.{{property_Name_Here}} = moment(this.{{property_Name_Here}}).startOf('day');
+            }
+            else {
+                this.{{entity_Name_Here}}.{{property_Name_Here}} = moment(this.{{property_Name_Here}});
+            }
+        }
+        else {
+            this.{{entity_Name_Here}}.{{property_Name_Here}} = null;
+        }"
+					}
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Looped_Display_Declaration_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "    {{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} = '';
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_Display_Init_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "            this.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} = '';
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_Edit_Bind_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "                this.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} = result.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}};
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_Lookup_Component_Import_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType": "LookupTable",
+					"preventDuplicate":true,
+					"content" : "
+import { {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModalComponent } from './{{entity_Name_Here}}-{{nP_Foreign_Entity_Name_Here}}-lookup-table-modal.component';"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_ViewChild_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType": "LookupTable",
+					"content" : "    @ViewChild('{{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal{{NP_Duplication_Number_Here}}', { static: true }) {{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal{{NP_Duplication_Number_Here}}: {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModalComponent;
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_OpenModal_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",					
+					"viewType": "LookupTable",
+					"content" : "    openSelect{{NP_Foreign_Entity_Name_Here}}Modal{{NP_Duplication_Number_Here}}() {
+        this.{{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal{{NP_Duplication_Number_Here}}.id = this.{{entity_Name_Here}}.{{nP_Name_Here}};
+        this.{{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal{{NP_Duplication_Number_Here}}.displayName = this.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}};
+        this.{{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal{{NP_Duplication_Number_Here}}.show();
+    }
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_SetNull_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType":"LookupTable",
+					"content" : "    set{{NP_Name_Here}}Null() {
+        this.{{entity_Name_Here}}.{{nP_Name_Here}} = null;
+        this.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} = '';
+    }
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_GetNew_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType":"LookupTable",
+					"content" : "    getNew{{NP_Name_Here}}() {
+        this.{{entity_Name_Here}}.{{nP_Name_Here}} = this.{{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal{{NP_Duplication_Number_Here}}.id;
+        this.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} = this.{{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal{{NP_Duplication_Number_Here}}.displayName;
+    }
+"
+					}
+				]
+		},		
+		{
+			"placeholder" : "{{NP_Looped_Dropdown_GetAll_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType" : "Dropdown",
+					"content" : "this._{{entity_Name_Plural_Here}}ServiceProxy.getAll{{NP_Foreign_Entity_Name_Here}}ForTableDropdown().subscribe(result => {						
+						this.all{{NP_Foreign_Entity_Name_Here}}s = result;
+					});
+					"
+					}
+				]
+		},		
+		{
+			"placeholder" : "{{NP_Looped_Dropdown_Property_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"preventDuplicate":true,
+					"viewType" : "Dropdown",
+					"content" : "	all{{NP_Foreign_Entity_Name_Here}}s: {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto[];
+					"
+					}
+				]
+		},		
+		{
+			"placeholder" : "{{NP_Looped_Import_Dropdown_LookupTableDto_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType" : "Dropdown",
+					"preventDuplicate":true,
+					"content" : ",{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto
+					"
+					}
+				]
+		}
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{Primary_Key_Type_Here}}",
+			"condition": "{{Primary_Key_Here}} == 'Guid'",
+			"content": "string"
+		},
+		{
+			"placeholder": "{{Primary_Key_Type_Here}}",
+			"condition": "{{Primary_Key_Here}} == 'string'",
+			"content": "string"
+		},
+		{
+			"placeholder": "{{Primary_Key_Type_Here}}",
+			"condition": "{{Primary_Key_Here}} != 'Guid'",
+			"content": "number"
+		},
+		{
+			"placeholder": "{{Import_Modal_Directive_Here}}",
+			"condition": "{{Project_Version_Here}} < 080500",
+			"content": "import { ModalDirective } from 'ngx-bootstrap';"
+		},
+		{
+			"placeholder": "{{Import_Modal_Directive_Here}}",
+			"condition": "{{Project_Version_Here}} >= 080500",
+			"content": "import { ModalDirective } from 'ngx-bootstrap/modal';"
+		}
+	]
+}

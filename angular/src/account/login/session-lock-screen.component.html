@@ -1,0 +1,59 @@
+<div class="card card-bordered gutter-b card-stretch" [@routerTransition]>
+    <!--begin::Body-->
+    <div class="card-body text-center pt-4">
+        <div class="alert alert-custom alert-light-warning" role="alert">
+            <div class="alert-text" style="font-weight: bold;">{{'YourSessionIsLocked' | localize}}<i class="fa fa-lock float-right"></i></div>
+        </div>
+        <!--begin::User-->
+        <div class="mt-7 pb-2">
+            <div class="symbol symbol-circle symbol-lg-75">
+                <img class="symbol-label" *ngIf="userInfo && userInfo.profilePicture"
+                     [src]="userInfo.profilePicture" alt="profileimage">
+            </div>
+        </div>
+        <!--end::User-->
+        <!--begin::Name-->
+        <div class="my-2">
+            <a href="#" class="text-dark font-weight-bold text-hover-primary font-size-h4">{{userInfo.userName}}</a>
+        </div>
+        <!--end::Name-->
+        <!--begin::Name-->
+        <div class="my-2">
+            <span class="text-dark font-weight-normal font-size-h4">Tenant: <span class="text-dark font-weight-bold">{{userInfo.tenant}}</span></span>
+        </div>
+        <form #loginForm="ngForm" class="form mt-4" method="post" novalidate (ngSubmit)="login()">
+            <div class="my-2">
+                <div class="form-group">
+                    <input type="hidden" name="usernameOrEmailAddress"/>
+                </div>
+                <div class="form-group">
+                    <input #passwordInput="ngModel"
+                           [(ngModel)]="loginService.authenticateModel.password"
+                           class="form-control form-control-solid h-auto py-7 px-6 rounded-lg font-size-h6" type="password" autocomplete="new-password"
+                           placeholder="{{'Password' | localize}}*" name="password" required
+                           maxlength="32" />
+                    <validation-messages [formCtrl]="passwordInput" *ngIf="!passwordInput.touched">
+                    </validation-messages>
+                </div>
+            </div>
+
+            <!--end::Name-->
+            <!--begin::Buttons-->
+            <div class="mt-9 mb-6">
+                <div class="col-5 mt-2 float-left">
+                    <label class="checkbox">
+                        <input [(ngModel)]="loginService.rememberMe"
+                               type="checkbox" name="rememberMe"
+                               value="true" />
+                        <span></span>
+                        {{"RememberMe" | localize}}
+                    </label>
+                </div>
+                <button type="submit"
+                        class="btn btn-primary font-weight-bolder font-size-h6 col-4 float-right"
+                        [disabled]="!loginForm.form.valid">{{"LogIn" | localize}}</button></div>
+            <!--end::Buttons-->
+        </form>
+    </div>
+    <!--end::Body-->
+</div>

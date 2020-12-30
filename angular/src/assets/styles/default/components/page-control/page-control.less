@@ -1,0 +1,118 @@
+.page-control {
+    width: max-content;
+    position: absolute;
+    z-index: 1;
+
+    &.top-control {
+        z-index: 100;
+    }
+
+    &.moving-stop {
+        transform: none !important;
+    }
+
+    &__label {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    &__actions {
+        position: absolute;
+        display: none;
+        margin: 10px;
+        padding: 6px;
+        background-color: @main-white-third;
+        border-radius: 4px;
+        opacity: 0;
+        transition: opacity 0.2s ease-in;
+
+        &.show-action {
+            display: flex;
+            top: -44px;
+            left: -12px;
+            opacity: 1;
+        }
+
+        >i {
+            cursor: pointer;
+            height: 22px;
+            width: 22px;
+            color: @main-black-second;
+            font-size: 22px;
+            transform: rotate3d(0, 0, 1, 0deg);
+            transition: transform 0.1s ease-in;
+
+            &:hover {
+                color: @main-black-third;
+            }
+
+            &.opened-icon {
+                transform: rotate3d(0, 0, -1, 360deg);
+            }
+        }
+
+        &__wrapper {
+            cursor: default;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-left: 2px;
+            padding: 0 4px;
+            width: 100%;
+
+            i {
+                cursor: pointer;
+                margin: 0 0 0 10px;
+                color: @main-color;
+                font-size: 16px;
+
+                &:hover {
+                    color: @main-color-second;
+                }
+            }
+        }
+
+        &__font-size {
+            position: absolute;
+            top: 30px;
+            left: 26px;
+            background-color: @main-white-second;
+
+            &__list {
+                margin-bottom: 0;
+                padding: 8px 0;
+                max-height: 120px;
+                overflow-y: auto;
+                list-style: none;
+
+                &__item {
+                    cursor: pointer;
+                    display: flex;
+                    justify-content: center;
+                    padding: 2px 8px;
+                    font-weight: 500;
+
+                    &:last-child {
+                        padding-bottom: 0;
+                    }
+
+                    &:hover {
+                        background-color: @disabled-color-third;
+                    }
+
+                    &.active {
+                        background-color: @disabled-color-second;
+                    }
+                }
+            }
+        }
+    }
+
+    @import './components/date-time-control.less';
+    @import './components/page-control-view.less';
+    @import './components/signature-control.less';
+    @import './components/text-field-control.less';
+    @import './components/initials-control.less';
+    @import './components/text-area-control.less';
+}

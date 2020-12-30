@@ -1,0 +1,16 @@
+﻿<div [@routerTransition]>
+  {{Content_Class_After_Metronic_V606}}
+  {{Content_Class_After_Metronic_V90}}
+  {{Page_Header_Here}} 
+    <div {{Container_Class_Here}}{{Container_Class_V2_Here}}{{Container_Class_V3_Here}}>
+        <div class="{{Portlet_Class_Here}}{{Card_Class_Here}}">
+            <div class="{{Portlet_Body_Class_Here}}{{Card_Body_Class_Here}}">
+                <div class="row align-items-center">
+                 {{Property_Looped_Template_Here}}
+                 {{NP_Looped_Template_Here}}
+                </div>
+            </div>
+        </div>
+    </div>
+  {{Div_After_Metronic_V606}}
+</div>

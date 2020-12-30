@@ -1,0 +1,28 @@
+<div class="d-flex align-items-center justify-content-between mb-5 chat-user" (click)="selectChatFriend.emit($event)">
+    <div class="d-flex align-items-center">
+        <div class="symbol symbol-circle symbol-50 mr-3">
+            <friend-profile-picture class="symbol symbol-circle symbol-50 mr-3" [userId]="friend.friendUserId" [tenantId]="friend.friendTenantId">
+            </friend-profile-picture>
+        </div>
+        <div class="d-flex flex-column">
+            <a href="javascript:;" class="text-dark-75 text-hover-primary font-weight-bold font-size-lg">{{friend.friendUserName}}</a>
+            <span *ngIf='friend.friendTenancyName' class="text-muted font-weight-bold font-size-sm">
+                {{friend.friendTenancyName}}
+            </span>
+            <span *ngIf='!friend.friendTenancyName' class="text-muted font-weight-bold font-size-sm">
+                Host
+            </span>
+            <span *ngIf="friend.isOnline" class="label label-xl label-dot label-success"></span>
+            <span *ngIf="!friend.isOnline" class="label label-xl label-dot label-secondary"></span>
+        </div>
+    </div>
+
+    <div class="d-flex flex-column align-items-end">
+        <span *ngIf="friend.unreadMessageCount" class="label label-warning">
+            {{friend.unreadMessageCount}}
+        </span>
+        <span *ngIf="!friend.unreadMessageCount" class="label label-warning d-none">
+            {{friend.unreadMessageCount}}
+        </span>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="autocomplete-user-container">
+    <label for="userInput" *ngIf="label">{{ label }}</label>
+    <span class="text-muted" *ngIf="!isEditMode && user">{{ user.name }}</span>
+
+    <div *ngIf="user && user.publicId && isEditMode">
+        <span class="autoComplete-selected d-flex align-items-center">{{user.name}}
+            <a class="btn p-0 pl-1" (click)="clear()">
+                <i class="fa fa-times"></i>
+            </a>
+        </span>
+    </div>
+
+    <p-autoComplete *ngIf="isEditMode && (!user || !user.publicId)"
+        [(ngModel)]="user"
+        (onSelect)="onSelect()"
+        id="userInput"
+        [suggestions]="filteredUsers"
+        (completeMethod)="filterUsers($event)"
+        field="name"
+        [placeholder]="userRole"
+        [minLength]="2"
+        name="userInput"
+        inputStyleClass="form-control"
+        styleClass="width-percent-100 p-0">
+    </p-autoComplete>
+</div>

@@ -1,0 +1,34 @@
+{
+    "conditionalTemplates":[
+        {
+            "placeholder": "{{Portlet_Class_Here}}",
+            "condition": "{{Project_Version_Here}} < 090000",
+            "content": "kt-portlet kt-portlet--mobile"
+        },
+        {
+            "placeholder": "{{Card_Class_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "card card-custom gutter-b"
+        },
+        {
+            "placeholder": "{{Portlet_Body_Here}}",
+            "condition": "{{Project_Version_Here}} < 090000",
+            "content": "kt-portlet__body"
+        },
+        {
+            "placeholder": "{{Card_Body_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "card-body"
+        },
+        {
+            "placeholder": "{{Form_Class_Here}}",
+            "condition": "{{Project_Version_Here}} < 090000",
+            "content": "kt-form"
+        },
+        {
+            "placeholder": "{{Form_Class_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "form"
+        }
+    ]
+}

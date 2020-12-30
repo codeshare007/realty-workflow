@@ -1,0 +1,54 @@
+.wizard.wizard-2 {
+  display: flex;
+}
+
+.wizard.wizard-2 .wizard-body {
+  width: 100%;
+}
+
+.wizard.wizard-2 .wizard-nav {
+  padding: 0;
+  flex: 0 0 200px;
+  width: 200px;
+  max-width: 100%;
+}
+
+.wizard.wizard-2 .wizard-nav .wizard-steps {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.wizard.wizard-2 .wizard-nav .wizard-steps .wizard-step.wizard-step-current, 
+.wizard.wizard-2 .wizard-nav .wizard-steps .wizard-step.wizard-step-current .wizard-icon {
+  transition: color .15s ease,background-color .15s ease,border-color .15s ease,box-shadow .15s ease;
+}
+
+.wizard.wizard-2 .wizard-nav .wizard-steps .wizard-step.wizard-step-current {
+  background-color: #f3f6f9;
+}
+
+.wizard.wizard-2 .wizard-nav .wizard-steps .wizard-step {
+  padding: .75rem 1.5rem;
+  position: relative;
+  border-radius: .5rem;
+  transition: color .15s ease,background-color .15s ease,border-color .15s ease,box-shadow .15s ease;
+}
+
+.wizard.wizard-2 .wizard-nav .wizard-steps .wizard-step.wizard-step-current::before {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  border: 1rem solid transparent;
+  border-right-color: #f3f6f9;
+}
+
+.wizard.wizard-2 .wizard-nav .wizard-steps .wizard-step .wizard-label .wizard-title {
+  color: #181c32;
+  font-weight: 500;
+  font-size: 1.1rem;
+}

@@ -1,0 +1,220 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Looped_Template_Here}}",
+			"condition" : "{{Property_Listed_Here}} == true",
+			"templates" : [
+					{
+					"type" : "default",
+					"content" : ",
+					{
+						targets: {{Combined_Loop_Index}},
+						 data: \"{{entity_Name_Here}}.{{property_Name_Here}}\",
+						 name: \"{{property_Name_Here}}\" {{Datetime_Formatter}} {{Bool_Formatter}} {{Enum_Formatter}}
+					}"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Property_Filter_Param_Here}}",
+			"condition" : "{{Property_Advanced_Filter_Here}} == true",
+			"templates" : [
+					{
+					"type" : "numeric",
+					"content" : ",
+					min{{Property_Name_Here}}Filter: $('#Min{{Property_Name_Here}}FilterId').val(),
+					max{{Property_Name_Here}}Filter: $('#Max{{Property_Name_Here}}FilterId').val()"
+					},
+					{
+					"type" : "DateTime",
+					"content" : ",
+					min{{Property_Name_Here}}Filter:  getDateFilter($('#Min{{Property_Name_Here}}FilterId')),
+					max{{Property_Name_Here}}Filter:  getDateFilter($('#Max{{Property_Name_Here}}FilterId'))"
+					},
+					{
+					"type" : "default",
+					"content" : ",
+					{{Dp_Property_Name_Here}}Filter: $('#{{Property_Name_Here}}FilterId').val()"
+					}
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : ",
+					{
+						targets: {{Combined_Loop_Index}},
+						 data: \"{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}\" ,
+						 name: \"{{nP_Object_Name_Here}}Fk.{{nP_Display_Property_Name_Here}}\" 
+					}"}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Filter_Param_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : ",
+					{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}Filter: $('#{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}FilterId').val()"
+					}
+				]
+		}
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{Datetime_Formatter}}",
+			"condition": "{{Property_Type_Here}} == 'DateTime'",
+			"content": ",
+					render: function ({{property_Name_Here}}) {
+						if ({{property_Name_Here}}) {
+							return moment({{property_Name_Here}}).format(\'L\');
+						}
+						return \"\";
+					}
+			"
+		},
+		{
+			"placeholder": "{{Bool_Formatter}}",
+			"condition": "{{Property_Type_Here}} == 'bool'",
+			"content": ",
+						render: function ({{property_Name_Here}}) {
+							if ({{property_Name_Here}}) {
+								return '<div class=\"text-center\"><i class=\"fa fa-check kt--font-success\" title=\"True\"></i></div>';
+							}
+							return '<div class=\"text-center\"><i class=\"fa fa-times-circle\" title=\"False\"></i></div>';
+					}
+			"
+		},
+		{
+			"placeholder": "{{Enum_Formatter}}",
+			"condition": "{{Is_That_Property_Enum}} == true",
+			"content": ",
+						render: function ({{property_Name_Here}}) {
+							return app.localize('Enum_{{Property_Type_Here}}_' + {{property_Name_Here}});
+						}
+			"
+		},
+		{
+			"placeholder": "{{View_Modal_Manager_Here}}",
+			"condition": "{{Create_View_Only_Here}} == true",
+			"content": "
+		 var _view{{Entity_Name_Here}}Modal = new app.ModalManager({
+            viewUrl: abp.appPath + '{{App_Area_Name_Here}}/{{Entity_Name_Plural_Here}}/View{{entity_Name_Here}}Modal',
+            modalClass: 'View{{Entity_Name_Here}}Modal'
+        });"
+		},
+		{
+			"placeholder": "{{View_Button_Here}}",
+			"condition": "{{Create_View_Only_Here}} == true && {{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "
+						{
+                                text: app.localize('View'),
+                                action: function (data) {
+                                    _view{{Entity_Name_Here}}Modal.open({ id: data.record.{{entity_Name_Here}}.id });
+                                }
+                        },"
+		},
+		{
+			"placeholder": "{{View_Button_Here}}",
+			"condition": "{{Create_View_Only_Here}} == true && {{Is_Non_Modal_CRUD_Page}} == true",
+			"content": "
+						{
+                                text: app.localize('View'),
+                                action: function (data) {
+                                    window.location=\"/{{App_Area_Name_Here}}/{{Entity_Name_Plural_Here}}/View{{Entity_Name_Here}}/\" + data.record.{{entity_Name_Here}}.id;
+                                }
+                        },"
+		},
+		{
+			"placeholder": "{{Get_Excel_Method_Here}}",
+			"condition": "{{Create_Excel_Export_Here}} == true",
+			"content": "$('#ExportToExcelButton').click(function () {
+            _{{entity_Name_Plural_Here}}Service
+                .get{{Entity_Name_Plural_Here}}ToExcel({
+				filter : $('#{{Entity_Name_Plural_Here}}TableFilter').val(){{Property_Filter_Param_Here}}{{NP_Filter_Param_Here}}
+				})
+                .done(function (result) {
+                    app.downloadTempFile(result);
+                });
+        });"
+		},
+		{
+			"placeholder": "{{EntityTypeFullName_Dec_Here}}",
+			"condition": "{{Entity_History_Here}} == true",
+			"content": "var _entityTypeFullName = '{{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.{{Entity_Name_Here}}';
+        "
+		},
+		{
+			"placeholder": "{{EntityTypeHistoyModal_Dec_Here}}",
+			"condition": "{{Entity_History_Here}} == true",
+			"content": "        var _entityTypeHistoryModal = app.modals.EntityTypeHistoryModal.create();"
+		},
+		{
+			"placeholder": "{{EntityHistoryIsEnabled_Dec_Here}}",
+			"condition": "{{Entity_History_Here}} == true",
+			"content": "        function entityHistoryIsEnabled() {
+            return abp.auth.hasPermission('Pages.Administration.AuditLogs') &&
+                abp.custom.EntityHistory &&
+                abp.custom.EntityHistory.IsEnabled &&
+                _.filter(abp.custom.EntityHistory.EnabledEntities, entityType => entityType === _entityTypeFullName).length === 1;
+        }"
+		},
+		{
+			"placeholder": "{{EntityHistory_Action_Here}}",
+			"condition": "{{Entity_History_Here}} == true",
+			"content": "
+                        {
+                            text: app.localize('History'),
+                            visible: function () {
+                                return entityHistoryIsEnabled();
+                            },
+                            action: function (data) {
+                                _entityTypeHistoryModal.open({
+                                    entityTypeFullName: _entityTypeFullName,
+                                    entityId: data.record.{{entity_Name_Here}}.id
+                                });
+                            }
+						},"
+		},
+		{
+			"placeholder": "{{Create_Button_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == true",
+			"content": ""
+		},
+		{
+			"placeholder": "{{Create_Button_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "$('#CreateNew{{Entity_Name_Here}}Button').click(function () {
+            _createOrEditModal.open();
+        });"
+		},
+		{
+			"placeholder": "{{Create_Or_Edit_Modal_Dec_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == true",
+			"content": ""
+		},
+		{
+			"placeholder": "{{Create_Or_Edit_Modal_Dec_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == false",
+			"content": " var _createOrEditModal = new app.ModalManager({
+            viewUrl: abp.appPath + '{{App_Area_Name_Here}}/{{Entity_Name_Plural_Here}}/CreateOrEditModal',
+            scriptUrl: abp.appPath + 'view-resources/Areas/{{App_Area_Name_Here}}/Views/{{Entity_Name_Plural_Here}}/_CreateOrEditModal.js',
+            modalClass: 'CreateOrEdit{{Entity_Name_Here}}Modal'
+        });"
+		},
+		{
+			"placeholder": "{{Edit_Button_OnClick_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == true",
+			"content": "window.location=\"/{{App_Area_Name_Here}}/{{Entity_Name_Plural_Here}}/CreateOrEdit/\" + data.record.{{entity_Name_Here}}.id;"
+		},
+		{
+			"placeholder": "{{Edit_Button_OnClick_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "_createOrEditModal.open({ id: data.record.{{entity_Name_Here}}.id });"
+		}
+	]
+}

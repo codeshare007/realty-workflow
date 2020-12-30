@@ -1,0 +1,54 @@
+<div appBsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="language.id">{{"EditLanguage" | localize}}: {{language.name}}</span>
+                        <span *ngIf="!language.id">{{"CreateNewLanguage" | localize}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')"
+                        [disabled]="saving">
+                         <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <p-dropdown #languageCombobox [options]="languageNamesSelectItems" [filter]="true" [virtualScroll]="true" [itemSize]="30"
+                            name="languageName" [(ngModel)]="language.name" [style]="{'width':'100%'}"></p-dropdown>
+                        <validation-messages [formCtrl]="languageCombobox"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <p-dropdown #iconCombobox name="languageIcon" [options]="flagsSelectItems"
+                            [(ngModel)]="language.icon" [filter]="true" [virtualScroll]="true" [itemSize]="30" [style]="{'width':'100%'}">
+                            <ng-template let-item pTemplate="selectedItem">
+                                <i class="margin-right-5 d-inline-block" [ngClass]="item.value"></i>
+                                <span style="vertical-align:middle">{{item.label}}</span>
+                            </ng-template>
+                            <ng-template let-flag pTemplate="item">
+                                <i class="margin-right-5 d-inline-block" [ngClass]="flag.value"></i>
+                                <span style="vertical-align:middle">{{flag.label}}</span>
+                            </ng-template>
+                        </p-dropdown>
+                    </div>
+                    <div class="checkbox-list">
+                        <label for="EditLanguage_IsEnabled" class="checkbox">
+                            <input id="EditLanguage_IsEnabled" type="checkbox" name="languageIsEnabled"
+                                [(ngModel)]="language.isEnabled">
+                            <span></span>
+                            {{"IsEnabled" | localize}}
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">{{"Cancel" | localize}}</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!editForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{"Save" | localize}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,110 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="w-100 d-flex align-items-center">
+            <div class="w-100 d-flex justify-content-between">
+                <h4 class="card-label mb-0 d-flex align-items-center">General Info</h4>
+                <div>
+                    <a class="card-header-button" (click)="saveTransaction()" *ngIf="isEditMode">
+                        <i class="la la-save edit-control"></i> {{ 'Save' | localize }}
+                    </a>
+                    <a class="card-header-button" (click)="isEditMode = true" *ngIf="!isEditMode">
+                        <i class="la la-pencil edit-control"></i>
+                    </a>
+                    <a class="card-header-button chevron" (click)="isOpened = !isOpened">
+                        <i class="pi pi-fw pi-chevron-up" 
+                            [ngClass]="{'closed': !isOpened }"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body py-0" *ngIf="isOpened && transaction">
+        <div class="row py-3 mx-1 border-bottom-1">
+            <div class="col-lg-12 d-flex flex-column py-1 px-0 pr-10">
+                <span class="font-weight-bold mr-2">Name*:</span>
+                <span *ngIf="!isEditMode" class="text-muted text-hover-primary">{{ transaction.name }}</span>
+                <div *ngIf="isEditMode">
+                    <input id="TransactionName" #transactionNameInput="ngModel" type="text"
+                            name="TransactionName" class="form-control" [(ngModel)]="transaction.name"
+                            required maxlength="1024">
+                    <validation-messages [formCtrl]="transactionNameInput"></validation-messages>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10">
+                <span class="font-weight-bold mr-2">Status:</span>
+                <span *ngIf="!isEditMode" class="text-muted">{{ getStatusDescription(transaction.status) }}</span>
+                <div *ngIf="isEditMode">
+                    <general-combo
+                        name="TransactionStatus" 
+                        [values]="statusValues"
+                        [(selectedValue)]="transaction.status"
+                        >
+                    </general-combo>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10">
+                <span class="font-weight-bold mr-2">Type:</span>
+                <span *ngIf="!isEditMode" class="text-muted">{{ getTypeDescription(transaction.type) }}</span>
+                <div *ngIf="isEditMode">
+                    <general-combo
+                        name="TransactionType" 
+                        [values]="typeValues"
+                        [(selectedValue)]="transaction.type"
+                        >
+                    </general-combo>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10">
+                <span class="font-weight-bold mr-2">Customer:</span>
+                <autocomplete-user-input
+                    [isEditMode]="isEditMode"
+                    [(user)]="customer"
+                    (userChange)="transaction.customerId = $event.publicId"
+                    [userRole]="'Customer'"
+                    >
+                </autocomplete-user-input>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10"
+                *ngIf="'Pages.Users.Agents' | permission"
+                >
+                
+                <span class="font-weight-bold mr-2">Agent:</span>
+                <autocomplete-user-input
+                    [isEditMode]="isEditMode"
+                    [(user)]="agent"
+                    (userChange)="transaction.agentId = $event.publicId"
+                    [userRole]="'Agent'"
+                    >
+                </autocomplete-user-input>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10"
+                >
+                
+                <span class="font-weight-bold mr-2">Lead#:</span>
+                <span></span>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10"
+                >
+                
+                <span class="font-weight-bold mr-2">Listing#:</span>
+                <span></span>
+            </div>
+        </div>
+        <div class="row py-3 mx-1" *ngIf="(transaction.notes && transaction.notes.length > 0) || isEditMode">
+            <div class="col-lg-12 d-flex flex-column py-1 px-0">
+                <span class="font-weight-bold mr-2">Notes:</span>
+                <span *ngIf="!isEditMode" class="text-muted text-hover-primary">{{ transaction.notes }}</span>
+                <div *ngIf="isEditMode">
+                    <textarea 
+                        class="w-100"
+                        [(ngModel)]="transaction.notes" 
+                        name="TransactionNotes" 
+                        [style]="{'height':'300px'}"
+                        >
+                    </textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

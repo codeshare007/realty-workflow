@@ -1,0 +1,82 @@
+﻿import { Component, ViewChild, Injector, Output, EventEmitter, ViewEncapsulation} from '@angular/core';
+{{Import_Modal_Directive_Here}}
+import {{{Entity_Name_Plural_Here}}ServiceProxy, {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto } from '@shared/service-proxies/service-proxies';
+import { AppComponentBase } from '@shared/common/app-component-base';
+{{DataTable_Import_Here}}{{TurboTable_Import_Here}};
+{{PrimeNG_Imports_Here}}
+@Component({
+    selector: '{{entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal',
+    styleUrls: ['./{{entity_Name_Here}}-{{nP_Foreign_Entity_Name_Here}}-lookup-table-modal.component.less'],
+    encapsulation: ViewEncapsulation.None,
+    templateUrl: './{{entity_Name_Here}}-{{nP_Foreign_Entity_Name_Here}}-lookup-table-modal.component.html'
+})
+export class {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModalComponent extends AppComponentBase {
+
+    @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
+    @ViewChild('dataTable', { static: true }) dataTable: {{DataTable_Dec_Here}}Table;
+    @ViewChild('paginator', { static: true }) paginator: Paginator;
+
+    filterText = '';
+    id: {{NP_Id_Type_TS_Here}};
+    displayName: string;
+    
+    @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
+    active = false;
+    saving = false;
+
+    constructor(
+        injector: Injector,
+        private _{{entity_Name_Plural_Here}}ServiceProxy: {{Entity_Name_Plural_Here}}ServiceProxy
+    ) {
+        super(injector);
+    }
+
+    show(): void {
+        this.active = true;
+        this.paginator.rows = 5;
+        this.getAll();
+        this.modal.show();
+    }
+
+    getAll(event?: LazyLoadEvent) {
+        if (!this.active) {
+            return;
+        }
+
+        if (this.{{TruboTable_Primenghelper_Here}}{{DataTable_Primenghelper_Here}}.shouldResetPaging(event)) {
+            this.paginator.changePage(0);
+            return;
+        }
+
+        this.{{TruboTable_Primenghelper_Here}}{{DataTable_Primenghelper_Here}}.showLoadingIndicator();
+
+        this._{{entity_Name_Plural_Here}}ServiceProxy.getAll{{NP_Foreign_Entity_Name_Here}}ForLookupTable(
+            this.filterText,
+            this.{{TruboTable_Primenghelper_Here}}{{DataTable_Primenghelper_Here}}.getSorting(this.dataTable),
+            this.{{TruboTable_Primenghelper_Here}}{{DataTable_Primenghelper_Here}}.getSkipCount(this.paginator, event),
+            this.{{TruboTable_Primenghelper_Here}}{{DataTable_Primenghelper_Here}}.getMaxResultCount(this.paginator, event)
+        ).subscribe(result => {
+            this.{{TruboTable_Primenghelper_Here}}{{DataTable_Primenghelper_Here}}.totalRecordsCount = result.totalCount;
+            this.{{TruboTable_Primenghelper_Here}}{{DataTable_Primenghelper_Here}}.records = result.items;
+            this.{{TruboTable_Primenghelper_Here}}{{DataTable_Primenghelper_Here}}.hideLoadingIndicator();
+        });
+    }
+
+    reloadPage(): void {
+        this.paginator.changePage(this.paginator.getPage());
+    }
+
+    setAndSave({{nP_Foreign_Entity_Name_Here}}: {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto) {
+        this.id = {{nP_Foreign_Entity_Name_Here}}.id;
+        this.displayName = {{nP_Foreign_Entity_Name_Here}}.displayName;
+        this.active = false;
+        this.modal.hide();
+        this.modalSave.emit(null);
+    }
+
+    close(): void {
+        this.active = false;
+        this.modal.hide();
+        this.modalSave.emit(null);
+    }
+}

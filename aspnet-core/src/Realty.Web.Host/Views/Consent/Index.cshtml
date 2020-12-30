@@ -1,0 +1,80 @@
+﻿@model Realty.Web.Models.Consent.ConsentViewModel
+@{
+    ViewBag.DisableTenantChange = true;
+}
+
+<head>
+    <title>Realty</title>
+
+    <link href="~/view-resources/Views/Ui/Login.css" rel="stylesheet" asp-append-version="true"/>
+    <style>
+        .consent-buttons {
+            margin-top: 20px;
+        }
+
+            .consent-buttons button {
+                display: inline-block;
+                width: 49%;
+            }
+    </style>
+</head>
+<div class="login-form">
+    @if (Model.ClientLogoUrl != null)
+    {
+        <div class="client-logo"><img src="@Model.ClientLogoUrl"></div>
+    }
+    <h3>
+        <small>@L("ClientIsRequestingYourPermission", Model.ClientName)</small>
+    </h3>
+
+    <form asp-action="Index">
+        <input type="hidden" asp-for="ReturnUrl" />
+
+        @if (Model.IdentityScopes.Any())
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-user"></span>
+                    @L("PersonalInformations")
+                </div>
+                <ul class="list-group">
+                    @foreach (var scope in Model.IdentityScopes)
+                    {
+                        @await Html.PartialAsync("_ScopeListItem", scope)
+                    }
+                </ul>
+            </div>
+        }
+
+        @if (Model.ResourceScopes.Any())
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-tasks"></span>
+                    @L("ApplicationAccess")
+                </div>
+                <ul class="list-group">
+                    @foreach (var scope in Model.ResourceScopes)
+                    {
+                        @await Html.PartialAsync("_ScopeListItem", scope)
+                    }
+                </ul>
+            </div>
+        }
+
+        @if (Model.AllowRememberConsent)
+        {
+            <div class="consent-remember">
+                <label>
+                    <input class="consent-scopecheck" asp-for="RememberConsent" />
+                    <strong>@L("RememberMyDecision")</strong>
+                </label>
+            </div>
+        }
+
+        <div class="consent-buttons">
+            <button name="button" value="yes" autofocus>@L("Allow")</button>
+            <button name="button" value="no">@L("DoNotAllow")</button>
+        </div>
+    </form>
+</div>

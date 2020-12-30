@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+
+  mycompanyname.abpzerotemplate.migrator:
+    image: ${DOCKER_REGISTRY-}mycompanynameabpzerotemplatemigrator
+    container_name: mycompanynameabpzerotemplatemigrator_container
+    build:
+      context: .
+      dockerfile: src/Realty.Migrator/Dockerfile
+    environment:
+      - ASPNETCORE_Docker_Enabled=true
+      - ConnectionStrings__Default=Server=mssqlDb;Database=RealtyDb;User=sa;Password=Super_Encrypted_Passw0rd!
+    networks:
+      - mycompanyname.abpzerotemplate
+      
+networks:
+  mycompanyname.abpzerotemplate:
+    external:
+      name: mycompanyname.abpzerotemplate

@@ -1,0 +1,86 @@
+/*Stlye for Chat Buttons */
+.dropdown-excel-operations .ui-button {
+    display: block;
+    margin: 0;
+    text-align: left;
+    border-radius: 0;
+    transition: none !important;
+    margin-left: -11px;
+}
+
+.ui-button-text {
+    color: #212121 !important;
+    font-size: 13px !important;
+    margin-left: 9px !important;
+}
+
+.dropdown-excel-operations .ui-fileupload-choose.ui-button.ui-state-hover,
+.ui-fileupload-choose.ui-button.ui-state-focus,
+.ui-fileupload-choose.ui-button.ui-state-active {
+    background-color: #eee;
+}
+
+.dropdown-excel-operations {
+    a:hover {
+        span.ui-button,
+        div.ui-fileupload-buttonbar.ui-widget-header.ui-corner-top {
+            background-color: #f4f5f8 !important;
+        }
+    }
+
+    a.no-padding {
+        padding: 0px !important;
+    }
+
+    a{
+        .ui-button-text{
+            margin-left: 5px !important;
+        }
+    }
+}
+
+.dropdown-excel-operations .ui-fileupload-choose:not(.ui-state-disabled) {
+    border: none;
+}
+
+.dropdown-excel-operations .ui-fileupload-choose:not(.ui-state-disabled):hover,
+.dropdown-excel-operations .ui-fileupload-choose:not(.ui-state-disabled):focus,
+.dropdown-excel-operations .ui-fileupload-choose:not(.ui-state-disabled):active {
+    background-color: #f4f5f8 !important;
+    color: #b2b1c5;
+    box-shadow: none !important;
+    border: none;
+}
+
+.dropdown-excel-operations {
+    div.ui-fileupload-buttonbar {
+        &.ui-widget-header.ui-corner-top {
+            border: none;
+            background: #fff;
+            padding-bottom: 3px !important;
+            padding-top: 3px !important;
+
+            &:hover {
+                background-color: #f4f5f8 !important;
+            }
+        }
+    }
+
+    div.ui-fileupload-content.ui-widget-content.ui-corner-bottom {
+        display: none;
+    }
+
+    div.ui-fileupload-buttonbar.ui-widget-header.ui-corner-top:hover {
+        background-color: #f4f5f8 !important;
+    }
+}
+
+.ui-table img.img-circle{
+    height: 24px;
+    margin-right: 5px;
+    box-shadow: 1px 1px 5px 1px hsl(0, 0%, 66%);
+}
+
+#ExportUsersToExcelButton{
+    padding-left: 12px !important;
+}

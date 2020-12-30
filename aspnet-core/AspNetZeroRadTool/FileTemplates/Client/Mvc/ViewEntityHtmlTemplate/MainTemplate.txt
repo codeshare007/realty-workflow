@@ -1,0 +1,20 @@
+﻿
+@using {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Models.Common.Modals
+@using {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Models.{{Entity_Name_Plural_Here}}
+@model {{Entity_Name_Here}}ViewModel
+
+@await Html.PartialAsync("~/Areas/{{App_Area_Name_Here}}/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Details")))
+
+<div class="modal-body">
+    <div id="{{Entity_Name_Here}}InformationsTab">
+        
+        <div class="row">
+{{Property_Looped_Template_Here}}
+{{NP_Looped_Template_Here}}
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/{{App_Area_Name_Here}}/Views/Common/Modals/_ModalFooterWithClose.cshtml")
+

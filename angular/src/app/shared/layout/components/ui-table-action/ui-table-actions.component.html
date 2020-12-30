@@ -1,0 +1,21 @@
+<span class="wrapper-table-actions">
+    <label class="table-actions__dots"
+           (click)="toggle()">
+        <i class="fas fa-ellipsis-h click-outside table-actions__dots__icon"
+           [ngClass]="{ 'open-option': showOptions }"></i>
+    </label>
+
+    <ul *ngIf="showOptions"
+        class="table-actions__list"
+        [ngClass]="{ 'max-content': maxContent }"
+        dropDownClickOutside
+        (dropDownClickOutside)="toggle()">
+        <li *ngFor="let item of listActions | uiTableActionsFilter"
+            class="table-actions__list__item"
+            (click)="selectOption(item)">
+            <span class="table-actions__list__item--option">
+                {{ item.name }}
+            </span>
+        </li>
+    </ul>
+</span>

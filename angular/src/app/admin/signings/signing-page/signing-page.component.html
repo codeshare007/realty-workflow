@@ -1,0 +1,74 @@
+<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="'Signing'" [breadcrumbs]="breadcrumbs">
+            <div class="py-2 py-lg-4 subheader subheader-solid" *ngIf="signing">
+                <div class="align-items-center container-fluid d-flex flex-sm-nowrap flex-wrap justify-content-between">
+                    <div class="d-flex align-items-center flex-wrap mr-2">
+                        <h5 class="font-weight-bold mb-2 mr-5 mt-2 text-dark">Signing: 1949 Commonwealth Avenue, Apt 57, Brighton MA 0213</h5>
+                    </div>
+                    <div class="d-flex align-items-center"></div>
+                </div>
+            </div>
+        </sub-header>
+        <div class="container-fluid" *ngIf="signing">
+            <signing-general-info-section 
+                [(signing)]="signing"
+                [(isEditMode)]="isEditMode"
+                >
+            </signing-general-info-section>
+
+            <div class="card card-custom gutter-b" *ngIf="signing && signing.id">
+                <div class="card-header">
+                    <div class="w-100 d-flex align-items-center">
+                        <div class="w-100 d-flex justify-content-between">
+                            <h4 class="card-label mb-0 d-flex align-items-center">Participants</h4>
+                            <div>
+                                <a class="card-header-button" (click)="signingContacts.createNewContact()">
+                                    <i class="la la-plus"></i>
+                                </a>
+                                <a class="card-header-button chevron" (click)="accordionOptions.participantsOpened = !accordionOptions.participantsOpened">
+                                    <i class="pi pi-fw pi-chevron-up" 
+                                        [ngClass]="{'closed': !accordionOptions.participantsOpened }"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body py-0" [hidden]="!accordionOptions.participantsOpened">
+                    <signing-contacts 
+                        #signingContacts 
+                        [signingId]="signing.id"
+                        >
+                    </signing-contacts>
+                </div>
+            </div>
+            
+            <div class="card card-custom gutter-b" *ngIf="signing && signing.id">
+                <div class="card-header">
+                    <div class="w-100 d-flex align-items-center">
+                        <div class="w-100 d-flex justify-content-between">
+                            <h4 class="card-label mb-0 d-flex align-items-center">Documents</h4>
+                            <div>
+                                <a class="card-header-button" (click)="signingFormsTable.openModal()">
+                                    <i class="la la-plus"></i>
+                                </a>
+                                <a class="card-header-button chevron" (click)="accordionOptions.documentsOpened = !accordionOptions.documentsOpened">
+                                    <i class="pi pi-fw pi-chevron-up" 
+                                        [ngClass]="{'closed': !accordionOptions.documentsOpened }"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body py-0 mb-3" [hidden]="!accordionOptions.documentsOpened">
+                    <signing-forms-table 
+                        #signingFormsTable
+                        [signingId]="signing.id"
+                        >
+                    </signing-forms-table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

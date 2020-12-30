@@ -1,0 +1,83 @@
+<!-- BEGIN: Horizontal Menu -->
+<div ktOffcanvas [options]="offcanvasOptions" [class]="menuWrapperStyle" id="kt_header_menu_wrapper">
+    <div [class]="containerClass">
+        <div id="kt_header_menu" ktMenu [options]="menuOptions" class="header-menu header-menu-left header-menu-mobile header-menu-layout-default">
+            <ul class="menu-nav">
+                <li class="menu-item menu-item-here menu-item-submenu" aria-haspopup="true" *ngIf="isMobileDevice()">
+                    <menu-search-bar></menu-search-bar>
+                </li>
+                <ng-container *ngFor="let item of menu.items">
+                    <ng-container *ngIf="item.name" [ngTemplateOutlet]="kt_menu"
+                        [ngTemplateOutletContext]="{ item: item, depth: 0 }">
+                    </ng-container>
+                </ng-container>
+                <li class="menu-item menu-item-here menu-item-submenu" aria-haspopup="true" *ngIf="!isMobileDevice()">
+                    <menu-search-bar></menu-search-bar>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END: Horizontal Menu -->
+
+<ng-template #kt_menu let-item="item" let-parentItem="parentItem" let-depth="depth">
+    <li attr.aria-haspopup="true" data-menu-toggle="click" class="{{ getItemCssClasses(item, parentItem, depth) }}"
+        *ngIf="showMenuItem(item)" routerLinkActive="menu-item-active">
+
+        <!-- if item has submenu -->
+        <ng-container *ngIf="item.items.length">
+            <a href="javascript:;" class="{{ getAnchorItemCssClasses(item, parentItem) }}">
+                <ng-container [ngTemplateOutlet]="kt_menu_item_inner"
+                    [ngTemplateOutletContext]="{ item: item, parentItem: parentItem, depth: (depth + 1) }">
+                </ng-container>
+
+                <i *ngIf="item.items.length && !parentItem" class="menu-hor-arrow la la-angle-down ml-2 mt-2"></i>
+                <i *ngIf="item.items.length && parentItem" class="menu-ver-arrow la la-angle-right"></i>
+            </a>
+        </ng-container>
+
+        <!-- if item hasn't sumbenu -->
+        <ng-container *ngIf="!item.items.length">
+            <a *ngIf="!item.external" [routerLink]="item.route" [queryParams]="item.parameters" class="menu-link">
+                <ng-container [ngTemplateOutlet]="kt_menu_item_inner"
+                    [ngTemplateOutletContext]="{ item: item, parentItem: parentItem, depth: (depth + 1) }">
+                </ng-container>
+            </a>
+            <a *ngIf="item.external" [attr.href]="[item.route]" target="_blank" class="menu-link">
+                <ng-container [ngTemplateOutlet]="kt_menu_item_inner"
+                    [ngTemplateOutletContext]="{ item: item, parentItem: parentItem, depth: (depth + 1) }">
+                </ng-container>
+            </a>
+        </ng-container>
+
+        <!-- if menu item has submenu child then recursively call new menu item component -->
+        <ng-container *ngIf="item.items.length">
+            <div class="{{ getSubmenuCssClasses(item, parentItem, depth) }}">
+                <span class="menu-arrow" [ngClass]="{ 'menu-arrow-adjust': !parentItem }"></span>
+                <ul *ngIf="item.items.length" class="menu-subnav">
+                    <ng-container *ngFor="let child of item.items">
+
+                        <ng-container [ngTemplateOutlet]="kt_menu"
+                            [ngTemplateOutletContext]="{ item: child, parentItem: item, depth: (depth + 1) }">
+                        </ng-container>
+
+                    </ng-container>
+                </ul>
+            </div>
+        </ng-container>
+    </li>
+</ng-template>
+
+<!-- item inner -->
+<ng-template #kt_menu_item_inner let-item="item" let-parentItem="parentItem">
+    <!-- if menu item has icon -->
+    <i *ngIf="item.icon" class="menu-link-icon mr-2" [ngClass]="item.icon"></i>
+
+    <ng-container>
+        <span class="menu-item-here"></span>
+        <!-- menu item title text -->
+        <span class="menu-text">
+            {{item.name | localize}}
+        </span>
+    </ng-container>
+</ng-template>

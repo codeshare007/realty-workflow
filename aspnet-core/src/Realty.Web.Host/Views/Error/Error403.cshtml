@@ -1,0 +1,19 @@
+﻿<head>
+    <title>Realty - Error</title>
+
+    <link href="~/view-resources/Views/Error/Index.css" rel="stylesheet" asp-append-version="true"/>
+</head>
+<div class="m-error_container">
+    <span class="m-error_title">
+        <h1>
+            403
+        </h1>
+    </span>
+    <p class="m-error_subtitle">
+        @L("UnAuthorizedOperation")
+    </p>
+    <p class="m-error_description">
+        @L("YouAreNotAuthorizedToPerformThisOperation")<br>
+        <a href="@Url.Action("Index", "Home")" class="link">@L("HomePage")</a>.
+    </p>
+</div>

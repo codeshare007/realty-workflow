@@ -1,0 +1,28 @@
+﻿@using {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Startup
+@using {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Models.{{Entity_Name_Plural_Here}}
+@model {{Entity_Name_Here}}ViewModel
+{{Using_Tag_Helper_Here}}
+@{
+    ViewBag.CurrentPageName = {{App_Area_Name_Here}}PageNames.{{Page_Names_Sub_Class_Name_Here}}.{{Entity_Name_Plural_Here}};
+}
+@section Scripts
+{
+    <script abp-src="/view-resources/Areas/{{App_Area_Name_Here}}/Views/{{Entity_Name_Plural_Here}}/CreateOrEdit.js" asp-append-version="true"></script>
+}
+{{Content_Class_After_Metronic_V606}}
+{{Content_Class_After_Metronic_V90}}
+{{Page_Header}}
+
+<div class="{{Container_Class_Here}}{{Container_Class_V2_Here}}{{Container_Class_V3_Here}}">
+    <div class="{{Portlet_Class_Here}} {{Card_Class_Here}}">
+        <div class="{{Portlet_Body_Class_Here}} {{Card_Body_Class_Here}}">
+             <div id="{{Entity_Name_Here}}InformationsTab">        
+                    <div class="row">
+                        {{Property_Looped_Template_Here}}
+                        {{NP_Looped_Template_Here}}
+                    </div>
+                </div>
+			</div>
+        </div>
+    </div>
+  {{Div_After_Metronic_V606}}

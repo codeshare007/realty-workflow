@@ -1,0 +1,157 @@
+<ng-container *ngIf="mode === viewModesType.Edit">
+    <ng-container *ngTemplateOutlet="modeEdit"></ng-container>
+</ng-container>
+
+<ng-container *ngIf="mode === viewModesType.Populate">
+    <ng-container *ngTemplateOutlet="modePopulate"></ng-container>
+</ng-container>
+
+<ng-container *ngIf="mode === viewModesType.View">
+    <ng-container *ngTemplateOutlet="modeView"></ng-container>
+</ng-container>
+
+<!-- Statr Edit -->
+<ng-template #modeEdit>
+    <div cdkDrag
+         (cdkDragEnded)="onControlStoped($event)"
+         (cdkDragMoved)="onControlMoved($event)"
+         [cdkDragDisabled]="isResize"
+         class="page-control"
+         [ngClass]="{ 'top-control': isShowAction() }"
+         [style.transform]="'translate3d('+ control.position.left + 'px,' + control.position.top + 'px,' + '0px)'">
+
+        <div #controlRef
+             (click)="changeStyle(statusControlAction.Show)"
+             [class]="'resizable-draggable ' + (control.type | formControlClass)"
+             [ngStyle]="styleControl"
+             [class.active]="status === statusControl.Resize || status === statusControl.Move">
+
+            <span class="resizable-draggable__title">{{ control.type | formControlType }}</span>
+
+            <div class="resizable-draggable__action resize resize__bottom--right"
+                 (resize)="onResize($event)"
+                 (resizeEnd)="resizeEnd($event)"
+                 (resizeStart)="resizeStart($event)"
+                 [targetElement]="controlRef"
+                 [direction]="AngularResizeElementDirection.BOTTOM_RIGHT">
+            </div>
+        </div>
+
+        <div class="page-control__actions"
+             [ngClass]="{ 'show-action': isShowAction() }">
+
+            <i class="fas fa-cog"
+               [ngClass]="{ 'opened-icon': showSettings }"
+               (click)="onControlSetting()"></i>
+
+            <div *ngIf="showSettings"
+                 class="page-control__actions__wrapper">
+                <i class="fas fa-text-height click-outside"
+                   (click)="onActions(typeControlAction.TextSize)">
+                </i>
+                <i class="fas fa-user-plus"
+                   (click)="onActions(typeControlAction.Assign)">
+                </i>
+                <i class="fas fa-object-ungroup"
+                   (click)="onActions(typeControlAction.Coppy)">
+                </i>
+                <i class="fas fa-trash-alt"
+                   (click)="onActions(typeControlAction.Delete)">
+                </i>
+            </div>
+            <div class="page-control__actions__font-size"
+                 *ngIf="showDropDown"
+                 dropDownClickOutside
+                 (dropDownClickOutside)="toggleDropDown()">
+                <ul class="page-control__actions__font-size__list new-scrollbar">
+                    <li *ngFor="let item of fontSizeList"
+                        [ngClass]="{ 'active': control.font.sizeInPx === item.value }"
+                        (click)="selectSize(item)"
+                        class="page-control__actions__font-size__list__item">
+                        <span>{{ item.name }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</ng-template>
+<!-- End Edit -->
+
+<!-- Statr Populate -->
+<ng-template #modePopulate>
+    <div [style.transform]="'translate3d('+ (control.position.left) + 'px,' + (control.position.top-3) + 'px,' + '0px)'"
+         class="page-control">
+
+        <ng-container *ngIf="control.type === controlType.DateTime">
+            <ng-container *ngTemplateOutlet="dateTimeControl"></ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="control.type === controlType.Initials">
+            <ng-container *ngTemplateOutlet="initialsControl"></ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="control.type === controlType.Signature">
+            <ng-container *ngTemplateOutlet="signatureControl"></ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="control.type === controlType.TextArea">
+            <ng-container *ngTemplateOutlet="textAreaControl"></ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="control.type === controlType.TextField">
+            <ng-container *ngTemplateOutlet="textFieldControl"></ng-container>
+        </ng-container>
+    </div>
+    <!-- Start Populate Controls -->
+    <ng-template #dateTimeControl>
+        <div [ngStyle]="styleControl">
+            <date-time-control></date-time-control>
+        </div>
+    </ng-template>
+
+    <ng-template #initialsControl>
+        <div [ngStyle]="styleControl">
+            <initials-control></initials-control>
+        </div>
+    </ng-template>
+
+    <ng-template #signatureControl>
+        <div [ngStyle]="styleControl">
+            <signature-control></signature-control>
+        </div>
+    </ng-template>
+
+    <ng-template #textAreaControl>
+        <div [ngStyle]="styleControl">
+            <text-area-control [control]="control"
+                               [pageId]="pageId"
+                               [documentId]="documentId">
+            </text-area-control>
+        </div>
+    </ng-template>
+
+    <ng-template #textFieldControl>
+        <div [ngStyle]="styleControl">
+            <text-field-control [pageId]="pageId"
+                                [control]="control"
+                                [documentId]="documentId">
+            </text-field-control>
+        </div>
+    </ng-template>
+    <!-- End Populate Controls -->
+</ng-template>
+<!-- End Populate -->
+
+<!-- Statr View -->
+<ng-template #modeView>
+    <div [style.transform]="'translate3d('+ (control.position.left-1) + 'px,' + (control.position.top-3) + 'px,' + '0px)'"
+         class="page-control">
+        <span [class]="'page-control__view__text ' + (control.type | formControlClass)"
+              [ngStyle]="styleControl">
+            {{ control.value ? control.value.value: '' }}
+        </span>
+        <!-- <span>{{ control.value.date | momentFormat:'L' }}</span> -->
+    </div>
+</ng-template>
+<!-- End View -->

@@ -1,0 +1,15 @@
+<div [class]="footerStyle" id="kt_footer">
+	<div [class]="containerClass + ' d-flex flex-column flex-md-row align-items-center justify-content-between'">
+		<div class="text-dark order-2 order-md-1">
+			<span class="text-muted font-weight-bold mr-2">
+                Realty <span
+                    *ngIf="appSession.tenant && appSession.tenant.edition && appSession.tenant.edition.displayName">
+                    {{appSession.tenant.edition.displayName}}</span> | API: v{{appSession.application.version}} | Client: v{{webAppGuiVersion}}
+                [{{releaseDate}}]
+            </span>
+		</div>
+		<div class="nav nav-dark nav nav-dark order-1 order-md-2">
+            <a href="javascript:;" target="_blank" class="nav-link pl-0 pr-5">&nbsp;</a>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Abp" Version="5.13.0" />
+    <PackageReference Include="AWSSDK.S3" Version="3.5.6.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Realty.Core.Shared\Realty.Core.Shared.csproj" />
+    <ProjectReference Include="..\..\src\Realty.Core\Realty.Core.csproj" />
+  </ItemGroup>
+
+</Project>

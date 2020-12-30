@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
+  <PropertyGroup Label="Globals">
+    <ProjectVersion>2.1</ProjectVersion>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <ProjectGuid>159c8e5e-c191-439d-a31a-30a57c049736</ProjectGuid>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DockerServiceName>mycompanyname.abpzerotemplate.web.host</DockerServiceName>
+	<DockerComposeBaseFilePath>docker\mvc\docker-compose-host</DockerComposeBaseFilePath>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="docker\mvc\docker-compose-host.override.yml">
+      <DependentUpon>docker-compose-host.yml</DependentUpon>
+    </None>
+    <None Include="docker\mvc\docker-compose-host.yml" />
+    <None Include=".dockerignore" />
+  </ItemGroup>
+</Project>

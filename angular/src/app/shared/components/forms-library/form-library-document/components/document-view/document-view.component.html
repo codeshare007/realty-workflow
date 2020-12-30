@@ -1,0 +1,16 @@
+<div *ngIf="document">
+    <!-- <h2>{{ document.name }}</h2>
+    <p>Modified: {{ document.lastModificationTime | momentFormat:'L LT' }}</p> -->
+
+    <div class="document-view__wrapper new-scrollbar">
+        <document-page *ngFor="let page of document.pages; let i = index;"
+                       [page]="page"
+                       [documentId]="document.id"
+                       [index]="i+1">
+        </document-page>
+    </div>
+
+</div>
+<signature-control-modal #signatureControlRef
+                         (modalSave)="onModalSave($event)">
+</signature-control-modal>

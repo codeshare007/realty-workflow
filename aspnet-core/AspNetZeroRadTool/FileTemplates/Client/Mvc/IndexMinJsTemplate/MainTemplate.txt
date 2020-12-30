@@ -1,0 +1,138 @@
+﻿(function () {
+    $(function () {
+
+        var _${{entity_Name_Plural_Here}}Table = $('#{{Entity_Name_Plural_Here}}Table');
+        var _{{entity_Name_Plural_Here}}Service = abp.services.app.{{entity_Name_Plural_Here}};
+		{{EntityTypeFullName_Dec_Here}}
+        $('.date-picker').datetimepicker({
+            locale: abp.localization.currentLanguage.name,
+            format: 'L'
+        });
+
+        var _permissions = {
+            create: abp.auth.hasPermission('{{Permission_Value_Here}}.Create'),
+            edit: abp.auth.hasPermission('{{Permission_Value_Here}}.Edit'),
+            'delete': abp.auth.hasPermission('{{Permission_Value_Here}}.Delete')
+        };
+
+        {{Create_Or_Edit_Modal_Dec_Here}}       
+{{View_Modal_Manager_Here}}
+
+		{{EntityTypeHistoyModal_Dec_Here}}
+		{{EntityHistoryIsEnabled_Dec_Here}}
+
+        var getDateFilter = function (element) {
+            if (element.data("DateTimePicker").date() == null) {
+                return null;
+            }
+            return element.data("DateTimePicker").date().format("YYYY-MM-DDT00:00:00Z"); 
+        }
+
+        var dataTable = _${{entity_Name_Plural_Here}}Table.DataTable({
+            paging: true,
+            serverSide: true,
+            processing: true,
+            listAction: {
+                ajaxFunction: _{{entity_Name_Plural_Here}}Service.getAll,
+                inputFilter: function () {
+                    return {
+					filter: $('#{{Entity_Name_Plural_Here}}TableFilter').val(){{Property_Filter_Param_Here}}{{NP_Filter_Param_Here}}
+                    };
+                }
+            },
+            columnDefs: [
+                {
+                    className: 'control responsive',
+                    orderable: false,
+                    render: function () {
+                        return '';
+                    },
+                    targets: 0
+                },
+                {
+                    width: 120,
+                    targets: 1,
+                    data: null,
+                    orderable: false,
+                    autoWidth: false,
+                    defaultContent: '',
+                    rowAction: {
+                        cssClass: 'btn btn-brand dropdown-toggle',
+                        text: '<i class="fa fa-cog"></i> ' + app.localize('Actions') + ' <span class="caret"></span>',
+                        items: [{{View_Button_Here}}
+						{
+                            text: app.localize('Edit'),
+                            visible: function () {
+                                return _permissions.edit;
+                            },
+                            action: function (data) {
+                            {{Edit_Button_OnClick_Here}}                                
+                            }
+                        },{{EntityHistory_Action_Here}} 
+						{
+                            text: app.localize('Delete'),
+                            visible: function () {
+                                return _permissions.delete;
+                            },
+                            action: function (data) {
+                                delete{{Entity_Name_Here}}(data.record.{{entity_Name_Here}});
+                            }
+                        }]
+                    }
+                }{{Property_Looped_Template_Here}}{{NP_Looped_Template_Here}}
+            ]
+        });
+
+        function get{{Entity_Name_Plural_Here}}() {
+            dataTable.ajax.reload();
+        }
+
+        function delete{{Entity_Name_Here}}({{entity_Name_Here}}) {
+            abp.message.confirm(
+                '',
+                app.localize('AreYouSure'),
+                function (isConfirmed) {
+                    if (isConfirmed) {
+                        _{{entity_Name_Plural_Here}}Service.delete({
+                            id: {{entity_Name_Here}}.id
+                        }).done(function () {
+                            get{{Entity_Name_Plural_Here}}(true);
+                            abp.notify.success(app.localize('SuccessfullyDeleted'));
+                        });
+                    }
+                }
+            );
+        }
+
+		$('#ShowAdvancedFiltersSpan').click(function () {
+            $('#ShowAdvancedFiltersSpan').hide();
+            $('#HideAdvancedFiltersSpan').show();
+            $('#AdvacedAuditFiltersArea').slideDown();
+        });
+
+        $('#HideAdvancedFiltersSpan').click(function () {
+            $('#HideAdvancedFiltersSpan').hide();
+            $('#ShowAdvancedFiltersSpan').show();
+            $('#AdvacedAuditFiltersArea').slideUp();
+        });
+
+        {{Create_Button_Here}}        
+
+		{{Get_Excel_Method_Here}}
+
+        abp.event.on('app.createOrEdit{{Entity_Name_Here}}ModalSaved', function () {
+            get{{Entity_Name_Plural_Here}}();
+        });
+
+		$('#Get{{Entity_Name_Plural_Here}}Button').click(function (e) {
+            e.preventDefault();
+            get{{Entity_Name_Plural_Here}}();
+        });
+
+		$(document).keypress(function(e) {
+		  if(e.which === 13) {
+			get{{Entity_Name_Plural_Here}}();
+		  }
+		});
+    });
+})();

@@ -1,0 +1,39 @@
+﻿import { Component, ViewChild, Injector, Output, EventEmitter } from '@angular/core';
+{{Import_Modal_Directive_Here}}
+import { Get{{Entity_Name_Here}}ForViewDto, {{Entity_Name_Here}}Dto {{Enum_Import_After_V060600_Here}}{{Enum_Import_Before_V060600_Here}}} from '@shared/service-proxies/service-proxies';
+import { AppComponentBase } from '@shared/common/app-component-base';
+
+@Component({
+    selector: 'view{{Entity_Name_Here}}Modal',
+    templateUrl: './view-{{entity_Name_Here}}-modal.component.html'
+})
+export class View{{Entity_Name_Here}}ModalComponent extends AppComponentBase {
+
+    @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
+    @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
+
+    active = false;
+    saving = false;
+
+    item: Get{{Entity_Name_Here}}ForViewDto;
+{{enum_Def_After_V060600_Here}}{{enum_Def_Before_V060600_Here}}
+
+    constructor(
+        injector: Injector
+    ) {
+        super(injector);
+        this.item = new Get{{Entity_Name_Here}}ForViewDto();
+        this.item.{{entity_Name_Here}} = new {{Entity_Name_Here}}Dto();
+    }
+
+    show(item: Get{{Entity_Name_Here}}ForViewDto): void {
+        this.item = item;
+        this.active = true;
+        this.modal.show();
+    }
+
+    close(): void {
+        this.active = false;
+        this.modal.hide();
+    }
+}

@@ -1,0 +1,91 @@
+<!--<Primeng-TurboTable-Start>-->
+<div class="primeng-datatable-container">
+    <p-table #dataTable
+             (onLazyLoad)="getListings($event)"
+             [value]="primengTableHelper.records"
+             [lazy]="true"
+             class="table-no-header"
+             [responsive]="primengTableHelper.isResponsive"
+             [resizableColumns]="primengTableHelper.resizableColumns">
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="p-0" style="min-width: 50px; width: 70px;"></th>
+                <th class="p-0" style="min-width: 200px;"></th>
+                <th class="p-0" style="width: 100px;"></th>
+                <th class="p-0" style="width: 150px;"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body"
+                     let-record="$implicit">
+            <tr>
+                <td class="pl-0">
+                    <div class="symbol symbol-50 symbol-light mr-1">
+                        <img alt=""
+                             [src]="getFileImage(record.form.contentType)"
+                             class="h-50 align-self-center">
+                    </div>
+                </td>
+                <td class="pl-0">
+                    <span class="ui-column-title">
+                        {{ 'Name' | localize }}
+                    </span>
+                    <div>
+                        <a
+                           class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg cursor-pointer">{{ record.form.name }}</a>
+                        <div class="font-weight-bolder"
+                             *ngIf="record.form.lastModificationTime">
+                            <span class="font-weight-bolder">Modified: </span>
+                            <span
+                                  class="text-muted font-weight-bold text-hover-primary cursor-pointer">{{ record.form.lastModificationTime | momentFormat:'L LT'}}</span>
+                        </div>
+                        <div class="font-weight-bolder"
+                             *ngIf="!record.form.lastModificationTime">
+                            <span class="font-weight-bolder">Created:</span>
+                            <span
+                                  class="text-muted font-weight-bold text-hover-primary cursor-pointer">{{ record.form.creationTime | momentFormat:'L LT'}}</span>
+                        </div>
+                    </div>
+
+                    <!-- </span> -->
+                </td>
+                <td class="text-right">
+                    <span class="ui-column-title">
+                        {{ 'Status' | localize }}
+                    </span>
+                    <span class="forms-library-table__status__value label label-lg label-inline"
+                          [class]="getBadgeCssClass(record.form.status)">
+                        <ng-container *ngIf="!getBusyState(record.form.status)">
+                            {{ record.form.status | formStatus  }}
+                        </ng-container>
+                        <ng-container *ngIf="getBusyState(record.form.status)">
+                            <i class="fa fa-spin fa-spinner"></i> {{ 'ProcessingWithThreeDot' | localize }}
+                        </ng-container>
+                    </span>
+                </td>
+                <td class="text-right pr-0">
+                    <a class="btn btn-icon btn-light btn-sm cursor-pointer"
+                        (click)="editForm(record)">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    <a class="btn btn-icon btn-light btn-sm mx-3 cursor-pointer"
+                        (click)="deleteForm(record)">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <div class="primeng-paging-container">
+        <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                     #paginator
+                     (onPageChange)="getListings($event)"
+                     [totalRecords]="primengTableHelper.totalRecordsCount"
+                     [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+        </p-paginator>
+        <!-- <span class="total-records-count">
+            {{ 'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount }}
+        </span> -->
+    </div>
+</div>
+<!--<Primeng-TurboTable-End>-->

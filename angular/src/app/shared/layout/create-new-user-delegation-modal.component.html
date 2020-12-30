@@ -1,0 +1,59 @@
+<div appBsModal #userDelegationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form *ngIf="active" #userDelegationForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span>{{"DelegateNewUser" | localize}}</span>
+                    </h5>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                         <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="UsernameOrEmailAddress">{{"Username" | localize}}</label>
+                        <div class="input-group" (click)="showCommonLookupModal()">
+                            <input name="UsernameOrEmailAddress" class="form-control" type="text" readonly="readonly" disabled="disabled" [value]="selectedUsername">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">{{"Search" | localize}}</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="StartTime">{{"StartTime" | localize}}</label>
+                        <input id="StartTime" type="text"
+                            name="StartTime" class="form-control"
+                            bsDatepicker
+                            datePickerMomentModifier
+                            [(date)]="userDelegation.startTime"
+                            [(ngModel)]="userDelegation.startTime"
+                            [maxDate]="userDelegation.endTime"
+                            [bsConfig]="{ adaptivePosition: true }"
+                            autocomplete="new-password"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="EndTime">{{"EndTime" | localize}}</label>
+                        <input id="EndTime" type="text"
+                            name="EndTime" class="form-control"
+                            bsDatepicker
+                            datePickerMomentModifier
+                            [(date)]="userDelegation.endTime"
+                            [(ngModel)]="userDelegation.endTime"
+                            [minDate]="userDelegation.startTime"
+                            [bsConfig]="{ adaptivePosition: true }"
+                            autocomplete="new-password"
+                            required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold" (click)="close()">{{"Cancel" | localize}}</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!userDelegation.targetUserId || !userDelegationForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<commonLookupModal #userLookupModal (itemSelected)="userSelected($event)"></commonLookupModal>

@@ -1,0 +1,49 @@
+{
+"conditionalTemplates":[
+		{
+			"placeholder": "{{Container_Class_Here}}",
+			"condition": "{{Project_Version_Here}} < 070200",
+			"content": "kt-content"
+		},
+        {
+            "placeholder": "{{Container_Class_V2_Here}}",
+            "condition": "{{Project_Version_Here}} >= 070200 && {{Project_Version_Here}} < 090000",
+            "content": "@(await GetContainerClass()) kt-grid__item kt-grid__item--fluid"
+        },
+        {
+            "placeholder": "{{Container_Class_V3_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "@(await GetContainerClass())"
+        },
+        {
+            "placeholder": "{{Portlet_Class_Here}}",
+            "condition": "{{Project_Version_Here}} < 090000",
+            "content": "kt-portlet kt-portlet--mobile"
+        },
+        {
+            "placeholder": "{{Card_Class_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "card card-custom gutter-b"
+        },
+        {
+            "placeholder": "{{Portlet_Body_Class_Here}}",
+            "condition": "{{Project_Version_Here}} < 090000",
+            "content": "kt-portlet__body"
+        },
+        {
+            "placeholder": "{{Card_Body_Class_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "card-body"
+        },
+        {
+            "placeholder": "{{Form_Class_Here}}",
+            "condition": "{{Project_Version_Here}} < 090000",
+            "content": "kt-form"
+        },
+        {
+            "placeholder": "{{Form_Class_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "form"
+        }
+	]
+}

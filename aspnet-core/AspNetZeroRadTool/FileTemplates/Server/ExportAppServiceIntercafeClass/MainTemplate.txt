@@ -1,0 +1,11 @@
+﻿using System.Collections.Generic;
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Dtos;
+using {{Namespace_Here}}.Dto;
+
+namespace {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Exporting
+{
+    public interface I{{Entity_Name_Plural_Here}}ExcelExporter
+    {
+        FileDto ExportToFile(List<Get{{Entity_Name_Here}}ForViewDto> {{entity_Name_Plural_Here}});
+    }
+}

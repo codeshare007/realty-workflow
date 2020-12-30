@@ -1,0 +1,67 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Looped_Template_Here}}",
+			"condition" : "{{Property_Listed_Here}} == true",
+			"templates" : [
+					{
+					"type" : "enum",
+					"content" : "            <div class=\"col-6 mb-3\">
+                <h6>@L(\"{{Property_Name_Here}}\") :</h6>
+                @L(\"Enum_{{Property_Type_Here}}_\" + (int)Model.{{Entity_Name_Here}}.{{Property_Name_Here}})
+            </div>
+"
+					},
+					{
+					"type" : "default",
+					"content" : "            <div class=\"col-6 mb-3\">
+                <h6>@L(\"{{Property_Name_Here}}\") :</h6>
+                @Model.{{Entity_Name_Here}}.{{Property_Name_Here}}
+            </div>
+"
+					}
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "            <div class=\"col-6 mb-3\">
+                <h6>(@L(\"{{NP_Foreign_Entity_Name_Here}}\")) @L(\"{{NP_Display_Property_Name_Here}}\") :</h6>
+                @Model.{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}
+            </div>
+"
+					}
+				]
+		}
+	],
+	"conditionalTemplates": [		
+		{
+			"placeholder": "{{Container_Class_Here}}",
+			"condition": "{{Project_Version_Here}} < 070200",
+			"content": "kt-content"
+		},
+		{
+			"placeholder": "{{Container_Class_V2_Here}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "@(await GetContainerClass()) kt-grid__item kt-grid__item--fluid"
+		},
+		{
+			"placeholder": "{{Div_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "</div>"
+		},
+		{
+			"placeholder": "{{Content_Class_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "<div class=\"kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor\">"
+		},
+		{
+			"placeholder": "{{Container_Class_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "<div class=\"@(await GetContainerClass())\">"
+		}]
+}

@@ -1,0 +1,53 @@
+theme9-brand {
+    display: flex;
+  }
+  
+  .header-menu .menu-nav > .menu-item { 
+    flex: none;
+  }
+  
+  .header-menu .menu-nav > .menu-item > .menu-link {
+  
+    flex-direction: row;
+  }
+  
+  .unread-notification-count {
+    position: absolute;
+    top: 5px;
+    left: 23px;
+  }
+  
+  .unread-chat-message-count {
+    position: absolute;
+    top: -6px;
+    left: 13px;
+  }
+  
+  .header-menu .menu-nav > .menu-item > .menu-link{
+      border-right: none;
+  }
+  
+  .subscription-warning * {
+    color: #fff;
+  }
+  
+  header-notifications .dropdown-menu{
+    top: 75px !important;
+  }
+  
+  @media(max-width: 768px){
+    header-notifications .dropdown-menu{
+      top: 49px !important;
+    }
+  }
+menu-search-bar {
+    min-width: 100px !important;
+}
+
+p-autoComplete{
+    padding: 10px;
+}
+
+.menuSearchBarContainer{
+    width: calc(100% - 20px);
+}

@@ -1,0 +1,64 @@
+<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="'WebhookSubscriptions' | localize"
+                    [description]="'WebhookSubscriptionsInfo' | localize">
+            <div role="actions">
+                <button *ngIf="'Pages.Administration.WebhookSubscription.Create' | permission"
+                        class="btn btn-primary"
+                        (click)="createSubscription()"><i
+                    class="fa fa-plus"></i>{{"AddNewWebhookSubscription" | localize}}</button>
+            </div>
+        </sub-header>
+
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <!--<Primeng-TurboTable-Start>-->
+                        <div class="col primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable (onLazyLoad)="getSubscriptions($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                     [lazy]="true" [responsive]="primengTableHelper.isResponsive">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:100px;"></th>
+                                        <th>{{ 'WebhookEndpoint' | localize}}</th>
+                                        <th> {{'WebhookEvents' | localize}} </th>
+                                        <th> {{'IsActive' | localize}} </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary" (click)="goToSubscriptionDetail(record.id)">{{'Details' | localize}}</button></td>
+                                        <td>
+                                            {{record.webhookUri}}
+                                        </td>
+                                        <td>
+                                            <div *ngIf="record.webhooks">
+                                                <div *ngFor="let webhook of record.webhooks">
+                                                    {{webhook}}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="record.isActive" class="label label-success label-inline m-1">{{'Yes'| localize}}</span>
+                                            <span *ngIf="!record.isActive" class="label label-dark label-inline m-1">{{'No'| localize}}</span>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{'NoData' | localize}}
+                            </div>
+                        </div>
+                        <!--<Primeng-TurboTable-End>-->
+                    </div>
+                </div>
+            </div>
+            <create-or-edit-webhook-subscription #createOrEditWebhookSubscriptionModal
+                                                 (modalSave)="getSubscriptions()"></create-or-edit-webhook-subscription>
+        </div>
+    </div>
+</div>

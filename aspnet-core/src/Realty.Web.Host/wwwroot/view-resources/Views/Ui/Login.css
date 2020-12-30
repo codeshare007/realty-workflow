@@ -1,0 +1,47 @@
+﻿.login-form {
+    max-width: 400px;
+    margin: 100px auto;
+    font-family: sans-serif;
+    background: #f5f5f5;
+    padding: 10px 30px 15px;
+    border-radius: 4px;
+    border-bottom: 2px solid #eee;
+    border-right: 1px solid #eee;
+}
+
+.login-form-row {
+    margin: 15px 0;
+}
+
+.login-form h1 {
+    margin: 20px 0 20px 0;
+    font-size: 24px;
+}
+
+.login-form-row label {
+    margin-bottom: 8px;
+    display: inline-block;
+    font-size: 14px;
+    color: #777;
+}
+
+.login-form-row input[type=text], .login-form-row input[type=password] {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.login-form button {
+    background: green;
+    color: white;
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    border: 0;
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 4px;
+}

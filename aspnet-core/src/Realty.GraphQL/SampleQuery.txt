@@ -1,0 +1,35 @@
+﻿query MyQuery {
+  users(id: 1) {
+    totalCount
+    items {
+      name
+      surname
+
+      roles {
+        id
+        name
+        displayName
+      }
+
+      organizationUnits {
+        id
+        code
+        displayName
+      }
+    }
+  }
+
+  roles {
+    displayName
+    id
+    name
+    tenantId
+  }
+
+  organizationUnits {
+    id
+    code
+    displayName
+    tenantId
+  }
+}

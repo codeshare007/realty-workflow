@@ -1,0 +1,55 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div *ngIf="active">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="webhookSubscriptionId">{{"EditWebhookSubscription" | localize}}</span>
+                        <span *ngIf="!webhookSubscriptionId">{{"AddNewWebhookSubscription" | localize}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')"
+                        [disabled]="saving">
+                         <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group col-12">
+                        <div class="form-group">
+                            <label for="Name">{{"WebhookEndpoint" | localize}} *</label>
+                            <input id="WebhookEndpointURL" #endPointUrl="ngModel" class="form-control" type="text"
+                                name="Name" [(ngModel)]="webhookSubscription.webhookUri" required>
+                            <validation-messages [formCtrl]="endPointUrl"></validation-messages>
+                        </div>
+                        <div class="form-group">
+                            <label for="Name">{{"WebhookEvents" | localize}} *</label>
+                            <p-autoComplete [(ngModel)]="webhooks" [suggestions]="filteredWebhooks"
+                                (completeMethod)="filterWebhooks($event)" field="name" [minLength]="1"
+                                name="MultiSelectInput" id="MultiSelectInput" [multiple]="true"
+                                inputStyleClass="form-control" styleClass="width-percent-100">
+                            </p-autoComplete>
+                        </div>
+                        <div class="form-group mb-2">
+                            <key-value-list-manager
+                                #headerKeyValueManager
+                                [header]="l('AdditionalWebhookHeaders')"
+                                [keyPlaceHolder]="l('HeaderKey')"
+                                [valuePlaceHolder]="l('HeaderValue')"
+                                [items]="headers"
+                            ></key-value-list-manager>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">{{"Cancel" | localize}}</button>
+
+                    <button type="button" class="btn btn-primary font-weight-bold" (click)="save()"
+                        [disabled]="!webhookSubscription.webhookUri || !webhooks || webhooks.length == 0"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{"Save" | localize}}</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

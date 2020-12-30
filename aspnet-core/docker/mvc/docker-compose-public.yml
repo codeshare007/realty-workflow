@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  
+  mycompanyname.abpzerotemplate.web.public:
+    image: ${DOCKER_REGISTRY-}mycompanynameabpzerotemplatewebpublic
+    container_name: mycompanynameabpzerotemplatewebpublic_container
+    build:
+      context: .
+      dockerfile: ../../src/Realty.Web.Public/Dockerfile
+    environment:
+      - ConnectionStrings__Default=Server=mssqlDb;Database=RealtyDb;User=sa;Password=Super_Encrypted_Passw0rd!
+    ports:
+      - "44303:443"
+    networks:
+      - mycompanyname.abpzerotemplate
+
+networks:
+  mycompanyname.abpzerotemplate:
+    external:
+      name: mycompanyname.abpzerotemplate

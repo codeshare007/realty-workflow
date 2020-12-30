@@ -1,0 +1,89 @@
+<tabset *ngIf="settings">
+    <tab heading="{{'UiCustomization_Header' | localize}}" class="p-5">
+        <div class="form">
+            <form id="HeaderSettingsForm">
+                <div class="form-group row">
+                    <h5 class="col">{{"UiCustomization_Desktop" | localize}}</h5>
+                    <div class="col-lg-12">
+                        <label class="checkbox">
+                            <input type="checkbox"
+                                   name="DesktopFixedHeader"
+                                   [(ngModel)]="settings.header.desktopFixedHeader">
+                            <span></span>
+                            {{"UiCustomization_DesktopFixedHeader" | localize}}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <h5 class="col">{{"UiCustomization_Mobile" | localize}}</h5>
+                    <div class="col-lg-12">
+                        <label class="checkbox">
+                            <input type="checkbox"
+                                   name="MobileFixedHeader"
+                                   [(ngModel)]="settings.header.mobileFixedHeader">
+                            <span></span>
+                            {{"UiCustomization_MobileFixedHeader" | localize}}
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </tab>
+
+    <tab heading="{{'UiCustomization_Footer' | localize}}" class="p-5">
+        <div class="form">
+            <form id="FooterSettingsForm">
+                <div class="form-group row">
+                    <h5 class="col">{{"UiCustomization_Footer" | localize}}</h5>
+                    <div class="col-lg-12">
+                        <label class="checkbox">
+                            <input type="checkbox"
+                                   name="FixedSubHeader"
+                                   [(ngModel)]="settings.footer.fixedFooter">
+                            <span></span>
+                            {{"UiCustomization_FixedFooter" | localize}}
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </tab>
+
+    <tab heading="{{'UiCustomization_Menu' | localize}}" class="p-5">
+        <div class="form">
+            <form id="MenuSettingsForm">
+                <div class="form-group row">
+                    <div class="col-lg-12">
+                        <label class="checkbox col-lg-12">
+                            <input type="checkbox" name="DefaultMinimizedAside"
+                                   [(ngModel)]="settings.menu.searchActive">
+                            <span></span>
+                            {{"ShowMenuSearchInput" | localize}}
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </tab>
+</tabset>
+
+<div class="mt-4">
+    <button *ngIf="'Pages.Administration.UiCustomization' | permission"
+            (click)="updateDefaultUiManagementSettings()"
+            class="btn btn-primary">
+        <i class="fa fa-save"></i>
+        {{"SaveAsSystemDefault" | localize}}
+    </button>
+    <button *ngIf="!('Pages.Administration.UiCustomization' | permission)"
+            (click)="updateUiManagementSettings()"
+            class="btn btn-primary">
+        <i class="fa fa-save"></i>
+        {{"Save" | localize}}
+    </button>
+    <button *ngIf="!('Pages.Administration.UiCustomization' | permission)"
+            (click)="useSystemDefaultSettings()"
+            class="btn btn btn-secondary btn-hover-brand">
+        {{"UseSystemDefaults" | localize}}
+    </button>
+</div>

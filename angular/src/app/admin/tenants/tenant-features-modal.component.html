@@ -1,0 +1,28 @@
+<div appBsModal #tenantFeaturesModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="tenantFeaturesModal"
+     aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <form #editTenantFeaturesForm="ngForm" name="editTenantFeaturesForm" role="form" novalidate class="form-validation" (submit)="save()" *ngIf="active">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{"Features" | localize}} - {{tenantName}}</span>
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="close()">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <feature-tree #featureTree></feature-tree>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" [disabled]="saving" [buttonBusy]="resettingFeatures" [busyText]="l('SavingWithThreeDot')" class="btn btn-light-primary font-weight-bold pull-left" (click)="resetFeatures()" [tooltipHtml]="l('ResetFeaturesTooltip')" placement="top"><span>{{"ResetSpecialFeatures" | localize}}</span></button>
+                    <button type="button" [disabled]="saving || resettingFeatures" class="btn btn-light-primary font-weight-bold" (click)="close()">{{"Cancel" | localize}}</button>
+                    <button type="submit" [disabled]="resettingFeatures" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" class="btn btn-primary font-weight-bold"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

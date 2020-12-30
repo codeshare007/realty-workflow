@@ -1,0 +1,61 @@
+{
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{Navigation_Property_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "		public string {{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} { get; set;}
+
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Navigation_Property_Table_Dropdown_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType": "Dropdown",	
+					"preventDuplicate":true,					
+					"content" : "public List<{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto> {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}List { get; set;}
+
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Navigation_Property_Dropdown_Using}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType": "Dropdown",
+					"content" : "using System.Collections.Generic;
+"
+					}
+				]
+		}
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{IsEditMode_Value_Here}}",
+			"condition": "{{Primary_Key_Here}} == 'string'",
+			"content": "!{{Entity_Name_Here}}.Id.IsNullOrWhiteSpace()"
+		},
+		{
+			"placeholder": "{{IsEditMode_Value_Here}}",
+			"condition": "{{Primary_Key_Here}} != 'string'",
+			"content": "{{Entity_Name_Here}}.Id.HasValue"
+		},
+		{
+			"placeholder": "{{Create_Or_Edit_View_Model_Class_Name_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == true",
+			"content": "CreateOrEdit{{Entity_Name_Here}}ViewModel"
+		},
+		{
+			"placeholder": "{{Create_Or_Edit_View_Model_Class_Name_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "CreateOrEdit{{Entity_Name_Here}}ModalViewModel"
+		}
+	]
+}

@@ -1,0 +1,6 @@
+{
+	"path" : "app\\{{menu_Position_Here}}\\{{namespace_Relative_Here}}\\{{entity_Name_Plural_Here}}\\{{entity_Name_Here}}-{{nP_Foreign_Entity_Name_Here}}-lookup-table-modal.component.html",
+	"condition": "{{Project_Version_Here}} < 050400",
+	"viewType": "LookupTable",
+	"foreach":"navigationProperty"
+}

@@ -1,0 +1,50 @@
+.mobile-subscription-warning {
+  background-color: transparent;
+}
+theme10-brand {
+  display: flex !important;
+}
+.unread-notification-count {
+  position: absolute;
+  top: 5px;
+  left: 23px;
+}
+.unread-chat-message-count {
+  position: absolute;
+  top: -6px;
+  left: 13px;
+}
+.menuSearchBarContainer {
+  min-width: 150px !important;
+}
+@media (min-width: 1024px) {
+  .menuSearchBarContainer {
+    min-width: 150px !important;
+    margin-right: 14px;
+  }
+}
+.menuSearchBarContainer .ui-autocomplete-panel {
+  margin-left: 14px;
+}
+@media (max-width: 1024px) {
+  .menuSearchBarContainer {
+    width: calc(100% - 20px);
+    margin-left: 15px;
+  }
+  .menuSearchBarInput {
+    width: 214px;
+  }
+}
+li.menu-item-active .menu-link-icon,
+li.menu-item-active .menu-hor-arrow {
+  color: #fff !important;
+}
+
+.dropdown-language .dropdown-menu{
+  left: 0px !important;
+}
+
+header-notifications .dropdown-menu{
+    left: 0px !important;
+    min-width: 300px;
+}

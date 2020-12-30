@@ -1,0 +1,31 @@
+theme5-layout {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+#kt_wrapper > ng-component {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.unread-notification-count {
+    position: absolute;
+    top: 2px;
+    left: 19px;
+}
+
+.unread-chat-message-count {
+    position: absolute;
+    top: -6px;
+    left: 13px;
+}
+
+p-autoComplete{
+    padding: 10px;
+}
+
+.menuSearchBarContainer{
+    width: calc(100% - 20px);
+}

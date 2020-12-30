@@ -1,0 +1,20 @@
+﻿.m-error_container .m-error_title > h1 {
+    font-size: 100px;
+    margin-left: 80px;
+    margin-top: 9rem;
+    font-weight: 600;
+    color: #6587C6;
+}
+
+.m-error_container .m-error_subtitle {
+    font-size: 1.5rem;
+    margin-left: 80px;
+    color: #898b96;
+}
+
+
+.m-error_container .m-error_description {
+    font-size: 1.0rem;
+    margin-left: 80px;
+    color: #898b96;
+}

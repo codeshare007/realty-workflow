@@ -1,0 +1,21 @@
+<div class="form-library-controls__wrapper">
+    <div class="form-library-controls__wrapper__list">
+        <div *ngFor="let item of formControls"
+             class="form-library-controls__wrapper__list__item"
+             #libraryControl>
+            <div [class]="'form-library-controls__wrapper__list__item-control ' + (item.type | formControlClass)"
+                 [ngClass]="{ 'hover': isHover(item.type), 'disabled': !isEditMod }"
+                 (mousedown)="onSelected($event, libraryControl, item)">
+                {{ item.type | formControlType }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-library-controls__wrapper">
+    <div class="form-library-controls__wrapper__content"
+         [ngClass]="{ 'disabled': !formLibrarySettings.allowSwitchMode }">
+        <form-layer></form-layer>
+        <form-switch [formLibrarySettings]="formLibrarySettings"></form-switch>
+    </div>
+</div>

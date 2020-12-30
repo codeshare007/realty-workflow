@@ -1,0 +1,28 @@
+<div appBsModal #editModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #userForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{"Permissions" | localize}}<span *ngIf="userName"> - {{userName}}</span></span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')" [disabled]="saving">
+                         <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <permission-tree #permissionTree></permission-tree>
+
+                    <div class="alert alert-warning" style="margin-bottom: 0; margin-top: 15px">
+                        <em>{{'Note_RefreshPageForPermissionChanges' | localize}}</em>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" [buttonBusy]="resettingPermissions" [busyText]="l('SavingWithThreeDot')" type="button" class="btn btn-light-primary font-weight-bold pull-left" (click)="resetPermissions()" [tooltip]="l('ResetPermissionsTooltip')" placement="top"><span>{{"ResetSpecialPermissions" | localize}}</span></button>
+                    <button [disabled]="saving || resettingPermissions" type="button" class="btn btn-light-primary font-weight-bold" (click)="close()">{{"Cancel" | localize}}</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!userForm.form.valid || resettingPermissions" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

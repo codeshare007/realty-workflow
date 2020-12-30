@@ -1,0 +1,112 @@
+.form-library-controls {
+    display: flex;
+    flex-direction: column;
+
+    &__switch {
+        display: flex;
+        justify-content: space-between;
+        margin: 16px 0;
+        width: 100%;
+        user-select: none;
+    }
+
+    &__wrapper {
+        display: flex;
+        margin-bottom: 16px;
+        padding: 10px;
+        width: 100%;
+        height: auto;
+        border: 1px solid @main-border-third;
+        box-shadow: 0px 1px 1px @box-shadow;
+        border-radius: 4px;
+        user-select: none;
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+
+            &.disabled {
+                color: @disabled-color;
+                background-color: @disabled-color-second;
+
+                .selected,
+                .form-library__checkbox__label {
+                    color: @disabled-color;
+                }
+
+                [type="checkbox"].checked+span,
+                [type="checkbox"]:not(.checked)+span {
+                    cursor: not-allowed;
+                }
+
+                [type="checkbox"].checked+span:before,
+                [type="checkbox"]:not(.checked)+span:before {
+                    border-color: @disabled-color;
+                    background-color: @disabled-color-second;
+                }
+
+                [type="checkbox"].checked+span:after,
+                [type="checkbox"]:not(.checked)+span:after {
+                    background-color: @disabled-color;
+                }
+            }
+
+            .form-layer {
+                display: flex;
+                align-items: center;
+
+                h4 {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        &__list {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            width: 100%;
+
+            &__item {
+                margin-bottom: 8px;
+                width: 48.5%;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                &-control {
+                    cursor: grab;
+                    padding: 0 8px;
+                    width: 100%;
+                    min-width: 140px;
+                    height: 50px;
+                    color: @main-color;
+                    background-color: @box-shadow-icon;
+                    border: 1px solid @main-color-second;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    line-height: 24px;
+                    font-weight: 500;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    transition: all 0.1s ease-in;
+
+                    &.disabled {
+                        cursor: not-allowed;
+                        color: @disabled-color;
+                        background-color: @disabled-color-second;
+                        border-color: @disabled-color;
+                    }
+
+                    &.hover {
+                        opacity: 0.5;
+                        border-style: dashed;
+                    }
+                }
+            }
+        }
+    }
+}

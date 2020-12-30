@@ -1,0 +1,30 @@
+.file-choose-control {
+    width: 100%;
+
+    &.ui-button {
+        color: #439aff;
+        height: 40px;
+        background-color: #e1f0ff;
+        border: unset;
+       
+        .ui-button-icon-left {
+            left: 15px;
+        }
+
+        &.ui-button-text-icon-left {
+            .ui-button-text {
+                padding: 0.7em 1em 0.7em 2em;
+            }
+        }
+
+        &:not(.ui-state-disabled):hover {
+            background-color: #3699ff;
+            border:unset;
+            color: #fff;
+        }
+
+        &.ui-fileupload-choose.ui-state-focus {
+            box-shadow: unset;
+        }
+    }
+}

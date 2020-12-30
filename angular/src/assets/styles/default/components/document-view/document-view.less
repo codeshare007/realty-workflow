@@ -1,0 +1,59 @@
+.document {
+    &-view {
+        user-select: none;
+
+        &__wrapper {
+            padding: 24px 0;
+            height: 100vh;
+            background-color: @main-white-second;
+            overflow-y: auto;
+        }
+
+        @import './signature-control-modal.less';
+    }
+
+    &-page {
+        >div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+            position: relative;
+        }
+
+        &__url {
+            position: relative;
+            margin-bottom: 24px;
+            height: 297mm;
+            width: 210mm;
+            background-size: 210mm 297mm;
+            border: 2px solid @main-border;
+            user-select: none;
+            overflow: hidden;
+
+            &__count {
+                position: absolute;
+                bottom: -38px;
+                left: 50%;
+                transform: translate(-50%, -50%);
+
+                &:before,
+                &:after {
+                    content: '-';
+                    position: absolute;
+                    top: -2px;
+                    font-size: 16px;
+                    font-weight: 600;
+                }
+
+                &:after {
+                    left: -16px;
+                }
+
+                &:before {
+                    right: -16px;
+                }
+            }
+        }
+    }
+}

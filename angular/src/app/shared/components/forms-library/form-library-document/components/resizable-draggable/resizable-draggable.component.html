@@ -1,0 +1,13 @@
+<div #box
+     [style.width.px]="controlOption.width"
+     [style.height.px]="controlOption.height"
+     [style.z-index]="controlOption.zIndex"
+     [style.font-size.px]="controlOption.fontSize"
+     [style.transform]="'translate3d('+ controlOption.left + 'px,' + controlOption.top + 'px,' + '0px)'"
+     class="resizable-draggable">
+    <ng-content></ng-content>
+    <div class="resizable-draggable__action"></div>
+    <span>{{ controlOption.width | number:'1.0-0' }}px</span>
+    <span>{{ controlOption.height | number:'1.0-0' }}px</span>
+    <span>({{ controlOption.left }}, {{ controlOption.top }})</span>
+</div>

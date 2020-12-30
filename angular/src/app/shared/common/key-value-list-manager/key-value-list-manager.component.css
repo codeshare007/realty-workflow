@@ -1,0 +1,11 @@
+.key-value-items-list{
+    height: auto;
+    overflow-y: auto;
+    background-color: #e5e5e5;
+    padding: 5px;
+    resize: vertical;
+}
+
+.key-value-items-list .alert-text {
+    overflow: auto;
+}

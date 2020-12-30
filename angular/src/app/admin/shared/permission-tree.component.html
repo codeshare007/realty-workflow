@@ -1,0 +1,7 @@
+<div class='form-group'>
+    <input type='text' (input)="filterPermissions($event)" [(ngModel)]="filter" class='form-control'
+        placeholder='{{"SearchWithThreeDot" | localize}}'>
+</div>
+<p-tree [value]="treeData" [(selection)]="selectedPermissions" selectionMode="checkbox"
+    (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="onNodeUnselect($event)" [propagateSelectionUp]="false">
+</p-tree>

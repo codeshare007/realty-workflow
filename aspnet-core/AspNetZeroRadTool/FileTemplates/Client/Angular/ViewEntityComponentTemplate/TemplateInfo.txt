@@ -1,0 +1,4 @@
+{
+	"path" : "app\\{{menu_Position_Here}}\\{{namespace_Relative_Here}}\\{{entity_Name_Plural_Here}}\\view-{{entity_Name_Here}}-modal.component.ts",
+	"condition" : "{{Create_View_Only_Here}} == true && {{Is_Non_Modal_CRUD_Page}} == false"
+}

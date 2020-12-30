@@ -1,0 +1,19 @@
+<div class="form-library-controls__switch"
+     *ngFor="let setting of formLibrarySettings.viewModeSettings | filterModeSitting:layer">
+    <div class="form-library__checkbox"
+         *ngFor="let mode of setting.viewModes">
+        <label class="form-library__checkbox__label">
+            <span class="form-library__checkbox__label__title"
+                  [ngClass]="{ 'selected': mode.value }">
+                {{ mode.title }}
+            </span>
+            <input [(ngModel)]="mode.value"
+                   [ngClass]="{ 'checked': mode.value }"
+                   [checked]="mode.value ? true : false"
+                   (ngModelChange)="onSwitch(setting.viewModes, mode.type)"
+                   type="checkbox"
+                   [name]="mode.title" />
+            <span></span>
+        </label>
+    </div>
+</div>

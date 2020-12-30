@@ -1,0 +1,70 @@
+﻿import { Component, ViewChild, Injector, Output, EventEmitter, OnInit} from '@angular/core';
+{{Import_Modal_Directive_Here}}
+import { finalize } from 'rxjs/operators';
+import { {{Entity_Name_Plural_Here}}ServiceProxy, CreateOrEdit{{Entity_Name_Here}}Dto {{NP_Looped_Import_Dropdown_LookupTableDto_Here}}} from '@shared/service-proxies/service-proxies';
+import { AppComponentBase } from '@shared/common/app-component-base';
+import * as moment from 'moment';{{NP_Looped_Lookup_Component_Import_Here}}
+import { ActivatedRoute } from '@angular/router';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+
+@Component({
+    selector: 'createOrEdit{{Entity_Name_Here}}',
+    templateUrl: './create-or-edit-{{entity_Name_Here}}.component.html',
+    animations: [appModuleAnimation()]
+})
+export class CreateOrEdit{{Entity_Name_Here}}Component extends AppComponentBase implements OnInit {
+    active = false;
+    saving = false;
+    {{NP_Looped_ViewChild_Here}}
+    {{entity_Name_Here}}: CreateOrEdit{{Entity_Name_Here}}Dto = new CreateOrEdit{{Entity_Name_Here}}Dto();
+{{Property_Nullable_Datetime_Dec_Looped_Template_Here}}
+{{NP_Looped_Display_Declaration_Here}}
+{{NP_Looped_Dropdown_Property_Here}}
+    constructor(
+        injector: Injector,
+        private _activatedRoute: ActivatedRoute,        
+        private _{{entity_Name_Plural_Here}}ServiceProxy: {{Entity_Name_Plural_Here}}ServiceProxy
+    ) {
+        super(injector);
+    }
+
+    ngOnInit(): void {
+        this.show(this._activatedRoute.snapshot.queryParams['id']);
+    }
+
+    show({{entity_Name_Here}}Id?: {{Primary_Key_Type_Here}}): void {
+{{Property_Nullable_Datetime_SetNull_Looped_Template_Here}}
+        if (!{{entity_Name_Here}}Id) {
+            this.{{entity_Name_Here}} = new CreateOrEdit{{Entity_Name_Here}}Dto();
+            this.{{entity_Name_Here}}.id = {{entity_Name_Here}}Id;{{Property_Datetime_Init_Looped_Template_Here}}{{Property_Datetime_Init_Looped_Template_Here_After_070200}}
+{{NP_Looped_Display_Init_Here}}
+            this.active = true;
+        } else {
+            this._{{entity_Name_Plural_Here}}ServiceProxy.get{{Entity_Name_Here}}ForEdit({{entity_Name_Here}}Id).subscribe(result => {
+                this.{{entity_Name_Here}} = result.{{entity_Name_Here}};
+{{Property_Nullable_Datetime_Init_Looped_Template_Here}}
+{{NP_Looped_Edit_Bind_Here}}
+                this.active = true;
+            });
+        }
+        {{NP_Looped_Dropdown_GetAll_Here}}
+    }
+
+    save(): void {
+            this.saving = true;
+
+			{{Property_Nullable_Datetime_GetValue_Looped_Template_Here}}
+            this._{{entity_Name_Plural_Here}}ServiceProxy.createOrEdit(this.{{entity_Name_Here}})
+             .pipe(finalize(() => { this.saving = false;}))
+             .subscribe(() => {
+                this.notify.info(this.l('SavedSuccessfully'));
+             });
+    }
+
+{{NP_Looped_OpenModal_Here}}
+
+{{NP_Looped_SetNull_Here}}
+
+{{NP_Looped_GetNew_Here}}
+
+}

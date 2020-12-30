@@ -1,0 +1,31 @@
+<div class="form-group mb-2">
+    <label>{{header}}</label>
+    <div class="input-group">
+        <input type="text" class="form-control" [(ngModel)]="addOrEditKey" placeholder="{{keyPlaceHolder}}"
+               (change)="onKeyChange()">
+        <input type="text" class="form-control" [(ngModel)]="addOrEditValue" placeholder="{{valuePlaceHolder}}">
+        <div class="input-group-append">
+            <button class="btn btn-primary" (click)="addOrEdit()" type="button">
+                <span *ngIf="!isEdit">{{ 'Add' | localize }}</span>
+                <span *ngIf="isEdit">{{ 'Edit' | localize }}</span>
+            </button>
+        </div>
+    </div>
+    <div class="key-value-items-list" *ngIf="items">
+        <div *ngFor="let keyValueItem of items"
+             class="alert alert-custom alert-bold m-1"
+             [class.alert-white]="addOrEditKey!==keyValueItem.key"
+             [class.alert-warning]="addOrEditKey===keyValueItem.key"
+             role="alert">
+            <div class="alert-text"> "{{keyValueItem.key}}" : "{{keyValueItem.value}}"</div>
+            <div class="alert-close">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true" (click)="openItemEdit(keyValueItem)"><i class="la la-edit fa-1x"></i></span>
+                </button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true" (click)="removeItem(keyValueItem)"><i class="la la-close fa-1x"></i></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

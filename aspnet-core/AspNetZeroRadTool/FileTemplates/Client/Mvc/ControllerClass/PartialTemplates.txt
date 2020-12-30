@@ -1,0 +1,183 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Init_Here}}",
+			"condition" : "{{Property_CreateOrEdit_Here}} == true",
+			"templates" : [
+					{
+					"type" : "DateTime",
+					"content" : "
+				get{{Entity_Name_Here}}ForEditOutput.{{Entity_Name_Here}}.{{Property_Name_Here}} = DateTime.Now;"
+					}
+				]
+		},
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Looped_Display_Property_Init_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : ",
+					{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} = get{{Entity_Name_Here}}ForEditOutput.{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_Dropdown_Init_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType": "Dropdown",						
+					"preventDuplicate":true,
+					"content" : ",
+					{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}List = await _{{entity_Name_Plural_Here}}AppService.GetAll{{NP_Foreign_Entity_Name_Here}}ForTableDropdown()"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_Controller_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"viewType":"LookupTable",
+					"preventDuplicate" : true,
+					"content" : "        [AbpMvcAuthorize(AppPermissions.{{Permission_Name_Here}}_Create, AppPermissions.{{Permission_Name_Here}}_Edit)]
+        public PartialViewResult {{NP_Foreign_Entity_Name_Here}}LookupTableModal({{NP_Id_Type_Here}}? id, string displayName)
+        {
+            var viewModel = new {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableViewModel()
+            {
+                Id = id{{NP_Id_Type_ToStringIfNeeded_Here}},
+                DisplayName = displayName,
+                FilterText = \"\"
+            };
+
+            return PartialView(\"_{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal\", viewModel);
+        }
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_ViewMethod_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"preventDuplicate" : true,
+					"content" : "
+                , {{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} = get{{Entity_Name_Here}}ForViewDto.{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} 
+"
+					}
+				]
+		}
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{Primary_Key_Inside_Tag_Here}}",
+			"condition": "{{Primary_Key_Here}} != 'int'",
+			"content": "<{{Primary_Key_Here}}>"
+		},		
+		{
+			"placeholder": "{{Primary_Key_Nullable_If_Not_String_Here}}",
+			"condition": "{{Primary_Key_Here}} != 'string'",
+			"content": "?"
+		},
+		{
+			"placeholder": "{{View_Method_Here}}",
+			"condition": "{{Create_View_Only_Here}} == true && {{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "
+        public async Task<PartialViewResult> View{{Entity_Name_Here}}Modal({{Primary_Key_Here}} id)
+        {
+			var get{{Entity_Name_Here}}ForViewDto = await _{{entity_Name_Plural_Here}}AppService.Get{{Entity_Name_Here}}ForView(id);
+
+            var model = new {{Entity_Name_Here}}ViewModel()
+            {
+                {{Entity_Name_Here}} = get{{Entity_Name_Here}}ForViewDto.{{Entity_Name_Here}}{{NP_Looped_ViewMethod_Here}}
+            };
+
+            return PartialView(\"_View{{Entity_Name_Here}}Modal\", model);
+        }"
+		},
+		{
+			"placeholder": "{{View_Method_Here}}",
+			"condition": "{{Create_View_Only_Here}} == true && {{Is_Non_Modal_CRUD_Page}} == true",
+			"content": "
+        public async Task<ActionResult> View{{Entity_Name_Here}}({{Primary_Key_Here}} id)
+        {
+			var get{{Entity_Name_Here}}ForViewDto = await _{{entity_Name_Plural_Here}}AppService.Get{{Entity_Name_Here}}ForView(id);
+
+            var model = new {{Entity_Name_Here}}ViewModel()
+            {
+                {{Entity_Name_Here}} = get{{Entity_Name_Here}}ForViewDto.{{Entity_Name_Here}}{{NP_Looped_ViewMethod_Here}}
+            };
+
+            return View(model);
+        }"
+		},
+		{
+			"placeholder": "{{Create_Or_Edit_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "
+			 [AbpMvcAuthorize(AppPermissions.{{Permission_Name_Here}}_Create, AppPermissions.{{Permission_Name_Here}}_Edit)]
+			public async Task<PartialViewResult> CreateOrEditModal({{Primary_Key_Here}}{{Primary_Key_Nullable_If_Not_String_Here}} id)
+			{
+				Get{{Entity_Name_Here}}ForEditOutput get{{Entity_Name_Here}}ForEditOutput;
+
+				if ({{Id_Null_Check_Here}}){
+					get{{Entity_Name_Here}}ForEditOutput = await _{{entity_Name_Plural_Here}}AppService.Get{{Entity_Name_Here}}ForEdit(new EntityDto{{Primary_Key_Inside_Tag_Here}} { Id = ({{Primary_Key_Here}}) id });
+				}
+				else {
+					get{{Entity_Name_Here}}ForEditOutput = new Get{{Entity_Name_Here}}ForEditOutput{
+						{{Entity_Name_Here}} = new CreateOrEdit{{Entity_Name_Here}}Dto()
+					};{{Property_Init_Here}}
+				}
+
+				var viewModel = new CreateOrEdit{{Entity_Name_Here}}ModalViewModel()
+				{
+					{{Entity_Name_Here}} = get{{Entity_Name_Here}}ForEditOutput.{{Entity_Name_Here}}{{NP_Looped_Display_Property_Init_Here}}{{NP_Looped_Dropdown_Init_Here}},                
+				};
+
+				return PartialView(\"_CreateOrEditModal\", viewModel);
+			}
+			"
+		},
+		{
+			"placeholder": "{{Create_Or_Edit_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == true",
+			"content": "[AbpMvcAuthorize(AppPermissions.{{Permission_Name_Here}}_Create, AppPermissions.{{Permission_Name_Here}}_Edit)]
+			public async Task<ActionResult> CreateOrEdit({{Primary_Key_Here}}{{Primary_Key_Nullable_If_Not_String_Here}} id)
+			{
+				Get{{Entity_Name_Here}}ForEditOutput get{{Entity_Name_Here}}ForEditOutput;
+
+				if ({{Id_Null_Check_Here}}){
+					get{{Entity_Name_Here}}ForEditOutput = await _{{entity_Name_Plural_Here}}AppService.Get{{Entity_Name_Here}}ForEdit(new EntityDto{{Primary_Key_Inside_Tag_Here}} { Id = ({{Primary_Key_Here}}) id });
+				}
+				else {
+					get{{Entity_Name_Here}}ForEditOutput = new Get{{Entity_Name_Here}}ForEditOutput{
+						{{Entity_Name_Here}} = new CreateOrEdit{{Entity_Name_Here}}Dto()
+					};{{Property_Init_Here}}
+				}
+
+				var viewModel = new CreateOrEdit{{Entity_Name_Here}}ViewModel()
+				{
+					{{Entity_Name_Here}} = get{{Entity_Name_Here}}ForEditOutput.{{Entity_Name_Here}}{{NP_Looped_Display_Property_Init_Here}}{{NP_Looped_Dropdown_Init_Here}},                
+				};
+
+				return View(viewModel);
+			}
+			"
+		},
+		{
+			"placeholder": "{{Id_Null_Check_Here}}",
+			"condition": "{{Primary_Key_Here}} != 'string'",
+			"content": "id.HasValue"
+		},
+		{
+			"placeholder": "{{Id_Null_Check_Here}}",
+			"condition": "{{Primary_Key_Here}} == 'string'",
+			"content": "!id.IsNullOrWhiteSpace()"
+		}
+	]
+}
+
+

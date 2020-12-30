@@ -1,0 +1,23 @@
+.blur {
+  filter: blur(10px);
+}
+
+.secret-view-btn {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  cursor: pointer;
+}
+
+#portlet-detail .form-group div {
+  padding: 8px;
+}
+
+.primeng-datatable-container th,
+.primeng-datatable-container td {
+  text-align: center;
+}
+
+#detailModal .modal-body {
+  overflow-wrap: break-word;
+}

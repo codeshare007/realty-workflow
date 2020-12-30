@@ -1,0 +1,83 @@
+<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="'Lead'" [breadcrumbs]="breadcrumbs"></sub-header>
+
+        <div [class]="containerClass" *ngIf="lead && lead.contact">
+            <lead-general-info-section 
+                [(lead)]="lead"
+                [(isEditMode)]="isEditMode"
+                *ngIf="!searchListingMode"
+                [(isOpened)]="accordionOptions.generalInfoOpened"
+                >
+            </lead-general-info-section>
+
+            <div *ngIf="lead && lead.id">
+                <div class="card card-custom gutter-b" *ngIf="!searchListingMode">
+                    <div class="card-header">
+                        <div class="w-100 d-flex align-items-center">
+                            <div class="w-100 d-flex justify-content-between">
+                                <h4 class="card-label mb-0 d-flex align-items-center">Recommended Listings</h4>
+                                <div>
+                                    <a class="card-header-button" (click)="searchListingMode = true">
+                                        <i class="la la-plus"></i>
+                                    </a>
+                                    <a class="card-header-button chevron" (click)="accordionOptions.recommendedListingsOpened = !accordionOptions.recommendedListingsOpened">
+                                        <i class="pi pi-fw pi-chevron-up" 
+                                            [ngClass]="{'closed': !accordionOptions.recommendedListingsOpened }"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body py-0" *ngIf="accordionOptions.recommendedListingsOpened">
+                        <recommended-listings 
+                            #recommendedListings 
+                            [leadId]="lead.id" 
+                            (recommendListingIds)="recommendListingIds = $event"
+                            >
+                        </recommended-listings>
+                    </div>
+                </div>
+
+                <div class="card card-custom gutter-b" *ngIf="!searchListingMode && lead.contact.email && lead.contact.email.length > 0">
+                    <div class="card-header">
+                        <div class="w-100 d-flex align-items-center">
+                            <div class="w-100 d-flex justify-content-between">
+                                <h4 class="card-label mb-0 d-flex align-items-center">Communications</h4>
+                                <div>
+                                    <a class="card-header-button chevron" (click)="accordionOptions.communicationOpened = !accordionOptions.communicationOpened">
+                                        <i class="pi pi-fw pi-chevron-up" 
+                                            [ngClass]="{'closed': !accordionOptions.communicationOpened }"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body py-0" *ngIf="accordionOptions.communicationOpened">
+                        <comms-inbox-view class="flex-row-fluid d-block" [contact]="lead.contact.email"></comms-inbox-view>
+                    </div>
+                </div>
+
+                <div class="card card-custom gutter-b" *ngIf="searchListingMode">
+                    <div class="card-header">
+                        <div class="w-100 d-flex align-items-center">
+                            <div class="w-100 d-flex justify-content-between">
+                                <h4 class="card-label mb-0 d-flex align-items-center">Search Listing</h4>
+                                <div>
+                                    <button class="btn btn-secondary" (click)="searchListingMode = false"><i class="fa fa-arrow-left"></i>Back to lead</button>
+                                    <button class="btn btn-primary" (click)="onSaveListings()"><i class="fa fa-plus"></i>Save <span *ngIf="recommendListingIds">({{recommendListingIds.length}}) Listings</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body py-0" *ngIf="accordionOptions.recommendedListingsOpened">
+                        <search-listings 
+                            [(selectedListingIds)]="recommendListingIds" 
+                            >
+                        </search-listings>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

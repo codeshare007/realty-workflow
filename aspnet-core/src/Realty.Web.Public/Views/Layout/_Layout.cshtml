@@ -1,0 +1,91 @@
+﻿@using System.Threading.Tasks
+@using Abp.AspNetZeroCore.Timing
+@using Abp.Web.Security.AntiForgery
+@using Realty.Timing
+@using Realty.Web.Public.Views.Shared.Components.Header
+@using CultureHelper = Realty.Localization.CultureHelper
+@inject AppTimes AppTimes
+@inject IAbpAntiForgeryManager AbpAntiForgeryManager
+@{
+    Layout = null;
+    AbpAntiForgeryManager.SetCookie(Context);
+}
+<!DOCTYPE html>
+<html lang="en" @(CultureHelper.IsRtl ? "dir=\"rtl\"" : "" )>
+<head>
+    <meta charset="utf-8">
+    <title>Realty</title>
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    @* Fill these meta tags upon your project specification *@
+    <meta content="Realty" name="description">
+    <meta content="Realty" name="keywords">
+    <meta content="Realty" name="author">
+
+    @* You can enable and fill these lines according to documentation on http://ogp.me/
+        <meta property="og:site_name" content="-CUSTOMER VALUE-">
+        <meta property="og:title" content="-CUSTOMER VALUE-">
+        <meta property="og:description" content="-CUSTOMER VALUE-">
+        <meta property="og:type" content="website">
+        <meta property="og:image" content="-CUSTOMER VALUE-">
+        <meta property="og:url" content="-CUSTOMER VALUE-">*@
+
+    <link rel="shortcut icon" href="~/favicon.ico">
+
+    <link rel="stylesheet" href="~/fonts/fonts-open-sans.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/fonts/fonts-ptsans-narrow.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/fonts/fonts-sourcesans-pro.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/view-resources/Views/_Bundles/frontend-libs@(CultureHelper.IsRtl ? "-rtl" : "").min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/view-resources/Views/_Bundles/frontend-metronic@(CultureHelper.IsRtl ? "-rtl" : "").min.css" asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", false)
+
+    <link rel="stylesheet" href="~/Common/_Bundles/common-styles.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/view-resources/Views/Layout/layout.min.css" asp-append-version="true" />
+
+    <script type="text/javascript">
+        @* This is used to get the application's root path from javascript.
+        It's useful if you're running application in a virtual directory under IIS. *@
+        var abp = abp || {}; abp.appPath = '@ApplicationPath';
+    </script>
+
+</head>
+<body class="corporate">
+
+    @await Component.InvokeAsync(typeof(HeaderViewComponent), new { currentPageName = ViewBag.CurrentPageName })
+
+    <div class="main">
+        <div class="container">
+            @RenderBody()
+        </div>
+    </div>
+
+    @await Html.PartialAsync("~/Views/Layout/_Footer.cshtml")
+
+    <script src="~/view-resources/Views/_Bundles/frontend-libs.min.js" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+        abp.localization.defaultSourceName = '@LocalizationSourceName';
+        abp.security.antiForgery.tokenCookieName = "Public-XSRF-TOKEN";
+        abp.security.antiForgery.tokenHeaderName = "Public-X-XSRF-TOKEN";
+    </script>
+
+    <!-- Dynamic scripts of ABP system (They are created on runtime and can not be bundled) -->
+    <script src="~/AbpScripts/GetScripts?_v=@AppTimes.StartupTime.Ticks" type="text/javascript"></script>
+
+    <script src="~/view-resources/Views/_Bundles/frontend-metronic.min.js" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            Layout.init();
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", false)
+
+</body>
+
+</html>

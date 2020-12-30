@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Name="LoginPage"
+             xmlns:base="clr-namespace:Realty.ViewModels.Base;assembly=Realty.Mobile.Shared"
+             xmlns:extensions="clr-namespace:Realty.Extensions.MarkupExtensions;assembly=Realty.Mobile.Shared"
+             xmlns:behaviors="clr-namespace:Realty.Behaviors;assembly=Realty.Mobile.Shared"
+             xmlns:controls="clr-namespace:Realty.Controls;assembly=Realty.Mobile.Shared"
+             x:Class="Realty.Views.LoginView"
+             BackgroundColor="{StaticResource LoginBackgroundColor}"
+             base:ViewManager.AutoWireViewModel="true"
+             Title="{extensions:Translate LogIn}">
+
+    <ContentPage.ToolbarItems>
+        <controls:HideableToolbarItem 
+            Order="Primary" 
+            Text="{extensions:Translate ChangeTenant}"  
+            Command="{Binding ChangeTenantCommand}" 
+            IsVisible="{Binding IsMultiTenancyEnabled}"
+            ParentPage="{x:Reference LoginPage}" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid 
+                  RowSpacing="0"
+                  ColumnSpacing="0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.10*"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="0.20*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image  Grid.Row="1"   
+                    Grid.Column="1"
+                    Aspect="AspectFit"
+                    Source="{extensions:ImageSource 'Realty.UI.Assets.Images.AppLogo.png'}">
+                </Image>
+
+                <Frame Grid.Row="2"
+                   Grid.Column="1" 
+                   IsVisible="{Binding IsMultiTenancyEnabled}"
+                   Style="{StaticResource RoundedFrame}">
+
+                    <Grid Padding="0" ColumnSpacing="5" RowSpacing="0" HorizontalOptions="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition Width="0.5*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0"
+                        Grid.Column="0"
+                        LineBreakMode="WordWrap"
+                        Text="{extensions:Translate CurrentTenant}"  />
+
+                        <Label Grid.Row="0"
+                        Grid.Column="1"
+                        LineBreakMode="WordWrap"
+                        Text="{Binding CurrentTenancyNameOrDefault}"  
+                        Style="{StaticResource ActiveLabel}"/>
+
+                    </Grid>
+
+                </Frame>
+
+                <Frame  Grid.Row="3"
+                    Grid.Column="1"
+                    Style="{StaticResource RoundedFrame}">
+
+                    <StackLayout VerticalOptions="StartAndExpand" Spacing="0">
+
+                        <Label Text="{extensions:Translate UserNameOrEmail}"  />
+                        <Entry Text="{Binding UserName, Mode=TwoWay}"  
+                           Keyboard="{StaticResource NoCapitalizationKeyboard}"
+                           x:Name="UsernameEntry"/>
+
+                        <Label Text="{extensions:Translate Password}" Margin="0,10,0,0"/>
+                        <Entry IsPassword="True" 
+                           Text="{Binding Password, Mode=TwoWay}" 
+                           Keyboard="{StaticResource NoCapitalizationKeyboard}"
+                           x:Name="PasswordEntry"/>
+
+                        <Button Text="{extensions:Translate LogIn}"  
+                                Command="{Binding LoginUserCommand}" 
+                                Margin="0,10,0,0"
+                                Style="{StaticResource ActionButton}"
+                                IsEnabled="{Binding IsLoginEnabled}"
+                                x:Name="LoginButton"/>
+
+                        <Label Text="{extensions:Translate ForgotPassword}" 
+                               HorizontalOptions="StartAndExpand" 
+                               TextColor="{StaticResource PrimaryColor}"
+                               Margin="0,10,0,0">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <Label Text="{extensions:Translate EmailActivation}" 
+                               HorizontalOptions="StartAndExpand" 
+                               TextColor="{StaticResource PrimaryColor}"
+                               Margin="0,10,0,0">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding EmailActivationCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <Picker Title="{extensions:Translate Languages}" 
+                                Margin="0,10,0,0"
+                                ItemsSource="{Binding Languages}" 
+                                ItemDisplayBinding="{Binding DisplayName}"
+                                SelectedItem="{Binding SelectedLanguage}"/>
+
+                    </StackLayout>
+                </Frame>
+
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+
+    <ContentPage.Behaviors>
+        <behaviors:EventHandlerBehavior EventName="Appearing">
+            <behaviors:ActionCollection>
+                <behaviors:InvokeCommandAction Command="{Binding PageAppearingCommand}" />
+            </behaviors:ActionCollection>
+        </behaviors:EventHandlerBehavior>
+    </ContentPage.Behaviors>
+
+</ContentPage>

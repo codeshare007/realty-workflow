@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "noEmit": true,
+        "target": "es5",
+        "disableSizeLimit": true
+    },
+    "include": [
+        "**/*"
+    ],
+    "exclude": [
+        "bin",
+        "node_modules",
+        "obj",
+        "wwwroot/assets",
+        "wwwroot/lib",
+        "wwwroot/metronic",
+        "wwwroot/**/_Bundles"
+    ],
+    "typeAcquisition": {
+        "enable": false,
+        "exclude": [ "node" ]
+    }
+}

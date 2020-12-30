@@ -1,0 +1,43 @@
+﻿<div [@routerTransition]>
+  {{Content_Class_After_Metronic_V606}}
+    <div class="kt-subheader kt-grid__item">
+      {{Container_Class_After_Metronic_V606}}
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">
+				<span *ngIf="active && {{entity_Name_Here}}.id">{{"Edit{{Entity_Name_Here}}" }}</span>
+				<span *ngIf="active && !{{entity_Name_Here}}.id">{{l("Create{{Entity_Name_Here}}")}}</span>
+			</h3>
+			<span class="kt-subheader__separator kt-subheader__separator--v"></span>
+			<div class="kt-subheader__breadcrumbs">
+				<a [routerLink]="['/app/{{menu_Position_Here}}/{{namespace_Relative_Here}}/{{entity_Name_Plural_Here}}']"
+					class="kt-subheader__breadcrumbs-home"><i
+						class="flaticon2-shelter"></i>{{l("{{Entity_Name_Here}}")}}</a>
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<a 
+					class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">
+					<span *ngIf="active && {{entity_Name_Here}}.id">{{l("Edit")}}</span>
+					<span *ngIf="active && !{{entity_Name_Here}}.id">{{l("Create")}}</span>
+				</a>
+			</div>
+        </div>
+      {{Div_After_Metronic_V606}}
+    </div>
+    <div {{Container_Class_Here}}{{Container_Class_V2_Here}}>
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">              
+                {{NP_Looped_Template_Here}}
+                {{Property_Looped_Template_Here}}
+            </div>
+              <div class="kt-portlet__foot">			  
+				<div class="col-lg-12">
+					<button (click)="save()" class="btn btn-primary blue"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> 
+                        <span>{{l("Save")}}</span>
+                    </button>               
+				</div>
+		    </div>
+        </div>
+    </div>
+  {{Div_After_Metronic_V606}}
+  {{NP_Looped_Modal_Here}}
+</div>

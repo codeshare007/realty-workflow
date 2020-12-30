@@ -1,0 +1,154 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="w-100 d-flex align-items-center">
+            <div class="w-100 d-flex justify-content-between">
+                <h4 class="card-label mb-0 d-flex align-items-center">General Info</h4>
+                <div>
+                    <a class="card-header-button" (click)="saveLead()" *ngIf="isEditMode">
+                        <i class="la la-save edit-control"></i> {{ 'Save' | localize }}
+                    </a>
+                    <a class="card-header-button" (click)="isEditMode = true" *ngIf="!isEditMode">
+                        <i class="la la-pencil edit-control"></i>
+                    </a>
+                    <a class="card-header-button chevron" (click)="isOpenedChange.emit(!isOpened)">
+                        <i class="pi pi-fw pi-chevron-up" 
+                            [ngClass]="{'closed': !isOpened }"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body py-0" *ngIf="isOpened && lead">
+        <div class="row py-3 mx-1 border-bottom-1">
+            <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10">
+                <span class="font-weight-bold mr-2">ID*:</span>
+                <span *ngIf="!isEditMode" class="text-muted text-hover-primary">{{ lead.externalId }}</span>
+                <div *ngIf="isEditMode">
+                    <input id="LeadExternalId" #leadExternalIdInput="ngModel" type="text"
+                            name="LeadExternalId" class="form-control" [(ngModel)]="lead.externalId"
+                            required maxlength="1024">
+                    <validation-messages [formCtrl]="leadExternalIdInput"></validation-messages>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10">
+                <span class="font-weight-bold mr-2">Source:</span>
+                <span *ngIf="!isEditMode" class="text-muted text-hover-primary">{{ getSourceDescription(lead.source) }}</span>
+                <div *ngIf="isEditMode">
+                    <general-combo
+                        name="LeadExternalSource" 
+                        [values]="sourceValues"
+                        [(selectedValue)]="lead.source"
+                        >
+                    </general-combo>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10" *ngIf="lead.source == 1">
+                <span class="font-weight-bold mr-2">External Source:</span>
+                <span *ngIf="!isEditMode" class="text-muted text-hover-primary">{{ lead.externalSource }}</span>
+                <div *ngIf="isEditMode">
+                    <input id="LeadExternalSource" type="text"
+                            name="LeadExternalSource" 
+                            class="form-control" 
+                            [(ngModel)]="lead.externalSource">
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10">
+                <span class="font-weight-bold mr-2">Status:</span>
+                <span *ngIf="!isEditMode" class="text-muted">{{ getStatusDescription(lead.status) }}</span>
+                <div *ngIf="isEditMode">
+                    <general-combo
+                        name="LeadStatus" 
+                        [values]="statusValues"
+                        [(selectedValue)]="lead.status"
+                        >
+                    </general-combo>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10">
+                <span class="font-weight-bold mr-2">Customer:</span>
+                <autocomplete-user-input
+                    [isEditMode]="isEditMode"
+                    [(user)]="customer"
+                    (userChange)="lead.customerId = $event.publicId"
+                    [userRole]="'Customer'"
+                    >
+                </autocomplete-user-input>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10"
+                *ngIf="'Pages.Users.Agents' | permission"
+                >
+                
+                <span class="font-weight-bold mr-2">Assigned To:</span>
+                <autocomplete-user-input
+                    [isEditMode]="isEditMode"
+                    [(user)]="agent"
+                    (userChange)="lead.agentId = $event.publicId"
+                    [userRole]="'Agent'"
+                    >
+                </autocomplete-user-input>
+            </div>
+        </div>
+        <div class="row py-3 mx-1 border-bottom-1">
+            <div class="col-lg-12 d-flex flex-column py-1 pb-4 px-0">
+                <h6 class="font-weight-bold mr-2">
+                    <span>CONTACT INFO</span>
+                    <a class="card-header-button ml-2" 
+                        (click)="createEditContactModal.show(lead.contact)" 
+                        *ngIf="isEditMode"
+                        >
+                        <i class="la la-pencil edit-control"></i>
+                    </a>
+                </h6>
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10">
+                            <span class="font-weight-bold mr-2">Name*:</span>
+                            <span class="text-muted text-hover-primary">
+                                {{ lead.contact.firstName + (lead.contact.middleName && lead.contact.middleName.length ? (' ' + lead.contact.middleName) : '') + ' ' + lead.contact.lastName }}
+                            </span>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10">
+                            <span class="font-weight-bold mr-2">Email:</span>
+                            <span class="text-muted text-hover-primary">{{ lead.contact.email }}</span>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10">
+                            <span class="font-weight-bold mr-2">Phone:</span>
+                            <span class="text-muted text-hover-primary">{{ lead.contact.phone }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row py-3 mx-1 border-bottom-1" *ngIf="(lead.tags && lead.tags.length > 0) || isEditMode">
+            <div class="col-lg-12 d-flex flex-column py-1 pb-4 px-0">
+                <span class="font-weight-bold mr-2">Tags:</span>
+                <div class="mt-3 text-muted">
+                    <span class="tag" *ngFor="let tag of lead.tags">{{ tag }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="row py-3 mx-1" *ngIf="(lead.notes && lead.notes.length > 0) || isEditMode">
+            <div class="col-lg-12 d-flex flex-column py-1 px-0">
+                <span class="font-weight-bold mr-2">Notes:</span>
+                <span *ngIf="!isEditMode" class="text-muted text-hover-primary">{{ lead.notes }}</span>
+                <div *ngIf="isEditMode">
+                    <textarea 
+                        class="w-100"
+                        [(ngModel)]="lead.notes" 
+                        name="LeadNotes" 
+                        [style]="{'height':'300px'}"
+                        >
+                    </textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<create-edit-contact-modal 
+    #createEditContactModal
+    (modalSave)="lead.contact = $event"
+    >
+</create-edit-contact-modal>
+

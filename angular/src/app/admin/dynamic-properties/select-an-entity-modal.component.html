@@ -1,0 +1,39 @@
+<div appBsModal #createModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createModal"
+     aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg" *ngIf="initialized">
+        <div class="modal-content">
+            <div *ngIf="initialized">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{"SelectAnEntity" | localize}}</span>
+                    </h4>
+
+                    <button type="button" class="close" (click)="close()" data-dismiss="modal" aria-hidden="true">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group col-12">
+                        <div class="form-group">
+                            <label for="Name">{{"Entity" | localize}} *</label>
+                            <select class="form-control" [(ngModel)]="entityFullName" required>
+                                <option value="">{{'SelectAnEntity'|localize}}</option>
+                                <option *ngFor="let entity of allEntities" [value]="entity">{{ entity }}
+                                </option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                            (click)="close()">{{"Cancel" | localize}}</button>
+
+                    <button type="button" class="btn btn-primary font-weight-bold" (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>{{"Save" | localize}}</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

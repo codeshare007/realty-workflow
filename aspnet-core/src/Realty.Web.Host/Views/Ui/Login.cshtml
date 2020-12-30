@@ -1,0 +1,39 @@
+﻿@using Abp.Web.Security.AntiForgery
+@using Realty
+@model Realty.Web.Models.Ui.LoginModel
+@inject IAbpAntiForgeryManager AbpAntiForgeryManager
+@{
+    AbpAntiForgeryManager.SetCookie(Context);
+}
+<head>
+    <title>Realty</title>
+
+    <link href="~/view-resources/Views/Ui/Login.css" rel="stylesheet" asp-append-version="true"/>
+</head>
+<div class="login-form">
+    <h1>@L("LogIn")</h1>
+    <form method="post">
+        <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl"/>
+        <div class="login-form-row">
+            <label for="TenancyName">@L("TenancyName")</label>
+            <input type="text" id="TenancyName" name="TenancyName" placeholder="@L("TenancyName")">
+        </div>
+        <div class="login-form-row">
+            <label for="UsernameOrEmailAddress">@L("UserNameOrEmail")</label>
+            <input type="text" id="UsernameOrEmailAddress" name="UserNameOrEmailAddress" placeholder="@L("UserNameOrEmail")">
+        </div>
+        <div class="login-form-row">
+            <label for="password">@L("Password")</label>
+            <input type="password" id="password" name="Password" placeholder="@L("Password")">
+        </div>
+        <div class="login-form-row">
+            <label class="checkbox">
+                <input type="checkbox" id="rememberMe" name="RememberMe" value="true">
+                <span></span>
+                @L("RememberMe")
+            </label>
+        </div>
+        <button type="submit" class="login-form-button">@L("LogIn")</button>
+    </form>
+    <span style="font-size: 0.8em;font-style:italic"> v@(AppVersionHelper.Version) [@AppVersionHelper.ReleaseDate.ToString("yyyyMMdd")]</span>
+</div>

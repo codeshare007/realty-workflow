@@ -1,0 +1,66 @@
+<div [@routerTransition] (window:resize)="onResize($event)">
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="'Maintenance' | localize">
+        </sub-header>
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <tabset>
+                        <tab heading=" {{'Caches' | localize}}">
+                            <div class="row m-3">
+                                <div class="col-xl-6">
+                                    <p>{{"CachesHeaderInfo" | localize}}</p>
+                                </div>
+                                <div class="col-xl-6 text-right">
+                                    <button class="btn btn-primary" (click)="clearAllCaches()"><i
+                                            class="fa fa-recycle"></i>
+                                        {{"ClearAll" | localize}}</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <table class="table table-striped table-hover table-bordered">
+                                        <tbody>
+                                            <tr *ngFor="let cache of caches">
+                                                <td>
+                                                    <span>{{cache.name}}</span>
+                                                    <button class="btn btn-primary btn-sm pull-right"
+                                                        (click)="clearCache(cache.name);">
+                                                        {{"Clear" | localize}}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab heading="{{'WebSiteLogs' | localize}}">
+                            <div class="row m-3">
+                                <div class="col-xl-6">
+                                    <p>{{"WebSiteLogsHeaderInfo" | localize}}</p>
+                                </div>
+                                <div class="col-xl-6 text-right">
+                                    <button class="btn btn-secondary" (click)="downloadWebLogs()"><i
+                                            class="fa fa-download"></i> {{"DownloadAll" | localize}}</button>
+                                    <button class="btn btn-primary" (click)="getWebLogs()"><i class="fa fa-sync"></i>
+                                        {{"Refresh" | localize}}</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="web-log-view full-height">
+                                        <span class="log-line" *ngFor="let log of logs">
+                                            <span [class]="getLogClass(log)">{{getLogType(log)}}</span>
+                                            {{getRawLogContent(log)}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

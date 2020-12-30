@@ -1,0 +1,27 @@
+subscription-notification-bar,
+active-delegated-users-combo,
+quick-theme-selection,
+language-switch-dropdown,
+header-notifications,
+chat-toggle-button,
+user-menu{
+    display: flex;
+}
+
+#notificationIcon,
+#chatIconUnRead{
+    position: relative;
+}
+
+.theme-selection-link {
+    cursor: pointer;
+}
+
+.dropdown-language .navi-link i.famfamfam-flags {
+    display: inline-block;
+}
+
+
+header-notifications .dropdown-menu{
+    max-width: 400px;
+}

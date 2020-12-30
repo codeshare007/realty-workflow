@@ -1,0 +1,199 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Looped_Template_Here}}",
+			"condition" : "{{Property_Listed_Here}} == true",
+			"templates" : [
+					{
+					"type" : "enum",
+					"content" : "
+					<p-column field=\"{{entity_Name_Here}}.{{property_Name_Here}}\" header=\"{{l('{{Property_Name_Here}}')}}\" [sortable]=\"true\">
+						<ng-template let-record=\"rowData\" pTemplate=\"body\">
+							{{l('Enum_{{Property_Type_Here}}' + {{property_Type_Here}}[record.{{entity_Name_Here}}.{{property_Name_Here}}])}}
+						</ng-template>
+					</p-column>
+"
+					},
+					{
+					"type" : "bool",
+					"content" : "
+					<p-column field=\"{{entity_Name_Here}}.{{property_Name_Here}}\" header=\"{{l('{{Property_Name_Here}}')}}\" [sortable]=\"true\">
+						<ng-template let-record=\"rowData\" pTemplate=\"body\">
+							<div *ngIf=\"record.{{entity_Name_Here}}.{{property_Name_Here}}\" class=\"text-center\"><i class=\"fa fa-check-circle m--font-success\" title=\"True\"></i></div>
+							<div *ngIf=\"!record.{{entity_Name_Here}}.{{property_Name_Here}}\" class=\"text-center\"><i class=\"fa fa-times-circle\" title=\"False\"></i></div>
+						</ng-template>
+					</p-column>
+"
+					},
+					{
+					"type" : "DateTime",
+					"content" : "
+					<p-column field=\"{{entity_Name_Here}}.{{property_Name_Here}}\" header=\"{{l('{{Property_Name_Here}}')}}\" [sortable]=\"true\">
+						<ng-template let-record=\"rowData\" pTemplate=\"body\">
+							<span *ngIf=\"record.{{entity_Name_Here}}.{{property_Name_Here}}\">
+								{{record.{{entity_Name_Here}}.{{property_Name_Here}} | momentFormat:\'L\'}}
+							</span>
+						</ng-template>
+					</p-column>
+"
+					},
+					{
+					"type" : "default",
+					"content" : "
+					<p-column field=\"{{entity_Name_Here}}.{{property_Name_Here}}\" header=\"{{l('{{Property_Name_Here}}')}}\" [sortable]=\"true\"></p-column> 
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Property_Filter_Template_Here}}",
+			"condition" : "{{Property_Advanced_Filter_Here}} == true",
+			"templates" : [
+					{
+					"type" : "enum",
+					"content" : "
+							<div class=\"col-md-3\">
+								<label for=\"{{Property_Name_Here}}FilterSelect\">{{l(\"{{Property_Name_Here}}\")}}</label>
+								<select class=\"form-control\" name=\"{{Property_Name_Here}}Filter\" id=\"{{Property_Name_Here}}FilterSelect\" [(ngModel)]=\"{{property_Name_Here}}Filter\">
+								<option value=\"-1\">{{l(\"All\")}}</option>
+									{{Enum_Option_Looped_Template_Here}}
+								</select>
+                            </div>"
+					},
+					{
+					"type" : "bool",
+					"content" : "	
+							<div class=\"col-md-3\">
+								<label for=\"{{Property_Name_Here}}FilterSelect\">{{l(\"{{Property_Name_Here}}\")}}</label>
+								<select class=\"form-control\" name=\"{{Property_Name_Here}}Filter\" id=\"{{Property_Name_Here}}FilterSelect\" [(ngModel)]=\"{{property_Name_Here}}Filter\">
+								<option value=\"-1\">{{l(\"All\")}}</option>
+								<option value=\"0\">{{l(\"False\")}}</option>
+								<option value=\"1\">{{l(\"True\")}}</option>
+								</select>
+                            </div>"
+					},
+					{
+					"type" : "DateTime",
+					"content" : "
+                            <div class=\"col-md-3\">
+                                <div class=\"form-group\">
+									<label for=\"Min{{Property_Name_Here}}Filter\">{{l(\"MinMax\")}} {{l(\"{{Property_Name_Here}}\")}}</label>
+									<div class=\"input-group\">
+                                        <input class=\"form-control m-input\" id=\"Min{{Property_Name_Here}}Filter\" type=\"datetime\" datePicker  placeholder=\"{{l('MinValue')}}\" [(selectedDate)]=\"min{{Property_Name_Here}}Filter\">
+                                        <input class=\"form-control m-input\" type=\"datetime\" datePicker  placeholder=\"{{l('MaxValue')}}\" [(selectedDate)]=\"max{{Property_Name_Here}}Filter\">
+									</div>
+                                </div>
+                            </div>"
+					},
+					{
+					"type" : "numeric",
+					"content" : "
+                            <div class=\"col-md-3\">
+                                <div class=\"form-group\">
+									<label for=\"Min{{Property_Name_Here}}Filter\">{{l(\"MinMax\")}} {{l(\"{{Property_Name_Here}}\")}}</label>
+									<div class=\"input-group\">
+                                        <input type=\"number\" id=\"Min{{Property_Name_Here}}Filter\" class=\"form-control\" [(ngModel)]=\"min{{Property_Name_Here}}Filter\" placeholder=\"{{l('MinValue')}}\" name=\"min{{Property_Name_Here}}Filter\" />
+                                        <input type=\"number\" class=\"form-control\" [(ngModel)]=\"max{{Property_Name_Here}}Filter\" placeholder=\"{{l('MaxValue')}}\" name=\"max{{Property_Name_Here}}Filter\" />
+									</div>
+                                </div>
+                            </div>"
+					},
+					{
+					"type" : "default",
+					"content" : "
+							<div class=\"col-md-3\">
+								<div class=\"form-group\">
+									<label for=\"{{Property_Name_Here}}Filter\">{{l(\"{{Property_Name_Here}}\")}}</label>
+									<input type=\"text\" id=\"{{Property_Name_Here}}Filter\" class=\"form-control\" name=\"{{property_Name_Here}}Filter\" [(ngModel)]=\"{{property_Name_Here}}Filter\">
+								</div>
+                            </div>"
+					}
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "
+					<p-column field=\"{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}\" header=\"{{l('{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}')}}\" [sortable]=\"true\"></p-column>
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Filter_Template_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "
+							<div class=\"col-md-3\">
+								<div class=\"form-group\">
+									<label for=\"{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}Filter\">({{l(\"{{NP_Foreign_Entity_Name_Here}}{{NP_Duplication_Number_Here}}\")}}) {{l(\"{{NP_Display_Property_Name_Here}}\")}}</label>
+									<input type=\"text\" class=\"form-control\" id=\"{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}Filter\" name=\"{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}Filter\" [(ngModel)]=\"{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}Filter\">
+								</div>
+                            </div>"
+					}
+				]
+		}
+	],
+"enumTemplates":[
+		{
+			"placeholder" : "{{Enum_Option_Looped_Template_Here}}",
+			"content" : "										<option value=\"{{Enum_Property_Value_Here}}\">{{l(\'Enum_{{Enum_Name_Here}}_{{Enum_Property_Value_Here}}\')}}</option>
+"
+		}
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{View_Button_Here}}",
+			"condition": "{{Create_View_Only_Here}} == true && {{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "										    <li>
+                                                <a 
+                                                   (click)=\"view{{Entity_Name_Here}}Modal.show(record)\">{{l('View')}}</a>
+                                            </li>"
+		},
+		{
+			"placeholder": "{{View_Button_Here}}",
+			"condition": "{{Create_View_Only_Here}} == true && {{Is_Non_Modal_CRUD_Page}} == true",
+			"content": "										    <li>
+                                                <a *ngIf=\"permission.isGranted('{{Permission_Value_Here}}.Edit')\"
+			[routerLink]=\"['/app/{{menu_Position_Here}}/{{namespace_Relative_Here}}/{{entity_Name_Plural_Here}}/view']\" [queryParams]=\"{id: record.{{entity_Name_Here}}.id}\">
+  {{l('View')}}	
+</a>
+                                            </li>"
+		},
+		{
+			"placeholder": "{{View_Modal_Tag_Here}}",
+			"condition": "{{Create_View_Only_Here}} == true && {{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "<view{{Entity_Name_Here}}Modal #view{{Entity_Name_Here}}Modal></view{{Entity_Name_Here}}Modal>"
+		},
+		{
+			"placeholder": "{{Get_Excel_Button_Here}}",
+			"condition": "{{Create_Excel_Export_Here}} == true",
+			"content": "<button (click)=\"exportToExcel()\" class=\"btn btn-outline-success\"><i class=\"far fa-file-excel\"></i> {{l(\"ExportToExcel\")}}</button>
+                "
+		},
+		{
+			"placeholder": "{{Edit_Button_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "<a *ngIf=\"permission.isGranted('{{Permission_Value_Here}}.Edit')\"
+                                                   (click)=\"createOrEdit{{Entity_Name_Here}}Modal.show(record.{{entity_Name_Here}}.id)\">{{l('Edit')}}</a>"
+		},
+		{
+			"placeholder": "{{Edit_Button_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == true",
+			"content": " <a *ngIf=\"permission.isGranted('{{Permission_Value_Here}}.Edit')\"
+			[routerLink]=\"['/app/{{menu_Position_Here}}/{{namespace_Relative_Here}}/{{entity_Name_Plural_Here}}/createOrEdit']\" [queryParams]=\"{id: record.{{entity_Name_Here}}.id}\">
+  {{l('Edit')}}	
+</a>"
+		},
+		{
+			"placeholder": "{{Create_Or_Edit_Modal_Tag_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "<createOrEdit{{Entity_Name_Here}}Modal #createOrEdit{{Entity_Name_Here}}Modal (modalSave)=\"get{{Entity_Name_Plural_Here}}()\"></createOrEdit{{Entity_Name_Here}}Modal>"
+		}
+	]
+}

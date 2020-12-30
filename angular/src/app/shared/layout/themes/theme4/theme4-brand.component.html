@@ -1,0 +1,4 @@
+<a routerLink="/" target="_blank">
+    <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" src="/assets/common/images/app-logo-on-dark-sm.svg" alt="logo" height="38" class="max-h-30px" />
+    <img *ngIf="appSession.tenant && appSession.tenant.logoId" [src]="remoteServiceBaseUrl + '/TenantCustomization/GetTenantLogo?skin=' + currentTheme.baseSettings.menu.asideSkin + '&tenantId=' + appSession.tenant.id + '&id=' + appSession.tenant.logoId" alt="logo" height="38" class="max-h-30px" />
+</a>

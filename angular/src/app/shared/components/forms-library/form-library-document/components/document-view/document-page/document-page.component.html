@@ -1,0 +1,19 @@
+<div>
+    <div class="document-page__wrapper">
+        <div [ngStyle]="urlPage"
+             #urlPageRef
+             class="document-page__url"
+             (mousemove)="onMouseEvent($event, statusPage.Allowed)">
+            <div *ngFor="let control of page.controls; let i = index"
+                 #libraryControl
+                 class="document-page__item">
+                <page-control [control]="control"
+                              [index]="i"
+                              [pageId]="page.id"
+                              [documentId]="documentId"
+                              (onControlActions)="onControlAction($event)">
+                </page-control>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<div appBsModal #editModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editModal"
+     aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #editionForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span>{{l("EditEdition")}}: {{edition.edition.displayName}}</span>
+                    </h5>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')" [disabled]="saving">
+                         <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <tabset>
+                        <tab heading="{{l('EditionProperties')}}" class="p-5">
+                            <div class="form-group">
+                                <label for="EditionDisplayName">{{l("EditionName")}} *</label>
+                                <input id="EditionDisplayName" #editionNameInput="ngModel" class="form-control" type="text" name="EditionDisplayName" [ngClass]="edition.edition.displayName" [(ngModel)]="edition.edition.displayName" required maxlength="64">
+                                <validation-messages [formCtrl]="editionNameInput"></validation-messages>
+                            </div>
+                        </tab>
+                        <tab heading="{{l('Features')}}" class="p-5">
+                            <feature-tree #featureTree></feature-tree>
+                        </tab>
+                    </tabset>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!editionForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

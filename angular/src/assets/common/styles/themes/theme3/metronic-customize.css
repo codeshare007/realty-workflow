@@ -1,0 +1,28 @@
+.unread-notification-count {
+    position: absolute;
+    top: 5px;
+    left: 23px;
+}
+
+.unread-chat-message-count {
+    position: absolute;
+    top: -6px;
+    left: 13px;
+}
+
+p-autoComplete {
+    padding: 10px;
+}
+
+.menuSearchBarContainer {
+    width: calc(100% - 20px);
+}
+
+.dropdown-language .dropdown-menu {
+    left: 0px !important;
+}
+
+header-notifications .dropdown-menu {
+    left: 0px !important;
+    min-width: 300px;
+}

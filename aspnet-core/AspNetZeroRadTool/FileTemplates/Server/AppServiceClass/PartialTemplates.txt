@@ -1,0 +1,373 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Enum_Variable_Here}}",
+			"condition" : "{{Property_Advanced_Filter_Here}} == true",
+			"templates" : [
+					{
+					"type" : "enum",
+					"content" : "var {{property_Name_Here}}Filter = input.{{Property_Name_Here}}Filter.HasValue
+                        ? ({{Property_Type_Here}}) input.{{Property_Name_Here}}Filter
+                        : default;			
+					"
+					}
+				] 
+		},
+		{
+			"placeholder" : "{{Property_Query_Filter_Here}}",
+			"condition" : "{{Property_Advanced_Filter_Here}} == true",
+			"templates" : [
+					{
+					"type" : "DateTime",
+					"content" : "
+						.WhereIf(input.Min{{Property_Name_Here}}Filter != null, e => e.{{Property_Name_Here}} >= input.Min{{Property_Name_Here}}Filter)
+						.WhereIf(input.Max{{Property_Name_Here}}Filter != null, e => e.{{Property_Name_Here}} <= input.Max{{Property_Name_Here}}Filter)"
+					},
+					{
+					"type" : "numeric",
+					"content" : "
+						.WhereIf(input.Min{{Property_Name_Here}}Filter != null, e => e.{{Property_Name_Here}} >= input.Min{{Property_Name_Here}}Filter)
+						.WhereIf(input.Max{{Property_Name_Here}}Filter != null, e => e.{{Property_Name_Here}} <= input.Max{{Property_Name_Here}}Filter)"
+					},
+					{
+					"type" : "enum",
+					"content" : "
+						.WhereIf(input.{{Property_Name_Here}}Filter.HasValue && input.{{Property_Name_Here}}Filter > -1, e => e.{{Property_Name_Here}} == {{property_Name_Here}}Filter)"
+					},
+					{
+					"type" : "string",
+					"content" : "
+						.WhereIf(!string.IsNullOrWhiteSpace(input.{{Property_Name_Here}}Filter),  e => e.{{Property_Name_Here}} == input.{{Property_Name_Here}}Filter)"
+					},
+					{
+					"type" : "bool",
+					"content" : "
+						.WhereIf(input.{{Property_Name_Here}}Filter.HasValue && input.{{Property_Name_Here}}Filter > -1,  e => (input.{{Property_Name_Here}}Filter == 1 && e.{{Property_Name_Here}}) || (input.{{Property_Name_Here}}Filter == 0 && !e.{{Property_Name_Here}}) )"
+					},
+					{
+					"type" : "default",
+					"content" : "
+						.WhereIf(!string.IsNullOrWhiteSpace(input.{{Property_Name_Here}}Filter.ToString()),  e => e.{{Property_Name_Here}}.ToString() == input.{{Property_Name_Here}}Filter.ToString())"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Property_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"type" : "string",
+					"content" : " || e.{{Property_Name_Here}}.Contains(input.Filter)"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Property_Manuel_Mapping_Here}}",
+			"condition" : "{{Property_Listed_Here}} == true",
+			"templates" : [
+					{
+					"type" : "default",
+					"content" : "
+                                {{Property_Name_Here}} = o.{{Property_Name_Here}},"
+					}
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Loop_Include_In_GetList_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"preventDuplicate" : true,
+					"content" : "
+						.Include( e => e.{{NP_Object_Name_Here}}Fk)"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Query_Filter_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"preventDuplicate" : true,
+					"content" : "
+						.WhereIf(!string.IsNullOrWhiteSpace(input.{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}Filter), e => e.{{NP_Object_Name_Here}}Fk != null && e.{{NP_Object_Name_Here}}Fk.{{NP_Display_Property_Name_Here}} == input.{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}Filter)"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_Declaration_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"preventDuplicate" : true,
+					"content" : "private readonly IRepository<{{NP_Foreign_Entity_Name_Here}},{{NP_Id_Type_Here}}> _lookup_{{nP_Foreign_Entity_Name_Here}}Repository;
+		 "
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_Ctor_Parameter_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"preventDuplicate" : true,
+					"content" : ", IRepository<{{NP_Foreign_Entity_Name_Here}}, {{NP_Id_Type_Here}}> lookup_{{nP_Foreign_Entity_Name_Here}}Repository"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_Ctor_Initialize_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"preventDuplicate" : true,
+					"content" : "_lookup_{{nP_Foreign_Entity_Name_Here}}Repository = lookup_{{nP_Foreign_Entity_Name_Here}}Repository;
+		"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_Query_Join_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "
+                         join o{{Loop_Index}} in _lookup_{{nP_Foreign_Entity_Name_Here}}Repository.GetAll() on o.{{NP_Name_Here}} equals o{{Loop_Index}}.Id into j{{Loop_Index}}
+                         from s{{Loop_Index}} in j{{Loop_Index}}.DefaultIfEmpty()
+                         "
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_Map_Join_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : ",
+                         	{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} = s{{Loop_Index}} == null || s{{Loop_Index}}.{{NP_Display_Property_Name_Here}} == null ? \"\" : s{{Loop_Index}}.{{NP_Display_Property_Name_Here}}.ToString()"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Loop_Include_In_Get_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "
+
+		    if (output.{{Entity_Name_Here}}.{{NP_Name_Here}} != null)
+            {
+                var _lookup{{NP_Foreign_Entity_Name_Here}} = await _lookup_{{nP_Foreign_Entity_Name_Here}}Repository.FirstOrDefaultAsync(({{NP_Id_Type_Here}})output.{{Entity_Name_Here}}.{{NP_Name_Here}});
+                output.{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}} = _lookup{{NP_Foreign_Entity_Name_Here}}?.{{NP_Display_Property_Name_Here}}?.ToString();
+            }"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Using_Looped_Template_Here}}",
+			"preventDuplicate":true,
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "using {{NP_Namespace_Here}};
+"
+					},
+					{
+					"relation" : "multi",
+					"content" : "using {{NP_Namespace_Here}};
+"
+					},
+					{
+					"relation" : "single",
+					"viewType": "Dropdown",						
+					"preventDuplicate":true,
+					"content" : "using {{NP_Namespace_Here}};
+					using System.Collections.Generic;
+"
+					},
+				]
+		},
+		{
+			"placeholder" : "{{NP_Looped_GetAllForLookupTable_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"preventDuplicate":true,
+					"viewType": "LookupTable",
+					"content" : "
+
+		[AbpAuthorize(AppPermissions.{{Permission_Name_Here}})]
+         public async Task<PagedResultDto<{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto>> GetAll{{NP_Foreign_Entity_Name_Here}}ForLookupTable(GetAllForLookupTableInput input)
+         {
+             var query = _lookup_{{nP_Foreign_Entity_Name_Here}}Repository.GetAll().WhereIf(
+                    !string.IsNullOrWhiteSpace(input.Filter),
+                   e=> e.{{NP_Display_Property_Name_Here}} != null && e.{{NP_Display_Property_Name_Here}}.Contains(input.Filter)
+                );
+
+            var totalCount = await query.CountAsync();
+
+            var {{nP_Foreign_Entity_Name_Here}}List = await query
+                .PageBy(input)
+                .ToListAsync();
+
+			var lookupTableDtoList = new List<{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto>();
+			foreach(var {{nP_Foreign_Entity_Name_Here}} in {{nP_Foreign_Entity_Name_Here}}List){
+				lookupTableDtoList.Add(new {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto
+				{
+					Id = {{nP_Foreign_Entity_Name_Here}}.Id{{NP_Id_Type_ToStringIfNeeded_Here}},
+					DisplayName = {{nP_Foreign_Entity_Name_Here}}.{{NP_Display_Property_Name_Here}}?.ToString()
+				});
+			}
+
+            return new PagedResultDto<{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto>(
+                totalCount,
+                lookupTableDtoList
+            );
+         }"
+					},
+					{
+						"relation" : "single",
+						"preventDuplicate":true,
+						"viewType": "Dropdown",					
+						"content" : "
+			[AbpAuthorize(AppPermissions.{{Permission_Name_Here}})]
+			public async Task<List<{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto>> GetAll{{NP_Foreign_Entity_Name_Here}}ForTableDropdown()
+			{
+				return await _lookup_{{nP_Foreign_Entity_Name_Here}}Repository.GetAll()
+					.Select({{nP_Foreign_Entity_Name_Here}} => new {{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableDto
+					{
+						Id = {{nP_Foreign_Entity_Name_Here}}.Id{{NP_Id_Type_ToStringIfNeeded_Here}},
+						DisplayName = {{nP_Foreign_Entity_Name_Here}} == null || {{nP_Foreign_Entity_Name_Here}}.{{NP_Display_Property_Name_Here}} == null ? \"\" : {{nP_Foreign_Entity_Name_Here}}.{{NP_Display_Property_Name_Here}}.ToString()
+					}).ToListAsync();
+			}
+							"
+					}
+				]
+		}		
+	],
+"enumTemplates":[
+		{
+			"placeholder" : "{{Enum_Using_Looped_Template_Here}}",
+			"preventDuplicate":true,
+			"content" : "using {{Enum_Namespace_Here}};
+"
+		}
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{Primary_Key_Inside_Tag_Here}}",
+			"condition": "{{Primary_Key_Here}} != 'int'",
+			"content": "<{{Primary_Key_Here}}>"
+		},
+		{
+			"placeholder": "{{Primary_Key_With_Comma_Here}}",
+			"condition": "{{Primary_Key_Here}} != 'int'",
+			"content": ", {{Primary_Key_Here}}"
+		},
+		{
+			"placeholder": "{{Set_Tenant_Id_Here}}",
+			"condition": "{{Is_Available_To_Host_Here}} != true && {{Is_Available_To_Tenant_Here}} == true",
+			"content": "
+			if (AbpSession.TenantId != null)
+			{
+				{{entity_Name_Here}}.TenantId = (int) AbpSession.TenantId;
+			}
+		"
+		},
+		{
+			"placeholder": "{{Set_Tenant_Id_Here}}",
+			"condition": "{{Is_Available_To_Host_Here}} == true && {{Is_Available_To_Tenant_Here}} == true",
+			"content": "
+			if (AbpSession.TenantId != null)
+			{
+				{{entity_Name_Here}}.TenantId = (int?) AbpSession.TenantId;
+			}
+		"
+		},
+		{
+			"placeholder": "{{Get_Excel_Method_Here}}",
+			"condition": "{{Create_Excel_Export_Here}} == true",
+			"content": "
+
+		public async Task<FileDto> Get{{Entity_Name_Plural_Here}}ToExcel(GetAll{{Entity_Name_Plural_Here}}ForExcelInput input)
+         {
+			{{Property_Enum_Variable_Here}}
+			var filtered{{Entity_Name_Plural_Here}} = _{{entity_Name_Here}}Repository.GetAll(){{NP_Loop_Include_In_GetList_Here}}
+						.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false {{Property_Looped_Template_Here}}){{Property_Query_Filter_Here}}{{NP_Query_Filter_Here}};
+
+			var query = (from o in filtered{{Entity_Name_Plural_Here}}{{NP_Looped_Query_Join_Here}}
+                         select new Get{{Entity_Name_Here}}ForViewDto() { 
+							{{Entity_Name_Here}} = new {{Entity_Name_Here}}Dto
+							{{{Property_Manuel_Mapping_Here}}
+                                Id = o.Id
+							}{{NP_Looped_Map_Join_Here}}
+						 });
+
+
+            var {{entity_Name_Here}}ListDtos = await query.ToListAsync();
+
+            return _{{entity_Name_Plural_Here}}ExcelExporter.ExportToFile({{entity_Name_Here}}ListDtos);
+         }
+
+"
+		},
+		{
+			"placeholder": "{{Excel_Constructor_Parameter_Here}}",
+			"condition": "{{Create_Excel_Export_Here}} == true",
+			"content": ", I{{Entity_Name_Plural_Here}}ExcelExporter {{entity_Name_Plural_Here}}ExcelExporter"
+		},
+		{
+			"placeholder": "{{Excel_Constructor_Init_Here}}",
+			"condition": "{{Create_Excel_Export_Here}} == true",
+			"content": "
+			_{{entity_Name_Plural_Here}}ExcelExporter = {{entity_Name_Plural_Here}}ExcelExporter;"
+		},
+		{
+			"placeholder": "{{Excel_Declaration_Here}}",
+			"condition": "{{Create_Excel_Export_Here}} == true",
+			"content": "
+		 private readonly I{{Entity_Name_Plural_Here}}ExcelExporter _{{entity_Name_Plural_Here}}ExcelExporter;"
+		},
+		{
+			"placeholder": "{{Excel_Using_Statement_Here}}",
+			"condition": "{{Create_Excel_Export_Here}} == true",
+			"content": "
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Exporting;"
+		},
+		{
+			"placeholder": "{{Id_Null_Check_Here}}",
+			"condition": "{{Primary_Key_Here}} != 'string'",
+			"content": "input.Id == null"
+		},
+		{
+			"placeholder": "{{Id_Null_Check_Here}}",
+			"condition": "{{Primary_Key_Here}} == 'string'",
+			"content": "input.Id.IsNullOrWhiteSpace()"
+		},
+		{
+			"placeholder": "{{Set_String_Id_Here}}",
+			"condition": "{{Primary_Key_Here}} == 'string'",
+			"content": "
+
+             if ({{entity_Name_Here}}.Id.IsNullOrWhiteSpace())
+             {
+                 {{entity_Name_Here}}.Id = Guid.NewGuid().ToString();
+             }"
+		},
+		{
+			"placeholder": "{{GetForView_Method_Here}}",
+			"condition": "{{Create_View_Only_Here}} == true",
+			"content": "
+		 
+		 public async Task<Get{{Entity_Name_Here}}ForViewDto> Get{{Entity_Name_Here}}ForView({{Primary_Key_Here}} id)
+         {
+            var {{entity_Name_Here}} = await _{{entity_Name_Here}}Repository.GetAsync(id);
+
+            var output = new Get{{Entity_Name_Here}}ForViewDto { {{Entity_Name_Here}} = ObjectMapper.Map<{{Entity_Name_Here}}Dto>({{entity_Name_Here}}) };{{NP_Loop_Include_In_Get_Here}}
+			
+            return output;
+         }"
+		}
+	]
+}

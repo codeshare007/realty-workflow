@@ -1,0 +1,64 @@
+<div id="kt_header_mobile" class="header-mobile ">
+    <a routerLink="/" target="_blank">
+        <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" [src]="defaultLogo" alt="logo" height="28" />
+        <img *ngIf="appSession.tenant && appSession.tenant.logoId"
+            [src]="remoteServiceBaseUrl + '/TenantCustomization/GetTenantLogo?skin=' + currentTheme.baseSettings.menu.asideSkin + '&tenantId=' + appSession.tenant.id + '&id=' + appSession.tenant.logoId"
+            alt="logo" height="38" />
+    </a>
+    <div class="d-flex align-items-center">
+        <button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+            <span></span>
+        </button>
+    </div>
+</div>
+<div [@routerTransition] class="d-flex flex-column flex-root">
+    <div class="d-flex flex-row flex-column-fluid page">
+        <div class="aside aside-left d-flex aside-fixed" id="kt_aside" ktOffcanvas [options]="menuCanvasOptions">
+            <div class="aside-primary d-flex flex-column align-items-center flex-row-auto">
+                <div class="aside-brand d-flex flex-column align-items-center flex-column-auto py-5 py-lg-12"
+                    style="height: calc(100vh - 350px);">
+                    <theme3-brand></theme3-brand>
+                    <div class="aside-nav d-flex flex-column align-items-center flex-column-fluid py-5">
+                    </div>
+                </div>
+                <div class="aside-footer d-flex flex-column align-items-center flex-column-auto py-4 py-lg-10">
+                    <active-delegated-users-combo
+                        [customStyle]="'btn btn-icon btn-clean btn-lg mb-1 position-relative'">
+                    </active-delegated-users-combo>
+                    <quick-theme-selection [customStyle]="'btn btn-icon btn-clean btn-lg mb-1 position-relative'">
+                    </quick-theme-selection>
+                    <language-switch-dropdown [customStyle]="'btn btn-icon btn-clean btn-lg mb-1 position-relative'" [isDropup]="true">
+                    </language-switch-dropdown>
+                    <header-notifications [customStyle]="'btn btn-icon btn-clean btn-lg mb-1 position-relative'" [isDropup]="true">
+                    </header-notifications>
+                    <chat-toggle-button [customStyle]="'btn btn-icon btn-clean btn-lg mb-1 position-relative'">
+                    </chat-toggle-button>
+                    <user-menu [iconOnly]="true"
+                        [togglerCssClass]="'btn btn-icon btn-clean btn-lg mb-1 position-relative'"></user-menu>
+                    <span class="aside-toggle btn btn-icon btn-primary btn-hover-primary shadow-sm" id="kt_aside_toggle"
+                        data-toggle="tooltip" data-placement="right" data-container="body" data-boundary="window"
+                        title="" data-original-title="Toggle Aside">
+                        <i class="ki ki-bold-arrow-back icon-sm"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="aside-secondary d-flex flex-row-fluid">
+                <div class="aside-workspace scroll scroll-push my-2">
+                    <div class="tab-pane p-3 px-lg-7 py-lg-5 fade show active" id="kt_aside_tab_1">
+                        <side-bar-menu></side-bar-menu>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+        <div class="subscription-warning ml-5 mt-5 d-print-none" *ngIf="subscriptionStatusBarVisible()">
+            <subscription-notification-bar></subscription-notification-bar>
+        </div>
+
+        <div style="flex:1">
+            <router-outlet></router-outlet>
+        </div>
+        <footer-bar></footer-bar>
+    </div>
+</div>

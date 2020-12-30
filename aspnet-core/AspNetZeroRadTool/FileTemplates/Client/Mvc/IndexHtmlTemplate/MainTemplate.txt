@@ -1,0 +1,57 @@
+﻿@using {{Namespace_Here}}.Authorization
+@using {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Models.{{Entity_Name_Plural_Here}}
+@using {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Startup
+@model {{Entity_Name_Plural_Here}}ViewModel
+@{
+    ViewBag.CurrentPageName = {{App_Area_Name_Here}}PageNames.{{Page_Names_Sub_Class_Name_Here}}.{{Entity_Name_Plural_Here}};
+}
+@section Scripts
+{
+    <script abp-src="/view-resources/Areas/{{App_Area_Name_Here}}/Views/{{Entity_Name_Plural_Here}}/Index.js" asp-append-version="true"></script>
+}
+{{Content_Class_After_Metronic_V606}}
+{{Content_Class_After_Metronic_V90}}
+{{Page_Header}}
+<div class="{{Container_Class_Here}}{{Container_Class_V2_Here}}{{Container_Class_V3_Here}}">   
+    <div class="{{Portlet_Class_Here}}{{Card_Class_Here}}">
+        <div class="{{Portlet_Body_Class_Here}}{{Card_Body_Class_Here}}">
+            <div class="{{Form_Class_Here}}">
+                <div class="row align-items-center mb-4">
+                    <div class="col-xl-12">
+                        <div class="form-group align-items-center">
+                            <div class="input-group">
+                                <input type="text" id="{{Entity_Name_Plural_Here}}TableFilter" class="form-control m-input" placeholder="@L("SearchWithThreeDot")" value="@Model.FilterText">
+                                <span class="input-group-btn">
+                                    <button id="Get{{Entity_Name_Plural_Here}}Button" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+                <div id="AdvacedAuditFiltersArea" style="display: none" class="row mb-4">
+                    <div class="col-md-12">
+						<div class="kt-separator kt-separator--border-dashed"></div>
+					</div>
+{{Property_Filter_Template_Here}}{{NP_Filter_Template_Here}}
+                </div>
+                <div class="row mb-4">
+                    <div class="col-xl-12">
+                        <span id="ShowAdvancedFiltersSpan" class="text-muted clickable-item"><i class="fa fa-angle-down"></i> @L("ShowAdvancedFilters")</span>
+                        <span id="HideAdvancedFiltersSpan" class="text-muted clickable-item" style="display: none"><i class="fa fa-angle-up"></i> @L("HideAdvancedFilters")</span>
+                    </div>
+                </div>
+            <div class="row align-items-center">
+                <table id="{{Entity_Name_Plural_Here}}Table" class="display table table-striped table-bordered table-hover dt-responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>@L("Actions")</th>{{Property_Looped_Template_Here}}{{NP_Looped_Template_Here}}
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+  {{Div_After_Metronic_V606}}
+</div>

@@ -1,0 +1,228 @@
+<div id="kt_quick_sidebar" class="offcanvas offcanvas-right pt-5 pb-10">
+    <div class="quick-panel-actions">
+        <a href="javascript:;" id="kt_quick_sidebar_back"
+            class="btn btn-xs btn-icon btn-light btn-hover-primary quick-sidebar-back ml-2" style="float:left;"
+            (click)="quickSideBarBackClick()" [hidden]="!selectedUser.friendUserId">
+            <i class="fa fa-arrow-alt-circle-left" aria-label="l('Back')"></i>
+        </a>
+        <a href="javascript:;" class="btn btn-xs btn-icon btn-light btn-hover-primary page-quick-sidebar-pinner"
+            (click)="reversePinned()">
+            <i class="fa fa-map-pin" [ngClass]="{'fa-rotate-90':!pinned}" aria-label="l('Pin')"></i>
+        </a>
+        <a href="javascript:;" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_sidebar_close">
+            <i class="flaticon2-delete"></i>
+        </a>
+    </div>
+    <div class="flex-row-auto">
+        <div class="card card-custom" [hidden]="selectedUser.friendUserId">
+            <div class="card-body">
+                <div class="input-group input-group-solid">
+                    <input type="text" id="ChatUserSearchUserName" class="form-control input-sm"
+                        [(ngModel)]="userNameFilter" placeholder="{{'FilterOrAddUser' | localize}}">
+                    <div class="input-group-append">
+                        <i id="InterTenantChatHintIcon" class="la la-info-circle" data-toggle="popover"
+                            data-trigger="hover" data-html="true" [popover]="popTemplate"
+                            triggers="mouseenter:mouseleave"></i>
+                        <ng-template #popTemplate>
+                            <div [innerHtml]="chatUserSearchHint">
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+                <button id="SearchChatUserButton" type="button" *ngIf="userNameFilter.length" (click)="search()"
+                    class="btn btn-block btn-success">{{'AddFriend' | localize}}</button>
+                <div class="mt-7 scroll scroll-pull chat-users">
+                    <div id="friendListFriends"
+                        *ngFor="let friend of getFilteredFriends(friendDtoState.Accepted, userNameFilter)">
+                        <chat-friend-list-item [friend]="friend" (selectChatFriend)="selectFriend(friend)">
+                        </chat-friend-list-item>
+                    </div>
+                    <p id="EmptyFriendListInfo" *ngIf="getFilteredFriendsCount(friendDtoState.Accepted) == 0">
+                        {{'YouDontHaveAnyFriend' | localize}}</p>
+                </div>
+                <div class="mt-20">
+                    <h5>{{"BlockedUsers" | localize}}</h5>
+                    <div id="friendListBlockeds">
+                        <div *ngFor="let friend of getFilteredFriends(friendDtoState.Blocked, userNameFilter)">
+                            <chat-friend-list-item [friend]="friend" (selectChatFriend)="selectFriend(friend)">
+                            </chat-friend-list-item>
+                        </div>
+                        <p id="EmptyBlockedFriendListInfo"
+                            *ngIf="getFilteredFriendsCount(friendDtoState.Blocked) == 0">
+                            {{"YouDontHaveAnyBlockedFriend" | localize}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="kt_chat_content" class="flex-row-fluid" [hidden]="!selectedUser.friendUserId"
+            (window:resize)="onWindowResize($event)">
+            <div class="card card-custom">
+                <!--begin::Header-->
+                <div class="card-header align-items-center px-4 py-3">
+                    <div class="text-left flex-grow-1">
+                    </div>
+                    <div class="text-center flex-grow-1">
+                        <div class="text-dark-75 font-weight-bold font-size-h5" id="selectedChatUserName">
+                            {{getShownUserName(selectedUser.friendTenancyName,selectedUser.friendUserName)}}
+                        </div>
+                        <div id="selectedChatUserStatus">
+                            <span class="label label-dot mr-1"
+                                [ngClass]="{'label-success': selectedUser.isOnline, 'label-secondary':!selectedUser.isOnline}"></span>
+                            <span class="font-weight-bold text-muted font-size-sm"
+                                *ngIf="selectedUser.isOnline">{{'Online' | localize}}</span>
+                            <span class="font-weight-bold text-muted font-size-sm"
+                                *ngIf="!selectedUser.isOnline">{{'Offline' | localize}}</span>
+                        </div>
+                    </div>
+                    <div class="text-right flex-grow-1">
+                        <div class="dropdown dropdown-inline" dropdown>
+                            <button dropdownToggle type="button" class="btn btn-clean btn-sm btn-icon btn-icon-md"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="flaticon-more-1"></i>
+                            </button>
+                            <div *dropdownMenu class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-md">
+                                <ul class="navi navi-hover py-5">
+                                    <li id="liBanChatUser" class="navi-item"
+                                        *ngIf="selectedUser.state !== friendDtoState.Blocked">
+                                        <a href="javascript:;" class="navi-link" (click)="block(selectedUser)">
+                                            <span class="navi-icon">
+                                                <i class="fa fa-ban"></i>
+                                            </span>
+                                            <span class="navi-text">{{"BlockUser" | localize}}</span>
+                                        </a>
+                                    </li>
+                                    <li id="liUnbanChatUser" class="navi-item"
+                                        *ngIf="selectedUser.state === friendDtoState.Blocked">
+                                        <a href="javascript:;" class="navi-link" (click)="unblock(selectedUser)">
+                                            <span class="navi-icon">
+                                                <i class="fa fa-check"></i>
+                                            </span>
+                                            <span class="navi-text">{{"UnblockUser" | localize}}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Header-->
+
+                <!--begin::Body-->
+                <div class="card-body">
+                    <perfect-scrollbar #chatScrollBar [config]="{suppressScrollX:true}"
+                        (psYReachStart)="loadPreviousMesssagesOfSelectedUser()" style="height: 78vh;">
+                        <!--begin::Scroll-->
+                        <div class="scroll scroll-pull">
+                            <!--begin::Messages-->
+                            <div class="messages" id="UserChatMessages" *ngFor="let message of selectedUser.messages">
+                                <div *ngIf="message.side === 1" class="d-flex flex-column mb-5 align-items-start">
+                                    <div class="d-flex align-items-center">
+                                        <div class="symbol symbol-circle symbol-40 mr-3">
+                                            <img src="{{profilePicture}}" alt="image">
+                                        </div>
+                                        <div>
+                                            <a href="#"
+                                                class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">{{currentUser.userName}}</a>
+                                            <time
+                                                class="text-muted font-size-sm timeago">{{ getFixedMessageTime(message.creationTime) | momentFromNow }}</time>
+                                            {{message.readStateCheck}}
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="mt-2 rounded p-5 bg-light-success text-dark-50 font-weight-bold font-size-lg text-left w-100">
+                                        <chat-message [message]="message"></chat-message>
+                                    </div>
+                                </div>
+                                <div *ngIf="message.side !== 1" class="d-flex flex-column mb-5 align-items-end">
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <time
+                                                class="text-muted font-size-sm timeago">{{ getFixedMessageTime(message.creationTime) | momentFromNow }}</time>
+                                            {{message.readStateCheck}}
+                                            <a href="#"
+                                                class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">{{selectedUser.friendUserName}}</a>
+                                        </div>
+                                        <div class="symbol symbol-circle symbol-40 ml-3">
+                                            <friend-profile-picture class="symbol symbol-circle symbol-40 ml-3"
+                                                [userId]="selectedUser.friendUserId"
+                                                [tenantId]="selectedUser.friendTenantId"></friend-profile-picture>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="mt-2 rounded p-5 bg-light-primary text-dark-50 font-weight-bold font-size-lg text-right max-w-100">
+                                        <chat-message [message]="message"></chat-message>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Messages-->
+                        </div>
+                    </perfect-scrollbar>
+                    <!--end::Scroll-->
+                </div>
+                <!--end::Body-->
+
+                <!--begin::Footer-->
+                <div class="card-footer align-items-center">
+                    <!--begin::Compose-->
+                    <form name="chatMessageForm" id="chatMessageForm" role="form">
+                        <div id="files" class="files"></div>
+                        <div class="col-md-12" style="margin: 5px; padding-right: 25px;"
+                            *ngIf="selectedUser.state === friendDtoState.Blocked">
+                            <button id="UnblockUserButton" type="button" (click)="unblock(selectedUser)"
+                                class="btn btn-block btn-success">{{"UnblockUser" | localize}}</button>
+                        </div>
+
+                        <div class="col-md-12 chat-progress-bar" *ngIf="progress > 0">
+                            <div id="chatFileUploadProgress" class="progress">
+                                <div class="progress-bar progress-bar-success"></div>
+                            </div>
+                        </div>
+                        <textarea id="ChatMessage" #ChatMessage name="message" class="form-control border-0 p-0"
+                            rows="2" placeholder="{{'TypeAMessageHere' | localize}}" [(ngModel)]="chatMessage"
+                            (keydown.Enter)="sendMessage($event)"
+                            [disabled]="selectedUser.state == friendDtoState.Blocked" maxlength="4096"
+                            required></textarea>
+                        <div class="d-flex align-items-center justify-content-between mt-5">
+                            <div class="mr-3">
+                                <a href="javascript:;" class="btn btn-clean btn-icon btn-md mr-1">
+                                    <span class="fileinput-button">
+                                        <p-fileUpload customUpload="true" (uploadHandler)="uploadImage($event)"
+                                            id="chatImageUpload" #chatImageUpload name="ChatImageUpload"
+                                            maxFileSize="10000000" auto="auto" accept="image/*"
+                                            (onBeforeSend)="onBeforeSend($event)"
+                                            chooseIcon="flaticon2-photo-camera icon-lg" chooseLabel=" ">
+                                        </p-fileUpload>
+                                    </span>
+                                </a>
+                                <a href="javascript:;" class="btn btn-clean btn-icon btn-md mr-1">
+                                    <span class="fileinput-button">
+                                        <p-fileUpload customUpload="true" (uploadHandler)="uploadFile($event)"
+                                            id="chatFileUpload" #chatFileUpload name="ChatFileUpload" [url]="uploadUrl"
+                                            maxFileSize="10000000" auto="auto" (onBeforeSend)="onBeforeSend($event)"
+                                            chooseIcon="flaticon2-file-1 icon-lg" chooseLabel=" ">
+                                        </p-fileUpload>
+                                    </span>
+                                </a>
+                                <a href="javascript:;" id="btnLinkShare" class="btn btn-clean btn-icon btn-md">
+                                    <button pButton type="button" class="ui-fileupload-choose"
+                                        icon="flaticon2-website icon-lg"
+                                        (click)="shareCurrentLink()">
+                                    </button>
+                                </a>
+                            </div>
+                            <div>
+                                <button type="button"
+                                    class="btn btn-primary btn-md text-uppercase font-weight-bold chat-send py-2 px-6"
+                                    (click)="sendMessage($event)" id="SendChatMessageButton">
+                                    {{'Reply' | localize}}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <!--begin::Compose-->
+                </div>
+                <!--end::Footer-->
+            </div>
+        </div>
+    </div>
+</div>

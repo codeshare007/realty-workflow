@@ -1,0 +1,367 @@
+{
+  "styles": [
+    {
+      "output": "src/assets/metronic/themes/default/css/style.bundle.min.css",
+      "input": [
+        "src/assets/metronic/themes/default/css/style.bundle.css"
+      ]
+    },
+    {
+      "output": "src/assets/metronic/themes/default/css/style.bundle.rtl.min.css",
+      "input": [
+        "src/assets/metronic/themes/default/css/style.bundle.rtl.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/metronic/themes/theme2/css/style.bundle.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme2/css/style.bundle.css"
+      ]
+    },
+    {
+      "output": "src/assets/metronic/themes/theme2/css/style.bundle.rtl.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme2/css/style.bundle.rtl.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/metronic/themes/theme3/css/style.bundle.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme3/css/style.bundle.css"
+      ]
+    },
+    {
+      "output": "src/assets/metronic/themes/theme3/css/style.bundle.rtl.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme3/css/style.bundle.rtl.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/metronic/themes/theme4/css/style.bundle.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme4/css/style.bundle.css"
+      ]
+    },
+    {
+      "output": "src/assets/metronic/themes/theme4/css/style.bundle.rtl.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme4/css/style.bundle.rtl.css"
+      ]
+    },
+    
+    {
+      "output": "src/assets/metronic/themes/theme5/css/style.bundle.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme5/css/style.bundle.css"
+      ]
+    },
+    {
+      "output": "src/assets/metronic/themes/theme5/css/style.bundle.rtl.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme5/css/style.bundle.rtl.css"
+      ]
+    },
+    
+    {
+      "output": "src/assets/metronic/themes/theme6/css/style.bundle.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme6/css/style.bundle.css"
+      ]
+    },
+    {
+      "output": "src/assets/metronic/themes/theme6/css/style.bundle.rtl.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme6/css/style.bundle.rtl.css"
+      ]
+    },
+    
+    {
+      "output": "src/assets/metronic/themes/theme7/css/style.bundle.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme7/css/style.bundle.css"
+      ]
+    },
+    {
+      "output": "src/assets/metronic/themes/theme7/css/style.bundle.rtl.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme7/css/style.bundle.rtl.css"
+      ]
+    }, 
+
+    {
+      "output": "src/assets/metronic/themes/theme8/css/style.bundle.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme8/css/style.bundle.css"
+      ]
+    },
+    {
+      "output": "src/assets/metronic/themes/theme8/css/style.bundle.rtl.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme8/css/style.bundle.rtl.css"
+      ]
+    },
+     
+    {
+      "output": "src/assets/metronic/themes/theme9/css/style.bundle.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme9/css/style.bundle.css"
+      ]
+    },
+    {
+      "output": "src/assets/metronic/themes/theme9/css/style.bundle.rtl.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme9/css/style.bundle.rtl.css"
+      ]
+    },
+     
+    {
+      "output": "src/assets/metronic/themes/theme10/css/style.bundle.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme10/css/style.bundle.css"
+      ]
+    },
+    {
+      "output": "src/assets/metronic/themes/theme10/css/style.bundle.rtl.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme10/css/style.bundle.rtl.css"
+      ]
+    },
+     
+    {
+      "output": "src/assets/metronic/themes/theme11/css/style.bundle.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme11/css/style.bundle.css"
+      ]
+    },
+    {
+      "output": "src/assets/metronic/themes/theme11/css/style.bundle.rtl.min.css",
+      "input": [
+        "src/assets/metronic/themes/theme11/css/style.bundle.rtl.css"
+      ]
+    },
+    
+    {
+      "output": "src/assets/primeng/datatable/css/primeng.datatable.min.css",
+      "input": [
+        "src/assets/primeng/datatable/css/primeng.datatable.css"
+      ]
+    },
+    {
+      "output": "src/assets/primeng/datatable/css/primeng.datatable-rtl.min.css",
+      "input": [
+        "src/assets/primeng/datatable/css/primeng.datatable-rtl.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/common/styles/metronic-customize.min.css",
+      "input": [
+        "src/assets/common/styles/metronic-customize.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/common/styles/metronic-customize-angular.min.css",
+      "input": [
+        "src/assets/common/styles/metronic-customize-angular.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/common/styles/themes/default/metronic-customize.min.css",
+      "input": [
+        "src/assets/common/styles/themes/default/metronic-customize.css"
+      ]
+    },
+    
+    {
+      "output": "src/assets/common/styles/themes/theme2/metronic-customize.min.css",
+      "input": [
+        "src/assets/common/styles/themes/theme2/metronic-customize.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/common/styles/themes/theme3/metronic-customize.min.css",
+      "input": [
+        "src/assets/common/styles/themes/theme3/metronic-customize.css"
+      ]
+    },
+    
+    {
+      "output": "src/assets/common/styles/themes/theme4/metronic-customize.min.css",
+      "input": [
+        "src/assets/common/styles/themes/theme4/metronic-customize.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/common/styles/themes/theme5/metronic-customize.min.css",
+      "input": [
+        "src/assets/common/styles/themes/theme5/metronic-customize.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/common/styles/themes/theme6/metronic-customize.min.css",
+      "input": [
+        "src/assets/common/styles/themes/theme6/metronic-customize.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/common/styles/themes/theme7/metronic-customize.min.css",
+      "input": [
+        "src/assets/common/styles/themes/theme7/metronic-customize.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/common/styles/themes/theme8/metronic-customize.min.css",
+      "input": [
+        "src/assets/common/styles/themes/theme8/metronic-customize.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/common/styles/themes/theme9/metronic-customize.min.css",
+      "input": [
+        "src/assets/common/styles/themes/theme9/metronic-customize.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/common/styles/themes/theme10/metronic-customize.min.css",
+      "input": [
+        "src/assets/common/styles/themes/theme10/metronic-customize.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/common/styles/themes/theme11/metronic-customize.min.css",
+      "input": [
+        "src/assets/common/styles/themes/theme11/metronic-customize.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/common/styles/themes/theme12/metronic-customize.min.css",
+      "input": [
+        "src/assets/common/styles/themes/theme12/metronic-customize.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/common/styles/abp-zero-template-rtl.min.css",
+      "input": [
+        "src/assets/common/styles/abp-zero-template-rtl.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/metronic/themes/default/css/skins/header/base/dark.min.css",
+      "input": [
+        "src/assets/metronic/themes/default/css/skins/header/base/dark.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/metronic/themes/default/css/skins/header/base/dark.rtl.min.css",
+      "input": [
+        "src/assets/metronic/themes/default/css/skins/header/base/dark.rtl.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/metronic/themes/default/css/skins/header/base/light.min.css",
+      "input": [
+        "src/assets/metronic/themes/default/css/skins/header/base/light.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/metronic/themes/default/css/skins/header/base/light.rtl.min.css",
+      "input": [
+        "src/assets/metronic/themes/default/css/skins/header/base/light.rtl.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/metronic/themes/default/css/skins/brand/dark.min.css",
+      "input": [
+        "src/assets/metronic/themes/default/css/skins/brand/dark.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/metronic/themes/default/css/skins/brand/dark.rtl.min.css",
+      "input": [
+        "src/assets/metronic/themes/default/css/skins/brand/dark.rtl.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/metronic/themes/default/css/skins/brand/light.min.css",
+      "input": [
+        "src/assets/metronic/themes/default/css/skins/brand/light.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/metronic/themes/default/css/skins/brand/light.rtl.min.css",
+      "input": [
+        "src/assets/metronic/themes/default/css/skins/brand/light.rtl.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/metronic/themes/default/css/skins/aside/dark.min.css",
+      "input": [
+        "src/assets/metronic/themes/default/css/skins/aside/dark.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/metronic/themes/default/css/skins/aside/dark.rtl.min.css",
+      "input": [
+        "src/assets/metronic/themes/default/css/skins/aside/dark.rtl.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/metronic/themes/default/css/skins/aside/light.min.css",
+      "input": [
+        "src/assets/metronic/themes/default/css/skins/aside/light.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/metronic/themes/default/css/skins/aside/light.rtl.min.css",
+      "input": [
+        "src/assets/metronic/themes/default/css/skins/aside/light.rtl.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/fonts/fonts-asap-condensed.min.css",
+      "input": [
+        "src/assets/fonts/fonts-asap-condensed.css"
+      ]
+    },
+
+    {
+      "output": "src/assets/fonts/fonts-montserrat.min.css",
+      "input": [
+        "src/assets/fonts/fonts-montserrat.css"
+      ]
+    }
+
+
+
+
+  ],
+  "scripts": []
+}

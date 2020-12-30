@@ -1,0 +1,96 @@
+<div class="card card-custom h-100">
+    <div class="card-header align-items-center border-0">
+        <h3 class="card-title align-items-start flex-column">
+                <span class="font-weight-bolder text-dark">
+                     Sales Summary
+                </span>
+        </h3>
+        <div class="card-toolbar" *ngIf="salesSummaryChart && !salesSummaryChart.loading">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-secondary active"
+                       [ngClass]="{'active': salesSummaryChart.selectedDatePeriod ==  appSalesSummaryDateInterval.Daily}"
+                       (click)="salesSummaryChart.reload(appSalesSummaryDateInterval.Daily)">
+                    <input type="radio" name="SalesSummaryDateInterval"
+                           [value]="appSalesSummaryDateInterval.Daily">
+                    {{"Daily" | localize}}
+                </label>
+                <label class="btn btn-secondary"
+                       [ngClass]="{'active': salesSummaryChart.selectedDatePeriod ==  appSalesSummaryDateInterval.Weekly}"
+                       (click)="salesSummaryChart.reload(appSalesSummaryDateInterval.Weekly)">
+                    <input type="radio" name="SalesSummaryDateInterval"
+                           [value]="appSalesSummaryDateInterval.Weekly">
+                    {{"Weekly" | localize}}
+                </label>
+                <label class="btn btn-secondary"
+                       [ngClass]="{'active': salesSummaryChart.selectedDatePeriod ==  appSalesSummaryDateInterval.Monthly}"
+                       (click)="salesSummaryChart.reload(appSalesSummaryDateInterval.Monthly)">
+                    <input type="radio" name="SalesSummaryDateInterval"
+                           [value]="appSalesSummaryDateInterval.Monthly">
+                    {{"Monthly" | localize}}
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="card-body" [busyIf]="salesSummaryChart.loading" [perfectScrollbar]>
+        <div class="row list-separated text-center">
+            <div class="col-md-3 col-sm-3 col-xs-6">
+                <h6>
+                    Total Sales
+                </h6>
+                <div>
+                    <span counto class="text-danger font-weight-bolder" [step]="30" [duration]="1"
+                          [countFrom]="0" [countTo]="salesSummaryChart.totalSales"
+                          (countoChange)="salesSummaryChart.totalSalesCounter = $event">
+                        {{salesSummaryChart.totalSalesCounter.toFixed(0)}}
+                    </span>
+                    <span class="text-danger font-weight-bolder">$</span>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-6">
+                <h6>
+                    Revenue
+                </h6>
+                <div class="uppercase font-hg font-green-haze">
+                    <span counto class="text-warning font-weight-bolder" [step]="30" [duration]="1"
+                          [countFrom]="0" [countTo]="salesSummaryChart.revenue"
+                          (countoChange)="salesSummaryChart.revenuesCounter = $event">
+                        {{salesSummaryChart.revenuesCounter.toFixed(0)}}
+                    </span>
+                    <span class="text-warning font-weight-bolder">$</span>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-6">
+                <h6>
+                    Expenses
+                </h6>
+                <div class="uppercase font-hg font-purple">
+                    <span counto class="text-info font-weight-bolder" [step]="30" [duration]="1"
+                          [countFrom]="0" [countTo]="salesSummaryChart.expenses"
+                          (countoChange)="salesSummaryChart.expensesCounter = $event">
+                        {{salesSummaryChart.expensesCounter.toFixed(0)}}
+                    </span>
+                    <span class="text-success font-weight-bolder">$</span>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-6">
+                <h6>
+                    Growth
+                </h6>
+                <div class="uppercase font-hg font-blue-sharp">
+                    <span counto class="text-info font-weight-bolder" [step]="30" [duration]="1"
+                          [countFrom]="0" [countTo]="salesSummaryChart.growth"
+                          (countoChange)="salesSummaryChart.growthCounter = $event">
+                        {{salesSummaryChart.growthCounter.toFixed(0)}}
+                    </span>
+                    <span class="text-info font-weight-bolder">$</span>
+                </div>
+            </div>
+        </div>
+        <div style="height: 260px; min-height: 260px;">
+            <ngx-charts-area-chart-stacked [results]="salesSummaryChart.data"
+                                           [showXAxisLabel]="true" showYAxisLabel="true" [xAxis]="true" [yAxis]="true"
+                                           [showGridLines]="false" [tooltipDisabled]="false">
+            </ngx-charts-area-chart-stacked>
+        </div>
+    </div>
+</div>

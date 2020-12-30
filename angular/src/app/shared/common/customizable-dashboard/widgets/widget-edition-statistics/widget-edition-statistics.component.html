@@ -1,0 +1,22 @@
+<div class="card card-custom h-100">
+    <div class="card-header align-items-center border-0">
+        <div class="card-title">
+            <span class="card-icon">
+                <i class="la la-pie-chart text-success"></i>
+            </span>
+            <h3 class="card-label text-success">
+                {{"EditionStatistics" | localize}}
+                <small class="text-muted">{{selectedDateRange[0] | momentFormat: 'L'}}
+                    - {{selectedDateRange[1] | momentFormat: 'L'}}</small>
+            </h3>
+        </div>
+    </div>
+    <div class="card-body" [perfectScrollbar]>
+        <ngx-charts-pie-chart *ngIf="editionStatisticsHasData" [results]="editionStatisticsData"
+                              [legend]="true" [doughnut]="true" [arcWidth]="0.75">
+        </ngx-charts-pie-chart>
+        <div class="note note-info text-center chart" [hidden]="editionStatisticsHasData">
+            <small class="text-muted">{{"NoData" | localize}}</small>
+        </div>
+    </div>
+</div>

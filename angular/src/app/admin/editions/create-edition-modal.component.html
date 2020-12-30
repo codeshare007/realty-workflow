@@ -1,0 +1,185 @@
+<div appBsModal #createModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #editionForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span>{{"CreateNewEdition" | localize}}</span>
+                    </h5>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')"
+                        [disabled]="saving">
+                         <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <tabset>
+                        <tab heading="{{'EditionProperties' | localize}}" class="p-5">
+                            <div class="form-group">
+                                <label for="EditionDisplayName">{{"EditionName" | localize}} *</label>
+                                <input id="EditionDisplayName" #editionNameInput="ngModel" class="form-control"
+                                    type="text" name="EditionDisplayName" [(ngModel)]="edition.edition.displayName"
+                                    required maxlength="64">
+                                <validation-messages [formCtrl]="editionNameInput"></validation-messages>
+                            </div>
+
+                            <label>{{"SubscriptionPrice" | localize}}</label>
+                            <div class="radio-inline">
+                                <label for="EditEdition_IsFree" class="radio">
+                                    <input id="EditEdition_IsFree" name="SubscriptionPrice" [(ngModel)]="isFree"
+                                        (ngModelChange)="resetPrices($event)" [value]="true" type="radio">
+                                    <span></span>
+                                    {{"Free" | localize}}
+                                </label>
+                                <label for="EditEdition_IsPaid" class="radio">
+                                    <input id="EditEdition_IsPaid" name="SubscriptionPrice" [(ngModel)]="isFree"
+                                        [value]="false" type="radio">
+                                    <span></span>
+                                    {{"Paid" | localize}}
+                                </label>
+                            </div>
+                            <div class="row" *ngIf="!isFree">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="DailyPrice">{{"DailyPrice" | localize}}</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend"><span
+                                                    class="input-group-text">{{appSession.application.currencySign}}</span>
+                                            </div>
+                                            <input #dailyPriceInput="ngModel" type="text" name="DailyPrice"
+                                                id="DailyPrice" class="form-control" autocomplete="new-password"
+                                                [ngClass]="{'edited':edition.edition.dailyPrice}" [required]="!isFree"
+                                                [(ngModel)]="edition.edition.dailyPrice"
+                                                [textMask]="{mask: currencyMask}" />
+                                        </div>
+                                        <validation-messages [formCtrl]="dailyPriceInput"></validation-messages>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="WeeklyPrice">{{"WeeklyPrice" | localize}}</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend"><span
+                                                        class="input-group-text">{{appSession.application.currencySign}}</span>
+                                                </div>
+                                                <input #weeklyPriceInput="ngModel" type="text" name="WeeklyPrice"
+                                                    id="WeeklyPrice" class="form-control" autocomplete="new-password"
+                                                    [ngClass]="{'edited':edition.edition.weeklyPrice}" [required]="!isFree"
+                                                    [(ngModel)]="edition.edition.weeklyPrice"
+                                                    [textMask]="{mask: currencyMask}" />
+                                            </div>
+                                            <validation-messages [formCtrl]="weeklyPriceInput"></validation-messages>
+                                        </div>
+                                    </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="MonthlyPrice">{{"MonthlyPrice" | localize}}</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend"><span
+                                                    class="input-group-text">{{appSession.application.currencySign}}</span>
+                                            </div>
+                                            <input #monthlyPriceInput="ngModel" type="text" name="MonthlyPrice"
+                                                id="MonthlyPrice" class="form-control" autocomplete="new-password"
+                                                [ngClass]="{'edited':edition.edition.monthlyPrice}" [required]="!isFree"
+                                                [(ngModel)]="edition.edition.monthlyPrice"
+                                                [textMask]="{mask: currencyMask}" />
+                                        </div>
+                                        <validation-messages [formCtrl]="monthlyPriceInput"></validation-messages>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="AnnualPrice">{{"AnnualPrice" | localize}}</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend"><span
+                                                    class="input-group-text">{{appSession.application.currencySign}}</span>
+                                            </div>
+                                            <input #annualPriceInput="ngModel" type="text" name="AnnualPrice"
+                                                id="AnnualPrice" class="form-control" autocomplete="new-password"
+                                                [ngClass]="{'edited':edition.edition.annualPrice}" [required]="!isFree"
+                                                [(ngModel)]="edition.edition.annualPrice"
+                                                [textMask]="{mask: currencyMask}" />
+                                        </div>
+                                        <validation-messages [formCtrl]="annualPriceInput"></validation-messages>
+                                    </div>
+                                </div>
+                            </div>
+                            <div [hidden]="isFree" class="paid-features">
+                                <div class="checkbox-list">
+                                    <label for="EditEdition_IsTrialActive" class="checkbox">
+                                        <input id="EditEdition_IsTrialActive" type="checkbox" name="isTrialActive"
+                                            [(ngModel)]="isTrialActive" />
+                                        <span></span>
+                                        {{"IsTrialActive" | localize}}
+                                    </label>
+                                </div>
+                                <div class="form-group trial-day-count" *ngIf="isTrialActive">
+                                    <label for="TrialDayCount">{{"TrialDayCount" | localize}}</label>
+                                    <input #trialDayCountInput="ngModel" class="form-control" type="number"
+                                        name="TrialDayCount" id="TrialDayCount" [required]="isTrialActive"
+                                        [(ngModel)]="edition.edition.trialDayCount"
+                                        [ngClass]="{'edited':edition.edition.trialDayCount}">
+                                    <validation-messages [formCtrl]="trialDayCountInput"></validation-messages>
+                                </div>
+                                <div class="checkbox-list">
+                                    <label for="EditEdition_IsWaitingDayActive" class="checkbox">
+                                        <input id="EditEdition_IsWaitingDayActive" type="checkbox"
+                                            name="IsWaitingDayActive" [(ngModel)]="isWaitingDayActive" />
+                                        <span></span>
+                                        {{"WaitAfterSubscriptionExpireDate" | localize}}
+                                    </label>
+                                </div>
+                                <div class="form-group waiting-day-after-expire" *ngIf="isWaitingDayActive">
+                                    <label for="WaitingDayAfterExpire">{{"WaitingDayAfterExpire" | localize}}</label>
+                                    <input #waitingDayAfterExpireInput="ngModel" class="form-control" type="number"
+                                        name="WaitingDayAfterExpire" id="WaitingDayAfterExpire"
+                                        [required]="isWaitingDayActive"
+                                        [(ngModel)]="edition.edition.waitingDayAfterExpire"
+                                        [ngClass]="{'edited':edition.edition.waitingDayAfterExpire}">
+                                    <validation-messages [formCtrl]="waitingDayAfterExpireInput"></validation-messages>
+                                </div>
+                                <label>{{"WhatWillDoneAfterSubscriptionExpiry" | localize}}</label>
+                                <div class="radio-inline">
+                                    <label for="EditEdition_ExpireAction_DeactiveUser" class="radio">
+                                        <input id="EditEdition_ExpireAction_DeactiveUser" name="ExpireAction"
+                                            [(ngModel)]="expireAction" [value]="expireActionEnum.DeactiveTenant"
+                                            (ngModelChange)="removeExpiringEdition($event)" type="radio">
+                                        <span></span>
+                                        {{"DeactiveTenant" | localize}}
+                                    </label>
+                                    <label for="EditEdition_ExpireAction_AssignEdition" class="radio">
+                                        <input id="EditEdition_ExpireAction_AssignEdition" name="ExpireAction"
+                                            [(ngModel)]="expireAction" [value]="expireActionEnum.AssignToAnotherEdition"
+                                            type="radio">
+                                        <span></span>
+                                        {{"AssignToAnotherEdition" | localize}}
+                                    </label>
+                                </div>
+                                <div class="form-group edition-list"
+                                    *ngIf="expireAction == expireActionEnum.AssignToAnotherEdition">
+                                    <select name="expiringEdition" class="form-control"
+                                        [(ngModel)]="edition.edition.expiringEditionId"
+                                        [attr.min]="expireAction == expireActionEnum.AssignToAnotherEdition ? 1:0">
+                                        <option *ngFor="let expiringEdition of expiringEditions"
+                                            [value]="expiringEdition.value">{{expiringEdition.displayText}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab heading="{{'Features' | localize}}" class="p-5">
+                            <feature-tree #featureTree></feature-tree>
+                        </tab>
+                    </tabset>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">{{"Cancel" | localize}}</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!editionForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{"Save" | localize}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+.kt-header-mobile .kt-header__brand-logo-default {
+  height: 52px !important;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.cc-window {
+  background-color: #282a3a;
+}
+
+.cc-btn {
+  background-color: #5867dd;
+  border-color: #5867dd;
+  color: #ffffff;
+}
+
+.cc-message {
+  color: #fefefe;
+}
+
+.kt-badge.kt-badge--inline {
+  border-radius: 0px;
+}
+
+.kt-user-card .kt-user-card__name {
+  color: #6c7293 !important;
+}
+
+.kt-header__topbar .subscription-warning {
+  padding-top: 24px;
+}
+
+.kt-header__topbar .subscription-warning span {
+  color: #fff;
+}
+
+.unread-notification-count {
+  position: absolute;
+  top: 14px;
+  right: 8px;
+  font-size: 1.0rem !important;
+}
+
+.menuSearchBarContainer {
+  width: calc(100% - 20px);
+  margin: 0 10px;
+}
+
+.menuSearchBarInput {
+  background-color: rgb(18, 18, 30) !important;
+  border: 1px solid rgb(44, 45, 68) !important;
+  color: #9899ac !important;
+  width: calc(100% - 20px);
+}
+
+.menuSearchBarInput:focus {
+  border-color: #7380fc !important;
+  color: #fff !important;
+}

@@ -1,0 +1,44 @@
+<div class="card card-custom h-100">
+    <div class="card-header align-items-center border-0">
+        <div class="card-title">
+            <h3 class="card-label text-dark">
+                Profit Share
+                <small class="text-muted">Profit Share between customers</small>
+            </h3>
+        </div>
+    </div>
+    <div class="card-body" [perfectScrollbar]>
+        <div>
+            <div class="row">
+                <div class="col-lg-6 col-md-12" style="max-height:300px ">
+                    <ngx-charts-pie-chart [results]="profitSharePieChart.chartData"
+                                          [doughnut]="true" [legend]="false" [labels]="false"
+                                          [scheme]="profitSharePieChart.scheme" [animations]="false"
+                                          [tooltipDisabled]="true">
+                    </ngx-charts-pie-chart>
+                </div>
+                <div class="col-lg-6 col-md-12"
+                     *ngIf="profitSharePieChart.chartData.length">
+                    <div >
+                        <span class="label label-dot label-lg label-success mr-3"></span>
+                        <span ng-if="profitSharePieChart.chartData">
+                            {{profitSharePieChart.chartData[0].value}}
+                        </span>
+                    </div>
+                    <div>
+                        <span class="label label-dot label-lg label-warning mr-3"></span>
+                        <span>
+                            22% Online Courses
+                        </span>
+                    </div>
+                    <div>
+                        <span class="label label-dot label-lg label-brand mr-3"></span>
+                        <span>
+                            33% Custom Development
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

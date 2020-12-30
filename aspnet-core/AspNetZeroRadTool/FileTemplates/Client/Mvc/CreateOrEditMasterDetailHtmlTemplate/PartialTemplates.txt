@@ -1,0 +1,184 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Looped_Template_Here}}",
+			"condition" : "{{Property_CreateOrEdit_Here}} == true",
+			"templates" : [
+					{
+					"type" : "enum",
+					"content" : "
+								{{LocalizationPrepareForEnum}}
+								<div class=\"form-group m-form__group\">
+									<label for=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\">@L(\"{{Property_Name_Here}}\")</label>
+										<select class=\"form-control m-input m-input--square\" name=\"{{property_Name_Here}}\" id=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\" asp-for=\"@Model.{{Entity_Name_Here}}.{{Property_Name_Here}}\" asp-items=\"@selectList{{Property_Name_Here}}\">
+									</select>
+								</div>
+					"
+					},
+					{
+					"type" : "numeric",
+					"content" : "
+								<div class=\"form-group\">
+									<label for=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\">@L(\"{{Property_Name_Here}}\")</label>
+									<input class=\"form-control m-input\" id=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\" value=\"@Model.{{Entity_Name_Here}}.{{Property_Name_Here}}{{Property_Nullable_Question_Mark_Here}}.ToString(CultureInfo.InvariantCulture)\" type=\"number\" name=\"{{property_Name_Here}}\" {{MinValue}} {{MaxValue}}/>
+								</div>
+					"
+					},
+					{
+					"type" : "bool",
+					"content" : "
+								<div class=\"m-checkbox-list\">
+									<label for=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\" class=\"kt-checkbox\">
+										<input id=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\" type=\"checkbox\" name=\"{{property_Name_Here}}\" value=\"true\" @Html.Raw(Model.{{Entity_Name_Here}}.{{Property_Name_Here}} ?\"checked=\\\"checked\\\"\":\"\") />
+										@L(\"{{Property_Name_Here}}\")
+										<span></span>
+									</label>
+								</div>
+					"
+					},
+					{
+					"type" : "DateTime",
+					"content" : "
+								<div class=\"form-group position-relative\">
+									<label for=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\">@L(\"{{Property_Name_Here}}\")</label>
+									<input class=\"form-control m-input date-picker\" id=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\" type=\"text\" name=\"{{property_Name_Here}}\" value=\"@Model.{{Entity_Name_Here}}.{{Property_Name_Here}}\"/>
+								</div>
+					"
+					},
+					{
+					"type" : "default",
+					"content" : "
+								<div class=\"form-group\">
+									<label for=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\">@L(\"{{Property_Name_Here}}\")</label>
+									<input class=\"form-control\" id=\"{{Entity_Name_Here}}_{{Property_Name_Here}}\" value=\"@Model.{{Entity_Name_Here}}.{{Property_Name_Here}}\" type=\"text\" name=\"{{property_Name_Here}}\" {{Required}} {{MaxLengthHere}} {{MinLengthHere}} {{Regex}} />
+								</div>
+					"
+					}
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"Type" : "Modal",
+					"viewType":"LookupTable",
+					"content" : "            
+								<div class=\"form-group m-form__group\">
+										<label for=\"{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}\">@L(\"{{NP_Foreign_Entity_Name_Here}}\")</label>
+									    <div class=\"input-group\">
+											<input class=\"form-control\" id=\"{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}\" name=\"{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}\" value=\"@Model.{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}\" type=\"text\" disabled>
+										<div class=\"input-group-append\">
+											<button class=\"btn btn-primary blue\" id=\"Open{{NP_Foreign_Entity_Name_Here}}{{NP_Duplication_Number_Here}}LookupTableButton\" type=\"button\"><i class=\"fa fa-search\"></i> @L(\"Pick\")</button>
+										</div> 
+										<div class=\"input-group-prepend\">
+											<button class=\"btn btn-danger btn-icon\" type=\"button\" id=\"Clear{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}Button\"><i class=\"fa fa-times\"></i></button>
+										</div>
+									</div>
+								</div>
+
+								@if (Model.IsEditMode)
+								{
+									<input class=\"form-control\" id=\"{{Entity_Name_Here}}_{{NP_Name_Here}}\" value=\"@Model.{{Entity_Name_Here}}.{{NP_Name_Here}}\" type=\"text\" name=\"{{nP_Name_Here}}\" {{NP_IsNullable_Required_Here}} hidden/>
+								}
+								 else
+								{ 
+									<input class=\"form-control\" id=\"{{Entity_Name_Here}}_{{NP_Name_Here}}\" value=\"\" type=\"text\" name=\"{{nP_Name_Here}}\" {{NP_IsNullable_Required_Here}} hidden/>
+								}
+
+"
+					},
+					{
+					"relation" : "single",
+					"Type" : "Modal",
+					"viewType":"Dropdown",
+					"content" : "            
+						<div class=\"form-group\">
+							<label for=\"{{nP_Name_Here}}\">@L(\"{{NP_Foreign_Entity_Name_Here}}\")</label>
+							@Html.DropDownList(\"{{nP_Name_Here}}\", new SelectList(Model.{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}List,\"Id\",\"DisplayName\", (Model.IsEditMode ? Model.{{Entity_Name_Here}}.{{NP_Name_Here}}.ToString() : \"\")),@L(\"SelectA{{NP_Foreign_Entity_Name_Here}}\"), new { @class = \"form-control\"  {{NP_IsNullable_Required_Here_With_Comma_And_At}} })
+						</div>
+"
+					}
+				]
+		}
+	],
+"enumTemplates":[
+		{
+			"placeholder" : "{{Enum_Using_Looped_Template_Here}}",
+			"content" : "@using {{Enum_Namespace_Here}};
+					"
+		}
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{LocalizationPrepareForEnum}}",
+			"condition": "",
+			"content": "@{
+					var selectList{{Property_Name_Here}} = Html.GetEnumSelectList(typeof({{Enum_Name_Here}}));
+					 foreach (var selectOption in selectList{{Property_Name_Here}}) { selectOption.Text = L(\"Enum_{{Enum_Name_Here}}_\" + selectOption.Value); }
+					}"
+		},
+		{
+			"placeholder": "{{Required}}",
+			"condition": "{{Property_Required_Here}} == true",
+			"content": " required"
+		},
+		{
+			"placeholder": "{{Regex}}",
+			"condition": "{{Property_Regex_Here}} != ''",
+			"content": " pattern=\"@{{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.{{Entity_Name_Here}}Consts.{{Property_Name_Here}}Regex\""
+		},
+		{
+			"placeholder": "{{MaxLengthHere}}",
+			"condition": "{{Property_MaxLength_Here}} > -1",
+			"content": " maxlength=\"@{{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.{{Entity_Name_Here}}Consts.Max{{Property_Name_Here}}Length\""
+		},
+		{
+			"placeholder": "{{MinLengthHere}}",
+			"condition": "{{Property_MinLength_Here}} > -1",
+			"content": " minlength=\"@{{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.{{Entity_Name_Here}}Consts.Min{{Property_Name_Here}}Length\""
+		},
+		{
+			"placeholder": "{{MaxValue}}",
+			"condition": "{{Property_Is_Range_Set_Here}} == true",
+			"content": " max=\"@{{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.{{Entity_Name_Here}}Consts.Max{{Property_Name_Here}}Value\""
+		},
+		{
+			"placeholder": "{{MinValue}}",
+			"condition": "{{Property_Is_Range_Set_Here}} == true",
+			"content": " min=\"@{{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.{{Entity_Name_Here}}Consts.Min{{Property_Name_Here}}Value\""
+		},	
+		{
+			"placeholder": "{{NP_IsNullable_Required_Here_With_Comma_And_At}}",
+			"condition": "{{NP_IsNullable_Required_Here}} != ''",
+			"content": ", @required=\"required\""
+		},
+		{
+			"placeholder": "{{Container_Class_Here}}",
+			"condition": "{{Project_Version_Here}} < 070200",
+			"content": "kt-content"
+		},
+		{
+			"placeholder": "{{Container_Class_V2_Here}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "@(await GetContainerClass()) kt-grid__item kt-grid__item--fluid"
+		},
+		{
+			"placeholder": "{{Div_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "</div>"
+		},
+		{
+			"placeholder": "{{Content_Class_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "<div class=\"kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor\">"
+		},
+		{
+			"placeholder": "{{Container_Class_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "<div class=\"@(await GetContainerClass())\">"
+		}
+	]
+}

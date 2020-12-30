@@ -1,0 +1,259 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Filter_Def_Here}}",
+			"condition" : "{{Property_Advanced_Filter_Here}} == true",
+			"templates" : [
+					{
+					"type" : "enum",
+					"content" : "    {{property_Name_Here}}Filter = -1;
+"
+					},
+					{
+					"type" : "numeric",
+					"content" : "    max{{Property_Name_Here}}Filter : number;
+		max{{Property_Name_Here}}FilterEmpty : number;
+		min{{Property_Name_Here}}Filter : number;
+		min{{Property_Name_Here}}FilterEmpty : number;
+"
+					},
+					{
+					"type" : "DateTime",
+					"content" : "    max{{Property_Name_Here}}Filter : moment.Moment;
+		min{{Property_Name_Here}}Filter : moment.Moment;
+"
+					},
+					{
+					"type" : "bool",
+					"content" : "    {{property_Name_Here}}Filter = -1;
+"
+					},
+					{
+					"type" : "default",
+					"content" : "    {{property_Name_Here}}Filter = '';
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Property_Filter_Param_Here}}",
+			"condition" : "{{Property_Advanced_Filter_Here}} == true",
+			"templates" : [
+					{
+					"type" : "numeric",
+					"content" : "
+            this.max{{Property_Name_Here}}Filter == null ? this.max{{Property_Name_Here}}FilterEmpty: this.max{{Property_Name_Here}}Filter,
+            this.min{{Property_Name_Here}}Filter == null ? this.min{{Property_Name_Here}}FilterEmpty: this.min{{Property_Name_Here}}Filter,"
+					},
+					{
+					"type" : "DateTime",
+					"content" : "
+            this.max{{Property_Name_Here}}Filter,
+            this.min{{Property_Name_Here}}Filter,"
+					},
+					{
+					"type" : "default",
+					"content" : "
+            this.{{property_Name_Here}}Filter,"
+					}
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Filter_Def_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "        {{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}Filter = '';
+"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Filter_Param_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "
+            this.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}Filter,"
+					}
+				]
+		}
+	],
+"enumTemplates":[
+		{
+			"placeholder" : "{{Enum_Import_Before_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} < 060600",
+			"content" : ", {{Entity_Name_Here}}Dto{{Enum_Used_For_Property_Name_Here}}"
+		},
+		{
+			"placeholder" : "{{Enum_Import_After_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} >= 060600",
+			"content" : ", {{Enum_Name_Here}}"
+		},
+		{
+			"placeholder" : "{{Enum_Def_Before_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} < 060600",
+			"content" : "    {{enum_Name_Here}} = {{Entity_Name_Here}}Dto{{Enum_Used_For_Property_Name_Here}};
+"
+		},
+		{
+			"placeholder" : "{{Enum_Def_After_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} >= 060600",
+			"content" : "    {{enum_Name_Here}} = {{Enum_Name_Here}};
+"
+		}
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{EntityHistory_Decs_Here}}",
+			"condition": "{{Entity_History_Here}} == true",
+			"content": "    _entityTypeFullName = '{{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.{{Entity_Name_Here}}';
+    entityHistoryEnabled = false;"
+		},
+		{
+			"placeholder": "{{EntityTypeHistoryModalComponent_Import_Here}}",
+			"condition": "{{Entity_History_Here}} == true",
+			"content": "
+import { EntityTypeHistoryModalComponent } from '@app/shared/common/entityHistory/entity-type-history-modal.component';"
+		},
+		{
+			"placeholder": "{{SetentityHistoryEnabled_Here}}",
+			"condition": "{{Entity_History_Here}} == true",
+			"content": "
+    ngOnInit(): void {
+        this.entityHistoryEnabled = this.setIsEntityHistoryEnabled();
+    }
+
+    private setIsEntityHistoryEnabled(): boolean {
+        let customSettings = (abp as any).custom;
+        return this.isGrantedAny('Pages.Administration.AuditLogs') && customSettings.EntityHistory && customSettings.EntityHistory.isEnabled && _.filter(customSettings.EntityHistory.enabledEntities, entityType => entityType === this._entityTypeFullName).length === 1;
+    }
+"
+		},
+		{
+			"placeholder": "{{EntityTypeHistoryModal_Dev_Here}}",
+			"condition": "{{Entity_History_Here}} == true",
+			"content": "
+    @ViewChild('entityTypeHistoryModal', { static: true }) entityTypeHistoryModal: EntityTypeHistoryModalComponent;"
+		},
+		{
+			"placeholder": "{{EntityTypeHistoryModal_Open_Here}}",
+			"condition": "{{Entity_History_Here}} == true",
+			"content": "
+    showHistory({{entity_Name_Here}}: {{Entity_Name_Here}}Dto): void {
+        this.entityTypeHistoryModal.show({
+            entityId: {{entity_Name_Here}}.id.toString(),
+            entityTypeFullName: this._entityTypeFullName,
+            entityTypeDescription: ''
+        });
+    }
+"
+		},
+		{
+			"placeholder": "{{View_Component_Import_Here}}",
+			"condition": "{{Create_View_Only_Here}} == true && {{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "
+import { View{{Entity_Name_Here}}ModalComponent } from './view-{{entity_Name_Here}}-modal.component';"
+		},		
+		{
+			"placeholder": "{{View_Component_Dec_Here}}",
+			"condition": "{{Create_View_Only_Here}} == true",
+			"content": "
+    @ViewChild('view{{Entity_Name_Here}}ModalComponent', { static: true }) view{{Entity_Name_Here}}Modal: View{{Entity_Name_Here}}ModalComponent;"
+		},
+		{
+			"placeholder": "{{TurboTable_Import_Here}}",
+			"condition": "{{Project_Version_Here}} >= 050400 && {{Project_Version_Here}} < 080500",
+			"content": "import { Table } from 'primeng/components/table/table'"
+		},
+		{
+			"placeholder": "{{TurboTable_Import_Here}}",
+			"condition": "{{Project_Version_Here}} >= 080500",
+			"content": "import { Table } from 'primeng/table'"
+		},
+		{
+			"placeholder": "{{DataTable_Import_Here}}",
+			"condition": "{{Project_Version_Here}} < 050400",
+			"content": "import { DataTable } from 'primeng/components/datatable/datatable'"
+		},
+		{
+			"placeholder": "{{TruboTable_Primenghelper_Here}}",
+			"condition": "{{Project_Version_Here}} >= 050400",
+			"content": "primengTableHelper"
+		},
+		{
+			"placeholder": "{{DataTable_Primenghelper_Here}}",
+			"condition": "{{Project_Version_Here}} < 050400",
+			"content": "primengDatatableHelper"
+		},
+		{
+			"placeholder": "{{DataTable_Dec_Here}}",
+			"condition": "{{Project_Version_Here}} < 050400",
+			"content": "Data"
+		},
+		{
+			"placeholder": "{{Get_Excel_Method_Here}}",
+			"condition": "{{Create_Excel_Export_Here}} == true",
+			"content": "
+
+    exportToExcel(): void {
+        this._{{entity_Name_Plural_Here}}ServiceProxy.get{{Entity_Name_Plural_Here}}ToExcel(
+        this.filterText,{{Property_Filter_Param_Here}}{{NP_Filter_Param_Here}}
+        )
+        .subscribe(result => {
+            this._fileDownloadService.downloadTempFile(result);
+         });
+    }"
+		},
+		{
+			"placeholder": "{{PrimeNG_Imports_Here}}",
+			"condition": "{{Project_Version_Here}} < 080500",
+			"content": "import { Paginator } from 'primeng/components/paginator/paginator';
+import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';"
+		},
+		{
+			"placeholder": "{{PrimeNG_Imports_Here}}",
+			"condition": "{{Project_Version_Here}} >= 080500",
+			"content": "import { Paginator } from 'primeng/paginator';
+import { LazyLoadEvent } from 'primeng/public_api';"
+		},
+		{
+			"placeholder": "{{Notify_Service_Here}}",
+			"condition": "{{Project_Version_Here}} < 080500",
+			"content": "import { NotifyService } from '@abp/notify/notify.service';"
+		},
+		{
+			"placeholder": "{{Notify_Service_Here}}",
+			"condition": "{{Project_Version_Here}} >= 080500",
+			"content": "import { NotifyService } from 'abp-ng2-module';"
+		},
+		{
+			"placeholder": "{{Import_Create_Or_Edit_Component_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "import { CreateOrEdit{{Entity_Name_Here}}ModalComponent } from './create-or-edit-{{entity_Name_Here}}-modal.component';"
+		},
+		{
+			"placeholder": "{{View_Child_Create_Or_Edit_Modal_Def_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "@ViewChild('createOrEdit{{Entity_Name_Here}}Modal', { static: true }) createOrEdit{{Entity_Name_Here}}Modal: CreateOrEdit{{Entity_Name_Here}}ModalComponent;{{View_Component_Dec_Here}}"
+		},
+		{
+			"placeholder": "{{On_Click_Create_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "this.createOrEdit{{Entity_Name_Here}}Modal.show();"
+		},
+		{
+			"placeholder": "{{On_Click_Create_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == true",
+			"content": "this._router.navigate(['/app/{{menu_Position_Here}}/{{namespace_Relative_Here}}/{{entity_Name_Plural_Here}}/createOrEdit']);"
+		},
+		{
+			"placeholder": "{{Router_Field_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == true",
+			"content": ",
+			private _router: Router"
+		},
+	]
+}

@@ -1,0 +1,61 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Filters_Here}}",
+			"condition" : "{{Property_Advanced_Filter_Here}} == true",
+			"templates" : [
+					{
+					"type" : "DateTime",
+					"content" : "		public {{Property_Type_Here}}? Max{{Property_Name_Here}}Filter { get; set; }
+		public {{Property_Type_Here}}? Min{{Property_Name_Here}}Filter { get; set; }
+
+"
+					},
+					{
+					"type" : "numeric",
+					"content" : "		public {{Property_Type_Here}}? Max{{Property_Name_Here}}Filter { get; set; }
+		public {{Property_Type_Here}}? Min{{Property_Name_Here}}Filter { get; set; }
+
+"
+					},
+					{
+					"type" : "bool",
+					"content" : "		public int? {{Property_Name_Here}}Filter { get; set; }
+
+"
+					},
+					{
+					"type" : "enum",
+					"content" : "		public int? {{Property_Name_Here}}Filter { get; set; }
+
+"
+					},
+					{
+					"type" : "Guid",
+					"content" : "		public Guid? {{Property_Name_Here}}Filter { get; set; }
+
+"
+					},
+					{
+					"type" : "default",
+					"content" : "		public {{Property_Type_Here}}{{Property_Nullable_Question_Mark_Here}} {{Property_Name_Here}}Filter { get; set; }
+
+"
+					}
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Filters_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "		 public string {{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}Filter { get; set; }
+
+		 "
+					}
+				]
+		}
+	]
+}

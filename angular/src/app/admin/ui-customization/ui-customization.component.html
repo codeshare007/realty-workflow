@@ -1,0 +1,48 @@
+<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="'VisualSettings' | localize" [description]="'UiCustomizationHeaderInfo' | localize">
+        </sub-header>
+
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <tabset type="pills">
+                        <tab *ngFor="let themeSetting of themeSettings"
+                            [active]="themeSetting.theme == currentThemeName">
+                            <ng-template tabHeading>
+                                <div class="theme-select-box">
+                                    <img [src]="'/assets/common/images/metronic-themes/' + themeSetting.theme +  '.png'"
+                                        width="150"  alt="theme{{themeSetting.theme}}"/>
+                                    <span class="theme-name">{{getLocalizedThemeName(themeSetting.theme)}}</span>
+                                </div>
+                            </ng-template>
+
+                            <default-theme-ui-settings *ngIf="themeSetting.theme == 'default'"
+                                [settings]="themeSetting"></default-theme-ui-settings>
+                            <theme2-theme-ui-settings *ngIf="themeSetting.theme == 'theme2'" [settings]="themeSetting">
+                            </theme2-theme-ui-settings>
+                            <theme3-theme-ui-settings *ngIf="themeSetting.theme == 'theme3'" [settings]="themeSetting">
+                            </theme3-theme-ui-settings>
+                            <theme4-theme-ui-settings *ngIf="themeSetting.theme == 'theme4'" [settings]="themeSetting">
+                            </theme4-theme-ui-settings>
+                            <theme5-theme-ui-settings *ngIf="themeSetting.theme == 'theme5'" [settings]="themeSetting">
+                            </theme5-theme-ui-settings>
+                            <theme6-theme-ui-settings *ngIf="themeSetting.theme == 'theme6'" [settings]="themeSetting">
+                            </theme6-theme-ui-settings>
+                            <theme7-theme-ui-settings *ngIf="themeSetting.theme == 'theme7'" [settings]="themeSetting">
+                            </theme7-theme-ui-settings>
+                            <theme8-theme-ui-settings *ngIf="themeSetting.theme == 'theme8'" [settings]="themeSetting">
+                            </theme8-theme-ui-settings>
+                            <theme9-theme-ui-settings *ngIf="themeSetting.theme == 'theme9'" [settings]="themeSetting">
+                            </theme9-theme-ui-settings>
+                            <theme10-theme-ui-settings *ngIf="themeSetting.theme == 'theme10'"
+                                [settings]="themeSetting"></theme10-theme-ui-settings>
+                            <theme11-theme-ui-settings *ngIf="themeSetting.theme == 'theme11'"
+                                [settings]="themeSetting"></theme11-theme-ui-settings>
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

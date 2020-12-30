@@ -1,0 +1,91 @@
+<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="'Transaction'" [breadcrumbs]="breadcrumbs">
+            <div class="py-2 py-lg-4 subheader subheader-solid" *ngIf="transaction">
+                <div class="align-items-center container-fluid d-flex flex-sm-nowrap flex-wrap justify-content-between">
+                    <div class="d-flex align-items-center flex-wrap mr-2">
+                        <h5 class="font-weight-bold mb-2 mr-5 mt-2 text-dark">Transaction: 1949 Commonwealth Avenue, Apt 57, Brighton MA 0213</h5>
+                    </div>
+                    <div class="d-flex align-items-center"></div>
+                </div>
+            </div>
+        </sub-header>
+        <div class="container-fluid" *ngIf="transaction">
+            <transaction-general-info-section 
+                [(transaction)]="transaction"
+                [(isEditMode)]="isEditMode"
+                >
+            </transaction-general-info-section>
+
+            <div class="app-wizard2" *ngIf="transaction && transaction.id">
+                <div class="card card-custom gutter-b">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="card-label pt-7">More Info</h3>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="kt_wizard_v2" data-wizard-state="first" class="wizard wizard-2">
+                            <div class="wizard-body pr-10">
+                                <div *ngIf="transactionSections.contacts === currentSection">
+                                    <transaction-contacts [transactionId]="transaction.id"></transaction-contacts>
+                                </div>
+                                <div *ngIf="transactionSections.forms === currentSection">
+                                    <transaction-forms-table 
+                                        [transactionId]="transaction.id"></transaction-forms-table>
+                                </div>
+                                <div *ngIf="transactionSections.signings === currentSection">
+                                    <signings-table 
+                                        [transactionId]="transaction.id"></signings-table>
+                                </div>
+                                <div *ngIf="transactionSections.documents === currentSection">
+                                    It will be a table with transaction documents
+                                </div>
+                            </div>
+                            <div class="wizard-nav border-left pl-10">
+                                <div class="wizard-steps">
+                                    <a (click)="switchSection(transactionSections.contacts)" 
+                                        [ngClass]="{'wizard-step-current': transactionSections.contacts === currentSection }"
+                                        href="javascript:;" data-wizard-type="step" class="wizard-step" data-wizard-state="pending">
+                                        <div class="wizard-wrapper">
+                                            <div class="wizard-label">
+                                                <div class="wizard-title">Contacts</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a (click)="switchSection(transactionSections.forms)" 
+                                        [ngClass]="{'wizard-step-current': transactionSections.forms === currentSection }"
+                                        href="javascript:;" data-wizard-type="step" class="wizard-step" data-wizard-state="pending">
+                                        <div class="wizard-wrapper">
+                                            <div class="wizard-label">
+                                                <div class="wizard-title">Forms</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a (click)="switchSection(transactionSections.signings)" 
+                                        [ngClass]="{'wizard-step-current': transactionSections.signings === currentSection }"
+                                        href="javascript:;" data-wizard-type="step" class="wizard-step" data-wizard-state="pending">
+                                        <div class="wizard-wrapper">
+                                            <div class="wizard-label">
+                                                <div class="wizard-title">Signings</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a (click)="switchSection(transactionSections.documents)" 
+                                        [ngClass]="{'wizard-step-current': transactionSections.documents === currentSection }"
+                                        href="javascript:;" data-wizard-type="step" class="wizard-step" data-wizard-state="pending">
+                                        <div class="wizard-wrapper">
+                                            <div class="wizard-label">
+                                                <div class="wizard-title">Documents</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

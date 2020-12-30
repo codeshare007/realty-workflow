@@ -1,0 +1,238 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Filter_Template_Here}}",
+			"condition" : "{{Property_Advanced_Filter_Here}} == true",
+			"templates" : [
+					{
+					"type" : "enum",
+					"content" : "
+							<div class=\"col-md-3\">
+								<label for=\"{{Property_Name_Here}}FilterId\">@L(\"{{Property_Name_Here}}\")</label>
+								<select class=\"form-control\" name=\"{{Property_Name_Here}}Filter\" id=\"{{Property_Name_Here}}FilterId\">
+								<option value=\"-1\">@L(\"All\")</option>
+									{{Enum_Option_Looped_Template_Here}}
+								</select>
+                            </div>"
+					},
+					{
+					"type" : "bool",
+					"content" : "
+							<div class=\"col-md-3\">
+								<label for=\"{{Property_Name_Here}}FilterId\">@L(\"{{Property_Name_Here}}\")</label>
+								<select class=\"form-control\" name=\"{{Property_Name_Here}}Filter\" id=\"{{Property_Name_Here}}FilterId\">
+									<option value=\"-1\">@L(\"All\")</option>
+									<option value=\"0\">@L(\"False\")</option>
+									<option value=\"1\">@L(\"True\")</option>
+								</select>
+                            </div>"
+					},
+					{
+					"type" : "DateTime",
+					"content" : "
+                            <div class=\"col-md-3\">
+                                    <div class=\"form-group\">
+										<label for=\"Min{{Property_Name_Here}}FilterId\">@L(\"{{Property_Name_Here}}Range\")</label>
+										<div class=\"input-group\">
+											<input class=\"form-control m-input date-picker\" type=\"text\" placeholder=\"@L(\"MinValue\")\"  id=\"Min{{Property_Name_Here}}FilterId\">
+											<span style=\"line-height: 40px;padding: 0 15px 0 15px;\"> &mdash; </span>
+											<input class=\"form-control m-input date-picker\" type=\"text\" placeholder=\"@L(\"MaxValue\")\"  id=\"Max{{Property_Name_Here}}FilterId\">
+										</div>
+									</div>
+                            </div>"
+					},
+					{
+					"type" : "numeric",
+					"content" : "
+                            <div class=\"col-md-3\">
+                                 <div class=\"form-group\">
+									<label  for=\"Min{{Property_Name_Here}}FilterId\">@L(\"MinMax\") @L(\"{{Property_Name_Here}}\")</label>
+									<div class=\"input-group\">
+										<input type=\"number\" class=\"form-control m-input\" placeholder=\"@L(\"MinValue\")\" name=\"min{{Property_Name_Here}}Filter\" id=\"Min{{Property_Name_Here}}FilterId\"/>
+                                        <input type=\"number\" class=\"form-control m-input\" placeholder=\"@L(\"MaxValue\")\" name=\"max{{Property_Name_Here}}Filter\"  id=\"Max{{Property_Name_Here}}FilterId\"/>
+									</div>
+                                </div>
+                            </div>"
+					},
+					{
+					"type" : "default",
+					"content" : "
+							<div class=\"col-md-3\">
+								<div class=\"form-group\">
+									<label for=\"{{Property_Name_Here}}FilterId\">@L(\"{{Property_Name_Here}}\")</label>
+									<input type=\"text\" class=\"form-control\" name=\"{{property_Name_Here}}Filter\" id=\"{{Property_Name_Here}}FilterId\">
+								</div>
+                            </div>"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{Property_Looped_Template_Here}}",
+			"condition" : "{{Property_Listed_Here}} == true",
+			"templates" : [
+					{
+					"type" : "default",
+					"content" : "
+								<th>@L(\"{{Property_Name_Here}}\")</th>"
+					}
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "
+								<th>@L(\"{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}\")</th>"
+					}
+				]
+		},
+		{
+			"placeholder" : "{{NP_Filter_Template_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "
+							<div class=\"col-md-3\">
+								<div class=\"form-group\">
+									<label for=\"{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}FilterId\">(@L(\"{{NP_Foreign_Entity_Name_Here}}\")) @L(\"{{NP_Display_Property_Name_Here}}\")</label>
+									<input type=\"text\" class=\"form-control\" name=\"{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}Filter\" id=\"{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}FilterId\">
+								</div>
+                            </div>"
+					}
+				]
+		}
+	],
+"enumTemplates":[
+		{
+			"placeholder" : "{{Enum_Option_Looped_Template_Here}}",
+			"content" : "										<option value=\"{{Enum_Property_Value_Here}}\">@L(\"Enum_{{Enum_Name_Here}}_{{Enum_Property_Value_Here}}\")</option>
+"
+		}
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{Get_Excel_Button_Here}}",
+			"condition": "{{Create_Excel_Export_Here}} == true",
+			"content": "<button id=\"ExportToExcelButton\" class=\"btn btn-outline-success\"><i class=\"fa fa-file-excel\"></i> @L(\"ExportToExcel\")</button>
+            "
+		},
+		{
+			"placeholder": "{{Container_Class_Here}}",
+			"condition": "{{Project_Version_Here}} < 070200",
+			"content": "kt-content"
+		},
+		{
+			"placeholder": "{{Container_Class_V2_Here}}",
+			"condition": "{{Project_Version_Here}} >= 070200 && {{Project_Version_Here}} < 090000",
+			"content": "@(await GetContainerClass()) kt-grid__item kt-grid__item--fluid"
+		},
+        {
+            "placeholder": "{{Container_Class_V3_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "@(await GetContainerClass())"
+        },
+		{
+			"placeholder": "{{Div_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "</div>"
+		},
+		{
+			"placeholder": "{{Content_Class_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200 && {{Project_Version_Here}} < 090000",
+			"content": "<div class=\"kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor\">"
+		},
+		{
+			"placeholder": "{{Container_Class_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "<div class=\"@(await GetContainerClass())\">"
+		},		
+		{
+			"placeholder": "{{Create_Button_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == false",
+			"content": "<button id=\"CreateNew{{Entity_Name_Here}}Button\" class=\"btn btn-primary blue\"><i class=\"fa fa-plus\"></i> @L(\"CreateNew{{Entity_Name_Here}}\")</button>"
+		},		
+		{
+			"placeholder": "{{Create_Button_Here}}",
+			"condition": "{{Is_Non_Modal_CRUD_Page}} == true",
+			"content": "<a href=\"\\{{App_Area_Name_Here}}\\{{Entity_Name_Plural_Here}}\\CreateOrEdit\" class=\"btn btn-primary blue\"><i class=\"fa fa-plus\"></i> @L(\"CreateNew{{Entity_Name_Here}}\")</a>"
+		},
+        {
+            "placeholder": "{{Content_Class_After_Metronic_V90}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "<div class=\"content d-flex flex-column flex-column-fluid\">"
+        },
+        {
+            "placeholder": "{{Page_Header}}",
+            "condition": "{{Project_Version_Here}} < 090000",
+            "content": "
+                <div class=\"kt-subheader kt-grid__item\">
+                  {{Container_Class_After_Metronic_V606}}
+                    <div class=\"kt-subheader__main\">
+                        <h3 class=\"kt-subheader__title\">
+                            <span>@L(\"{{Entity_Name_Plural_Here}}\")</span>
+                        </h3>
+                        <span class=\"kt-subheader__separator kt-subheader__separator--v\"></span>
+                        <span class=\"kt-subheader__desc\">
+                            @L(\"{{Entity_Name_Plural_Here}}HeaderInfo\")
+                        </span>
+                    </div>
+                    <div class=\"kt-subheader__toolbar\">
+                        <div class=\"kt-subheader__wrapper\">
+                            {{Get_Excel_Button_Here}}@if (IsGranted(AppPermissions.{{Permission_Name_Here}}_Create))
+                            {
+                                {{Create_Button_Here}}                
+                            }
+                        </div>
+                    </div>
+                  {{Div_After_Metronic_V606}}
+                </div>
+            "
+        },
+        {
+            "placeholder": "{{Page_Header}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "
+                <abp-page-subheader title=\"@L(\"{{Entity_Name_Plural_Here}}\")\" description=\"@L(\"{{Entity_Name_Plural_Here}}HeaderInfo\")\">
+                     {{Get_Excel_Button_Here}}
+                     @if (IsGranted(AppPermissions.{{Permission_Name_Here}}_Create))
+                     {
+                         {{Create_Button_Here}}                
+                     }
+                </abp-page-subheader>
+            "
+        },
+        {
+            "placeholder": "{{Portlet_Class_Here}}",
+            "condition": "{{Project_Version_Here}} < 090000",
+            "content": "kt-portlet kt-portlet--mobile"
+        },
+        {
+            "placeholder": "{{Card_Class_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "card card-custom gutter-b"
+        },
+        {
+            "placeholder": "{{Portlet_Body_Class_Here}}",
+            "condition": "{{Project_Version_Here}} < 090000",
+            "content": "kt-portlet__body"
+        },
+        {
+            "placeholder": "{{Card_Body_Class_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "card-body"
+        },
+        {
+            "placeholder": "{{Form_Class_Here}}",
+            "condition": "{{Project_Version_Here}} < 090000",
+            "content": "kt-form"
+        },
+        {
+            "placeholder": "{{Form_Class_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "form"
+        }
+	]
+}

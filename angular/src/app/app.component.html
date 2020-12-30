@@ -1,0 +1,28 @@
+<div [ngClass]="{'subscription-bar-visible': subscriptionStatusBarVisible()}" class="d-flex flex-column flex-root">
+    <default-layout *ngIf="theme=='default'"></default-layout>
+    <theme2-layout *ngIf="theme=='theme2'"></theme2-layout>
+    <theme3-layout *ngIf="theme=='theme3'"></theme3-layout>
+    <theme4-layout *ngIf="theme=='theme4'"></theme4-layout>
+    <theme5-layout *ngIf="theme=='theme5'"></theme5-layout>
+    <theme6-layout *ngIf="theme=='theme6'"></theme6-layout>
+    <theme7-layout *ngIf="theme=='theme7'"></theme7-layout>
+    <theme8-layout *ngIf="theme=='theme8'"></theme8-layout>
+    <theme9-layout *ngIf="theme=='theme9'"></theme9-layout>
+    <theme10-layout *ngIf="theme=='theme10'"></theme10-layout>
+    <theme11-layout *ngIf="theme=='theme11'"></theme11-layout>
+</div>
+
+<kt-scroll-top></kt-scroll-top>
+
+<loginAttemptsModal #loginAttemptsModal></loginAttemptsModal>
+<linkedAccountsModal *ngIf="!installationMode" #linkedAccountsModal (modalClose)="getRecentlyLinkedUsers()"></linkedAccountsModal>
+<userDelegationsModal #userDelegationsModal></userDelegationsModal>
+<changePasswordModal #changePasswordModal></changePasswordModal>
+<changeProfilePictureModal #changeProfilePictureModal></changeProfilePictureModal>
+<mySettingsModal #mySettingsModal (modalSave)="onMySettingsModalSaved()"></mySettingsModal>
+<notificationSettingsModal #notificationSettingsModal></notificationSettingsModal>
+
+<commonLookupModal #userLookupModal (itemSelected)="chatBarComponent.addFriendSelected($event)"></commonLookupModal>
+<chat-bar #chatBarComponent *ngIf="!installationMode" [userLookupModal]="userLookupModal"></chat-bar>
+<theme-selection-panel #themeSelectionPanelComponent *ngIf="!installationMode && isQuickThemeSelectEnabled"></theme-selection-panel> 
+<session-timeout #sessionTimeout *ngIf="IsSessionTimeOutEnabled"></session-timeout>

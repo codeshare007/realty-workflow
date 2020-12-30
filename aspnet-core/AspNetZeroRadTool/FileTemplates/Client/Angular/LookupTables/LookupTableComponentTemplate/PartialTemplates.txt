@@ -1,0 +1,55 @@
+{
+"conditionalTemplates":[
+		{
+			"placeholder": "{{TurboTable_Import_Here}}",
+			"condition": "{{Project_Version_Here}} >= 050400 && {{Project_Version_Here}} < 080500",
+			"content": "import { Table } from 'primeng/components/table/table'"
+		},
+		{
+			"placeholder": "{{TurboTable_Import_Here}}",
+			"condition": "{{Project_Version_Here}} >= 080500",
+			"content": "import { Table } from 'primeng/table'"
+		},
+		{
+			"placeholder": "{{DataTable_Import_Here}}",
+			"condition": "{{Project_Version_Here}} < 050400",
+			"content": "import { DataTable } from 'primeng/components/datatable/datatable'"
+		},
+		{
+			"placeholder": "{{DataTable_Dec_Here}}",
+			"condition": "{{Project_Version_Here}} < 050400",
+			"content": "Data"
+		},
+		{
+			"placeholder": "{{TruboTable_Primenghelper_Here}}",
+			"condition": "{{Project_Version_Here}} >= 050400",
+			"content": "primengTableHelper"
+		},
+		{
+			"placeholder": "{{DataTable_Primenghelper_Here}}",
+			"condition": "{{Project_Version_Here}} < 050400",
+			"content": "primengDatatableHelper"
+		},
+		{
+			"placeholder": "{{PrimeNG_Imports_Here}}",
+			"condition": "{{Project_Version_Here}} < 080500",
+			"content": "import { Paginator } from 'primeng/components/paginator/paginator';
+import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';"
+		},
+		{
+			"placeholder": "{{PrimeNG_Imports_Here}}",
+			"condition": "{{Project_Version_Here}} >= 080500",
+			"content": "import { Paginator } from 'primeng/paginator';
+import { LazyLoadEvent } from 'primeng/public_api';"
+		},
+		{
+			"placeholder": "{{Import_Modal_Directive_Here}}",
+			"condition": "{{Project_Version_Here}} < 080500",
+			"content": "import { ModalDirective } from 'ngx-bootstrap';"
+		},
+		{
+			"placeholder": "{{Import_Modal_Directive_Here}}",
+			"condition": "{{Project_Version_Here}} >= 080500",
+			"content": "import { ModalDirective } from 'ngx-bootstrap/modal';"
+		}
+	]}

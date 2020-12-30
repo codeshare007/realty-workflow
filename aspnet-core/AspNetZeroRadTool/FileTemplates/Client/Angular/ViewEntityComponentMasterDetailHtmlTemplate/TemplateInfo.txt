@@ -1,0 +1,4 @@
+{
+	"path" : "app\\{{menu_Position_Here}}\\{{namespace_Relative_Here}}\\{{entity_Name_Plural_Here}}\\view-{{entity_Name_Here}}.component.html",
+	"condition" : "{{Create_View_Only_Here}} == true && {{Is_Master_Detail_Page_Here}} == true"
+}

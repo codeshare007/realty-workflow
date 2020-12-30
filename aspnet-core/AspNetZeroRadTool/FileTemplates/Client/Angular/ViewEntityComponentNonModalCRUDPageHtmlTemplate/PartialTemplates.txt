@@ -1,0 +1,164 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Looped_Template_Here}}",
+			"condition" : "{{Property_Listed_Here}} == true",
+			"templates" : [
+					{
+					"type" : "enum",
+					"content" : "                    <div class=\"col-6 mb-3\">
+                        <h6>{{l(\"{{Property_Name_Here}}\")}} :</h6>
+                        {{l({{Enum_Localization_Before_060600}} {{property_Type_Here}}[item.{{entity_Name_Here}}.{{property_Name_Here}}])}}
+                    </div>
+"
+					},
+					{
+					"type" : "bool",
+					"content" : "                    <div class=\"col-6 mb-3\">
+                        <h6>{{l(\"{{Property_Name_Here}}\")}} :</h6>
+                        <div *ngIf=\"item.{{entity_Name_Here}}.{{property_Name_Here}}\" class=\"text-left\"><i class=\"fa fa-check-circle {{Font_Success_Class_Here}}\"
+                                title=\"True\"></i></div>
+                        <div *ngIf=\"!item.{{entity_Name_Here}}.{{property_Name_Here}}\" class=\"text-left\"><i class=\"fa fa-times-circle\" title=\"False\"></i></div>
+                    </div>"
+					},
+					{
+					"type" : "DateTime",
+					"content" : "                    <div class=\"col-6 mb-3\">
+                        <h6>{{l(\"{{Property_Name_Here}}\")}} :</h6>
+                        {{ item.{{entity_Name_Here}}.{{property_Name_Here}} | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+"
+					},
+					{
+					"type" : "default",
+					"content" : "                    <div class=\"col-6 mb-3\">
+                        <h6>{{l(\"{{Property_Name_Here}}\")}} :</h6>
+                        {{ item.{{entity_Name_Here}}.{{property_Name_Here}} }}
+                    </div>
+"
+					}
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "                    <div class=\"col-6 mb-3\">
+                        <h6>({{l(\"{{NP_Foreign_Entity_Name_Here}}\")}}) {{l(\"{{NP_Display_Property_Name_Here}}\")}} :</h6>
+                        {{item.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}}}
+                    </div>
+"
+					}
+				]
+		}
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{Enum_Localization_Before_060600}}",
+			"condition": "{{Project_Version_Here}} < 060600",
+			"content": "'Enum_{{Property_Type_Here}}' + "
+		},
+		{
+			"placeholder": "{{Div_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "</div>"
+		},
+		{
+			"placeholder": "{{Container_Class_Here}}",
+			"condition": "{{Project_Version_Here}} < 070200",
+			"content": "class=\"kt-content\""
+		},
+		{
+			"placeholder": "{{Container_Class_V2_Here}}",
+			"condition": "{{Project_Version_Here}} >= 070200 && {{Project_Version_Here}} < 090000",
+			"content": "[class]=\"containerClass + ' kt-grid__item kt-grid__item--fluid'\""
+		},
+		{
+            "placeholder": "{{Container_Class_V3_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "[class]=\"containerClass\""
+        },
+		{
+			"placeholder": "{{Content_Class_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200 && {{Project_Version_Here}} < 090000",
+			"content": "<div class=\"kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor\">"
+		},        
+		{
+            "placeholder": "{{Content_Class_After_Metronic_V90}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "<div class=\"content d-flex flex-column flex-column-fluid\">"
+        },
+		{
+			"placeholder": "{{Container_Class_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "<div [class]=\"containerClass\">"
+		},
+        {
+            "placeholder": "{{Page_Header_Here}}",
+            "condition": "{{Project_Version_Here}} < 090000",
+            "content": "
+                <div class=\"kt-subheader kt-grid__item\">
+                  {{Container_Class_After_Metronic_V606}}
+                    <div class=\"kt-subheader__main\">
+                        <h3 class=\"kt-subheader__title\">
+            				<span>{{l(\"Entity_Name_Plural_Here\")}} {{l(\"Details\")}}</span>
+            			</h3>
+            			<span class=\"kt-subheader__separator kt-subheader__separator--v\"></span>
+            			<div class=\"kt-subheader__breadcrumbs\">
+            				<a [routerLink]=\"['/app/{{menu_Position_Here}}/{{namespace_Relative_Here}}/{{entity_Name_Plural_Here}}']\"
+            					class=\"kt-subheader__breadcrumbs-home\"><i
+            						class=\"flaticon2-shelter\"></i>{{l(\"{{Entity_Name_Here}}\")}}</a>
+            				<span class=\"kt-subheader__breadcrumbs-separator\"></span>
+            				<a 
+            					class=\"kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active\">
+            					<span>{{l(\"Details\")}}</span>
+            				</a>
+            			</div>
+                    </div>
+                  {{Div_After_Metronic_V606}}
+                </div>
+            "
+        },
+        {
+            "placeholder": "{{Page_Header_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "
+                 <sub-header [title]=\"('{{Entity_Name_Plural_Here}}' | localize) +' '+ ('Details' | localize)\" [breadcrumbs]=\"breadcrumbs\">
+                 </sub-header>
+            "
+        },
+        {
+            "placeholder": "{{Portlet_Class_Here}}",
+            "condition": "{{Project_Version_Here}} < 090000",
+            "content": "kt-portlet kt-portlet--mobile"
+        },
+        {
+            "placeholder": "{{Card_Class_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "card card-custom gutter-b"
+        },
+        {
+            "placeholder": "{{Portlet_Body_Class_Here}}",
+            "condition": "{{Project_Version_Here}} < 090000",
+            "content": "kt-portlet__body"
+        },
+        {
+            "placeholder": "{{Card_Body_Class_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "card-body"
+        },
+        {
+            "placeholder": "{{Font_Success_Class_Here}}",
+            "condition": "{{Project_Version_Here}} < 090000",
+            "content": "kt--font-success"
+        },
+        {
+            "placeholder": "{{Font_Success_Class_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "text-success"
+        }
+	]
+}

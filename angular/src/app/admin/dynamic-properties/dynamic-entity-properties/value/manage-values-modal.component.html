@@ -1,0 +1,27 @@
+<div appBsModal #manageDynamicEntityParameterValuesModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="manageDynamicEntityParameterValuesModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg" *ngIf="initialized">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <div class="float-left"><span class="font-weight-bold ">{{'EntityFullName' | localize}}:</span>
+                        {{entityFullName}}
+                    </div>
+                    <div class="float-right"><span class="font-weight-bold ">{{'EntityId' | localize}}:</span>
+                        {{entityId}}
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <dynamic-entity-property-value-manager #dynamicEntityPropertyValueManager
+                        [entityFullName]="entityFullName" [entityId]="entityId" (onSaveDone)="close()">
+                    </dynamic-entity-property-value-manager>
+                </div>
+                <div class="modal-footer">
+                    <button  type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">{{"Cancel" | localize}}</button>
+
+                        <button type="button" class="btn btn-primary font-weight-bold"
+                        (click)="saveAll()">{{'Save' | localize}}</button>
+                </div>
+            </div>
+    </div>
+</div>

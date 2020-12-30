@@ -1,0 +1,57 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+
+# dependencies
+/node_modules
+/bower_components
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+*.launch
+.settings/
+.vs/
+obj/
+bin/
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage/*
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+package-lock.json
+
+# e2e
+/e2e/*.js
+/e2e/*.map
+
+#System Files
+.DS_Store
+Thumbs.db
+
+# VS files
+/Realty.AngularUI.csproj.user
+project.lock.json
+Properties/launchSettings.json
+/Realty.AngularUI.xproj.user
+/src/assets/common/styles/**/*.min.*
+
+src/assets/metronic/themes/**/css/*.min.css
+!src/assets/metronic/themes/**/css/pages/
+
+src/assets/primeng/datatable/css/*.min.css
+
+src/assets/metronic/themes/**/css/*.min.css
+!src/assets/metronic/themes/**/css/pages/
+
+src/assets/fonts/*min.css
+
+src/assets/metronic/themes/default/css/skins/**/*.min.css

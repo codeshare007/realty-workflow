@@ -1,0 +1,45 @@
+<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="'Signing_Design' | localize"
+            [breadcrumbs]="breadcrumbs"
+            >
+            <div role="actions">
+                <button type="button"
+                        (click)="saveForm()"
+                        class="btn btn-primary">
+                    {{ 'Save' | localize }}
+                </button>
+            </div>
+        </sub-header>
+
+        <div [class]="containerClass">
+            <div class="card card-custom"
+                 [busyIf]="loading">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-9">
+                            <div *ngFor="let form of signing.forms">
+                                <document-view *ngIf="form"
+                                                [document]="form"
+                                                [formLibrarySettings]="signingFormSettingService.settings">
+                                </document-view>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <form-library-controls (onDropped)="onFormDropped($event)"
+                                                   [formLibrarySettings]="signingFormSettingService.settings">
+                            </form-library-controls>
+                        </div>
+                        <div [ngClass]="{ 'form-library-document__dnd-wrapper': isHover }">
+                            <div [innerHtml]="dragebleElement"
+                                 [style.opacity]="0.8"
+                                 [style.transform]="'translate3d('+ boxPosition.left + 'px,' + boxPosition.top + 'px,' + '0px)'">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

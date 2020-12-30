@@ -1,0 +1,84 @@
+<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="('DynamicPropertyManagement' | localize)"></sub-header>
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <tabset>
+                            <tab class="p-5" heading=" {{'DynamicProperties' | localize}}">
+                                <div class="row justify-content-end px-5 pb-5">
+                                    <button *ngIf="'Pages.Administration.DynamicProperties.Create' | permission"
+                                        class="btn btn-primary" (click)="addNewDynamicProperty()"><i
+                                            class="fa fa-plus"></i>{{"AddNewDynamicProperty" | localize}}</button>
+                                </div>
+
+                                <!--<Primeng-TurboTable-Start>-->
+                                <div class="col primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                                    <p-table #dataTable (onLazyLoad)="getDynamicProperties()"
+                                        [value]="primengTableHelper.records"
+                                        rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                        [lazy]="true" [responsive]="primengTableHelper.isResponsive">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width: 130px;"></th>
+                                                <th>{{ 'PropertyName' | localize}}</th>
+                                                <th> {{'InputType' | localize}} </th>
+                                                <th> {{'Permission' | localize}} </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr>
+                                                <td>
+                                                    <div class="btn-group dropdown" dropdown>
+                                                        <button dropdownToggle
+                                                            class="dropdown-toggle btn btn-primary btn-sm dropdown-toggle">
+                                                            <i class="fa fa-cog"></i><span class="caret"></span>
+                                                            {{"Actions" | localize}}
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-left dropdown-excel-operations"
+                                                            *dropdownMenu>
+                                                            <a class="dropdown-item" href="javascript:;"
+                                                                *ngIf="'Pages.Administration.DynamicProperties.Edit' | permission"
+                                                                (click)="editDynamicProperty(record.id)">{{'Edit' | localize}}</a>
+                                                            <a class="dropdown-item" href="javascript:;"
+                                                                *ngIf="'Pages.Administration.DynamicProperties.Delete' | permission"
+                                                                (click)="deleteDynamicProperty(record.id)">{{'Delete' | localize}}</a>
+                                                            <a class="dropdown-item" href="javascript:;"
+                                                                *ngIf="('Pages.Administration.DynamicPropertyValue.Edit' | permission) && hasValues(record.inputType)"
+                                                                (click)="editValues(record)">{{'EditValues' | localize}}</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    {{record.propertyName}}
+                                                </td>
+                                                <td>
+                                                    {{record.inputType}}
+                                                </td>
+                                                <td>
+                                                    {{record.permission}}
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                    <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                        {{'NoData' | localize}}
+                                    </div>
+                                </div>
+                                <!--<Primeng-TurboTable-End>-->
+                            </tab>
+                            <tab class="p-5" heading=" {{'DynamicEntityProperties' | localize}}">
+                                <dynamic-entity-property-list></dynamic-entity-property-list>
+                            </tab>
+                        </tabset>
+                    </div>
+                </div>
+            </div>
+            <dynamic-property-value-modal #dynamicPropertyValueModal>
+            </dynamic-property-value-modal>
+            <create-or-edit-dynamic-property-modal #createOrEditDynamicProperty (modalSave)="getDynamicProperties()">
+            </create-or-edit-dynamic-property-modal>
+        </div>
+    </div>
+</div>

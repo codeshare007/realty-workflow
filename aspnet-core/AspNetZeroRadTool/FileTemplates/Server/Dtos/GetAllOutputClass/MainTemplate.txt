@@ -1,0 +1,9 @@
+﻿namespace {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Dtos
+{
+    public class Get{{Entity_Name_Here}}ForViewDto
+    {
+		public {{Entity_Name_Here}}Dto {{Entity_Name_Here}} { get; set; }
+
+{{Navigation_Property_Looped_Template_Here}}
+    }
+}

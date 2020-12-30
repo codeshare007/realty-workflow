@@ -1,0 +1,141 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Looped_Template_Here}}",
+			"condition" : "{{Property_Listed_Here}} == true",
+			"templates" : [
+					{
+					"type" : "enum",
+					"content" : "            <div class=\"col-6 mb-3\">
+                <h6>@L(\"{{Property_Name_Here}}\") :</h6>
+                @L(\"Enum_{{Property_Type_Here}}_\" + (int)Model.{{Entity_Name_Here}}.{{Property_Name_Here}})
+            </div>
+"
+					},
+					{
+					"type" : "default",
+					"content" : "            <div class=\"col-6 mb-3\">
+                <h6>@L(\"{{Property_Name_Here}}\") :</h6>
+                @Model.{{Entity_Name_Here}}.{{Property_Name_Here}}
+            </div>
+"
+					}
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "            <div class=\"col-6 mb-3\">
+                <h6>(@L(\"{{NP_Foreign_Entity_Name_Here}}\")) @L(\"{{NP_Display_Property_Name_Here}}\") :</h6>
+                @Model.{{NP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}
+            </div>
+"
+					}
+				]
+		}
+	],
+	"conditionalTemplates": [		
+		{
+			"placeholder": "{{Container_Class_Here}}",
+			"condition": "{{Project_Version_Here}} < 070200",
+			"content": "kt-content"
+		},
+		{
+            "placeholder": "{{Container_Class_V2_Here}}",
+            "condition": "{{Project_Version_Here}} >= 070200 && {{Project_Version_Here}} < 090000",
+            "content": "@(await GetContainerClass()) kt-grid__item kt-grid__item--fluid"
+        },
+        {
+            "placeholder": "{{Container_Class_V3_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "@(await GetContainerClass())"
+        },
+		{
+			"placeholder": "{{Div_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "</div>"
+		},
+		{
+			"placeholder": "{{Content_Class_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200 && {{Project_Version_Here}} < 090000",
+			"content": "<div class=\"kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor\">"
+		},
+		{
+			"placeholder": "{{Container_Class_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "<div class=\"@(await GetContainerClass())\">"
+		},
+        {
+            "placeholder": "{{Content_Class_After_Metronic_V90}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "<div class=\"content d-flex flex-column flex-column-fluid\">"
+        },
+		{
+			"placeholder": "{{Page_Header}}",
+            "condition": "{{Project_Version_Here}} < 090000",
+            "content": "
+                 <div class=\"kt-subheader kt-grid__item\">
+                  {{Container_Class_After_Metronic_V606}}
+                    <div class=\"kt-subheader__main\">
+                        <h3 class=\"kt-subheader__title\">
+                            <span>@L(\"Details\")</span>
+                        </h3>
+                        <span class=\"kt-subheader__separator kt-subheader__separator--v\"></span>
+                        <div class=\"kt-subheader__breadcrumbs\">
+                            <a href=\"/{{App_Area_Name_Here}}/{{Entity_Name_Plural_Here}}\" class=\"kt-subheader__breadcrumbs-home\"><i class=\"flaticon2-shelter\"></i>&thinsp;@L(\"{{Entity_Name_Plural_Here}}\")</a>
+                            <span class=\"kt-subheader__breadcrumbs-separator\"></span>
+                            <a href=\"javascript:;\" class=\"kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active\">
+                               @L(\"Details\")
+                            </a>
+                        </div>
+                    </div>
+                  {{Div_After_Metronic_V606}}
+                </div>
+            "
+		},
+        {
+            "placeholder": "{{Page_Header}}",
+             "condition": "{{Project_Version_Here}} >= 090000",
+             "content": "
+                  @{
+                      var breadcrumbs = new List<BreadcrumbItem>()
+                      {
+                          new BreadcrumbItem(\"/{{App_Area_Name_Here}}/{{Entity_Name_Plural_Here}}\", L(\"{{Entity_Name_Plural_Here}}\")),
+                          new BreadcrumbItem(L(\"Details\")),
+                      };
+                   }
+                  <abp-page-subheader title=\"@L(\"Details\")\" breadcrumbs=\"breadcrumbs\">                     
+                  </abp-page-subheader>
+             "
+        },
+        {
+            "placeholder": "{{Portlet_Class_Here}}",
+            "condition": "{{Project_Version_Here}} < 090000",
+            "content": "kt-portlet kt-portlet--mobile"
+        },
+        {
+            "placeholder": "{{Card_Class_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "card card-custom gutter-b"
+        },
+        {
+            "placeholder": "{{Portlet_Body_Class_Here}}",
+            "condition": "{{Project_Version_Here}} < 090000",
+            "content": "kt-portlet__body"
+        },
+        {
+            "placeholder": "{{Card_Body_Class_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "card-body"
+        },
+        {
+            "placeholder": "{{Using_Tag_Helper_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "@using {{Namespace_Here}}.Web.TagHelpers"
+        }
+    ]
+}

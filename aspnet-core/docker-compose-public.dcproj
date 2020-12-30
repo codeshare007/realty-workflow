@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
+  <PropertyGroup Label="Globals">
+    <ProjectVersion>2.1</ProjectVersion>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <ProjectGuid>75cbc9a6-fd1a-468e-9c73-23b3b7860898</ProjectGuid>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DockerServiceName>mycompanyname.abpzerotemplate.web.public</DockerServiceName>
+	<DockerComposeBaseFilePath>docker\mvc\docker-compose-public</DockerComposeBaseFilePath>
+	<AdditionalComposeFilePaths>docker\mvc\docker-compose-mvc.yml;docker\mvc\docker-compose-mvc.override.yml</AdditionalComposeFilePaths>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="docker\mvc\docker-compose-public.override.yml">
+      <DependentUpon>docker-compose-public.yml</DependentUpon>
+    </None>
+    <None Include="docker\mvc\docker-compose-public.yml" />
+    <None Include=".dockerignore" />
+  </ItemGroup>
+</Project>

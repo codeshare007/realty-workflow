@@ -1,0 +1,90 @@
+{
+"propertyTemplates":[
+		{
+			"placeholder" : "{{Property_Looped_Template_Here}}",
+			"condition" : "{{Property_Listed_Here}} == true",
+			"templates" : [
+					{
+					"type" : "enum",
+					"content" : "                    <div class=\"col-6 mb-3\">
+                        <h6>{{l(\"{{Property_Name_Here}}\")}} :</h6>
+                        {{l({{Enum_Localization_Before_060600}} {{property_Type_Here}}[item.{{entity_Name_Here}}.{{property_Name_Here}}])}}
+                    </div>
+"
+					},
+					{
+					"type" : "bool",
+					"content" : "                    <div class=\"col-6 mb-3\">
+                        <h6>{{l(\"{{Property_Name_Here}}\")}} :</h6>
+                        <div *ngIf=\"item.{{entity_Name_Here}}.{{property_Name_Here}}\" class=\"text-left\"><i class=\"fa fa-check-circle kt--font-success\"
+                                title=\"True\"></i></div>
+                        <div *ngIf=\"!item.{{entity_Name_Here}}.{{property_Name_Here}}\" class=\"text-left\"><i class=\"fa fa-times-circle\" title=\"False\"></i></div>
+                    </div>"
+					},
+					{
+					"type" : "DateTime",
+					"content" : "                    <div class=\"col-6 mb-3\">
+                        <h6>{{l(\"{{Property_Name_Here}}\")}} :</h6>
+                        {{ item.{{entity_Name_Here}}.{{property_Name_Here}} | momentFormat:'YYYY-MM-DD HH:mm:ss' }}
+                    </div>
+"
+					},
+					{
+					"type" : "default",
+					"content" : "                    <div class=\"col-6 mb-3\">
+                        <h6>{{l(\"{{Property_Name_Here}}\")}} :</h6>
+                        {{ item.{{entity_Name_Here}}.{{property_Name_Here}} }}
+                    </div>
+"
+					}
+				]
+		}
+	],
+"navigationPropertyTemplates":[
+		{
+			"placeholder" : "{{NP_Looped_Template_Here}}",
+			"templates" : [
+					{
+					"relation" : "single",
+					"content" : "                    <div class=\"col-6 mb-3\">
+                        <h6>({{l(\"{{NP_Foreign_Entity_Name_Here}}\")}}) {{l(\"{{NP_Display_Property_Name_Here}}\")}} :</h6>
+                        {{item.{{nP_Foreign_Entity_Name_Here}}{{NP_Display_Property_Name_Here}}{{NP_Duplication_Number_Here}}}}
+                    </div>
+"
+					}
+				]
+		}
+	],
+"conditionalTemplates":[
+		{
+			"placeholder": "{{Enum_Localization_Before_060600}}",
+			"condition": "{{Project_Version_Here}} < 060600",
+			"content": "'Enum_{{Property_Type_Here}}' + "
+		},
+		{
+			"placeholder": "{{Div_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "</div>"
+		},
+		{
+			"placeholder": "{{Container_Class_Here}}",
+			"condition": "{{Project_Version_Here}} < 070200",
+			"content": "class=\"kt-content\""
+		},
+		{
+			"placeholder": "{{Container_Class_V2_Here}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "[class]=\"containerClass + ' kt-grid__item kt-grid__item--fluid'\""
+		},
+		{
+			"placeholder": "{{Content_Class_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "<div class=\"kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor\">"
+		},
+		{
+			"placeholder": "{{Container_Class_After_Metronic_V606}}",
+			"condition": "{{Project_Version_Here}} >= 070200",
+			"content": "<div [class]=\"containerClass\">"
+		}
+	]
+}

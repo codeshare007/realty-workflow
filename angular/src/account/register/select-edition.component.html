@@ -1,0 +1,111 @@
+<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b shadow-lg">
+                <div class="card-body">
+                    <div class="row justify-content-center mt-10 mb-0 pricing-items">
+                        <div *ngIf="!editionsSelectOutput||!editionsSelectOutput.editionsWithFeatures"
+                             class="alert alert-warning fade show" role="alert">
+                            <div class="alert-icon">
+                                <i class="flaticon-warning"></i>
+                            </div>
+                            <div class="alert-text">{{'ThereIsNoEditionToUpgrade' |localize}}</div>
+                        </div>
+
+                        <div class="pt-30 pt-md-25 px-5 mb-15 text-center"
+                             style="min-width:200px"
+                             *ngFor="let editionWithFeatures of editionsSelectOutput.editionsWithFeatures;  let i = index"
+                             [class.border-left-md]="i>0">
+                            <!--begin::Icon-->
+                            <div class="d-flex flex-center position-relative mb-25">
+                                <span class="svg svg-fill-primary opacity-4 position-absolute">
+                                    <svg width="175" height="200">
+                                        <polyline points="87,0 174,50 174,150 87,200 0,150 0,50 87,0"></polyline>
+                                    </svg>
+                                </span>
+                                <span class="pricing-item-icon text-primary">
+                                   <i class="fa {{editionIcons[i]}}"></i>
+                               </span>
+                            </div>
+                            <!--end::Icon-->
+                            <span class="font-size-h1 d-block d-block font-weight-boldest py-2 pricing-title">{{editionWithFeatures.edition.displayName}}</span>
+                            <h4 class="font-size-h6 d-block d-block font-weight-bold mb-7 pricing-subtitle" style="min-height: 100px;"
+                                *ngIf="isFree(editionWithFeatures.edition)">
+
+                                <span> {{"Free" | localize}}</span>
+                            </h4>
+                            <h4 class="font-size-h6 d-block d-block font-weight-bold mb-7 pricing-subtitle" style="min-height: 100px;"
+                                *ngIf="!isFree(editionWithFeatures.edition)">
+                                <span *ngIf="editionWithFeatures.edition.dailyPrice > 0">{{appSession.application.currencySign}} {{editionWithFeatures.edition.dailyPrice}}
+                                  {{"PerDay" | localize}}<br/></span>
+                                <span *ngIf="editionWithFeatures.edition.weeklyPrice > 0">{{appSession.application.currencySign}} {{editionWithFeatures.edition.weeklyPrice}}
+                                    {{"PerWeek" | localize}}<br/></span>
+                                <span *ngIf="editionWithFeatures.edition.monthlyPrice > 0">{{appSession.application.currencySign}} {{editionWithFeatures.edition.monthlyPrice}}
+                                    {{"PerMonth" | localize}} <br/></span>
+                                <span *ngIf="editionWithFeatures.edition.annualPrice > 0">{{appSession.application.currencySign}} {{editionWithFeatures.edition.annualPrice}}
+                                    {{"PerYear" | localize}}</span>
+                            </h4>
+
+                            <p class="mb-4 d-flex flex-column">
+                                <span *ngFor="let feature of editionsSelectOutput.allFeatures">
+                                    <!--Checbox Feature-->
+                                    <span *ngIf="isTrueFalseFeature(feature) && featureEnabledForEdition(feature,editionWithFeatures)"
+                                          class="text-success text-center">
+                                        <i class="far fa-check-circle text-success"></i>
+                                        {{feature.displayName}}
+                                    </span>
+                                    <span *ngIf="isTrueFalseFeature(feature) && !featureEnabledForEdition(feature,editionWithFeatures)"
+                                      class="text-muted text-center">
+                                            <i class="far fa-times-circle text-muted"></i>
+                                            {{feature.displayName}}
+                                    </span>
+                                    <!--Checbox Feature-->
+
+                                    <!--Not Checbox Feature-->
+                                    <span *ngIf="!isTrueFalseFeature(feature)"
+                                          class="text-success text-center">
+                                            <i class="far fa-check-circle text-success"></i>
+                                            {{feature.displayName}}:{{getFeatureValueForEdition(feature, editionWithFeatures)}}
+                                    </span>
+                                    <!--Not Checbox Feature-->
+                                </span>
+                            </p>
+
+                            <button
+                                class="btn btn-warning btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
+                                (click)="upgrade(editionWithFeatures.edition, editionPaymentType.Upgrade)"
+                                *ngIf="isUserLoggedIn">
+                                {{"Upgrade" | localize}}
+                            </button>
+
+                            <button
+                                class="btn btn-success btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
+                                [routerLink]="['/account/register-tenant']"
+                                [queryParams]="{editionId: editionWithFeatures.edition.id, subscriptionStartType: subscriptionStartType.Free}"
+                                href="#" *ngIf="!isUserLoggedIn && isFree(editionWithFeatures.edition)">
+                                {{"Start" | localize}}
+                            </button>
+
+                            <button
+                                class="btn btn-warning btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
+                                [routerLink]="['/account/register-tenant']"
+                                [queryParams]="{editionId: editionWithFeatures.edition.id, subscriptionStartType: subscriptionStartType.Trial}"
+                                href="#"
+                                *ngIf="!isUserLoggedIn && !isFree(editionWithFeatures.edition) && editionWithFeatures.edition.trialDayCount">
+                                {{"FreeTrial" | localize}}
+                            </button>
+
+                            <button
+                                class="btn btn-primary btn-pill  btn-brand btn-wide btn-uppercase btn-bolder btn-sm mx-2"
+                                [routerLink]="['/account/register-tenant']"
+                                [queryParams]="{editionId: editionWithFeatures.edition.id, subscriptionStartType: subscriptionStartType.Paid, editionPaymentType: editionPaymentType.NewRegistration}"
+                                href="#" *ngIf="!isUserLoggedIn && !isFree(editionWithFeatures.edition)">
+                                {{"BuyNow" | localize}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

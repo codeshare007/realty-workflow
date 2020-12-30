@@ -1,0 +1,45 @@
+<!--begin::Aside-->
+<div class="flex-row-auto offcanvas-mobile w-275px w-xxl-300px" ktOffcanvas [options]="offcanvasOptions">
+    <!--begin::Card-->
+    <div class="card card-custom card-stretch">
+        <!--begin::Body-->
+        <div class="card-body px-5">
+            <!--begin::Navigations-->
+            <div class="navi navi-hover navi-active navi-link-rounded navi-bold navi-icon-center navi-light-icon mh-100"
+                [perfectScrollbar]>
+                <!--begin::Item-->
+                <div class="navi-item my-2" *ngFor="let item of items">
+                    <a href="javascript:;" class="navi-link" (click)="select(item)"
+                        [ngClass]="{active: item === selectedItem}">
+                        <span class="navi-icon mr-3">
+                            <span class="svg-icon svg-icon-lg">
+                                <div class="d-flex align-items-center flex-wrap" data-toggle="view">
+                                    <span class="symbol symbol-35">
+                                        <span class="symbol-label"
+                                            [ngStyle]="{'background-image': 'url(\'' + item.profilePictureUrl + '\')'}"></span>
+                                    </span>
+                                </div>
+                            </span>
+                        </span>
+                        <span
+                            class="navi-text font-weight-bolder font-size-lg text-dark-75 text-hover-primary text-truncate"
+                            [title]="item.fullName || item.contact">
+                            {{item.fullName || item.contact}}
+                            <span class="label label-success label-dot ml-2" *ngIf="!item.isRead"></span>
+                        </span>
+                        <span class="navi-label">
+                            <span class="label label-rounded font-weight-bolder">
+                                {{item.messagesCount}}
+                            </span>
+                        </span>
+                    </a>
+                </div>
+                <!--end::Item-->
+            </div>
+            <!--end::Navigations-->
+        </div>
+        <!--end::Body-->
+    </div>
+    <!--end::Card-->
+</div>
+<!--end::Aside-->

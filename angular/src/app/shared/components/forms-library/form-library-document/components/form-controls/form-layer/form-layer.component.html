@@ -1,0 +1,7 @@
+<h4>{{ layer | layerLabel }}</h4>
+<div class="dot-actions">
+    <ui-table-actions class="desktop-actions"
+                      [listActions]="layerList"
+                      (selected)="selectLayer($event)">
+    </ui-table-actions>
+</div>

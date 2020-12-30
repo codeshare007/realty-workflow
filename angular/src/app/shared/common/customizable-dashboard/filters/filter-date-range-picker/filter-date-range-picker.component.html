@@ -1,0 +1,10 @@
+<div class="input-group">
+    <input type="text" class="form-control  date-range-filter"
+        value="{{selectedDateRange[0] | momentFormat: 'LL'}} - {{selectedDateRange[1] | momentFormat: 'LL'}}"
+        disabled="disabled" #dateRangePicker="bsDaterangepicker" bsDaterangepicker dateRangePickerMomentModifier
+        placement="bottom" [(date)]="selectedDateRange" (dateChange)="onChange()">
+    <div class="input-group-append">
+        <button class="btn btn-primary" type="button" (click)="dateRangePicker.toggle()">
+                <i class="fa fa-calendar-day p-0" style="color:white;" aria-hidden="true"></i></button>
+    </div>
+</div>

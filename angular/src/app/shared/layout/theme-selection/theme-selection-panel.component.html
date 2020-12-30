@@ -1,0 +1,25 @@
+<!-- begin::Quick Sidebar -->
+<div ktOffcanvas [options]="offcanvasOptions" id="kt_demo_panel" class="offcanvas offcanvas-right p-10">
+    <div class="offcanvas-header d-flex align-items-center justify-content-between pb-7">
+        <h4 class="font-weight-bold m-0">{{'SelectATheme' | localize}}</h4>
+        <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_demo_panel_close">
+            <i class="ki ki-close icon-xs text-muted"></i>
+        </a>
+    </div>
+    <div class="offcanvas-content">
+        <perfect-scrollbar #themeSelectionPanelScrollBar style="height: 88vh">
+            <div class="overlay rounded-lg mb-8 offcanvas-demo theme-selection-link"
+                *ngFor="let theme of ['default', 'theme2', 'theme3', 'theme4', 'theme5', 'theme6', 'theme7', 'theme8', 'theme9', 'theme10', 'theme11']"
+                [ngClass]="{'offcanvas-demo-active' : theme == currentThemeName}"
+                (click)="changeTheme(theme)">
+                <div class="overlay-wrapper rounded-lg">
+                    <img [src]="'/assets/common/images/metronic-themes/' + theme + '.png'" class="w-100" />
+                </div>
+                <div class="overlay-layer">
+                    <button class="btn font-weight-bold btn-light btn-shadow ml-2">{{getLocalizedThemeName(theme)}}</button>
+                </div>
+            </div>
+        </perfect-scrollbar>
+    </div>
+</div>
+<!-- end::Quick Sidebar -->

@@ -1,0 +1,47 @@
+.resizable-draggable {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px 8px;
+    background-color: @box-shadow-icon;
+    border: 1px dashed @main-color;
+    border-radius: 4px;
+    font-weight: 500;
+    user-select: none;
+    opacity: 0.9;
+
+    &.control-area {
+        justify-content: flex-start;
+    }
+
+    &__title {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    &.active {
+        border-style: solid;
+        background-color: @box-shadow-icon;
+    }
+
+    &:hover {
+        cursor: all-scroll;
+    }
+
+    &__action {
+        position: absolute;
+        left: 100%;
+        top: 100%;
+        border-style: solid;
+        border-width: 8px;
+        border-color: transparent transparent transparent @main-color-second;
+        transform: translate3d(-50%, -50%, 0) rotateZ(45deg);
+
+        &:hover,
+        &:active {
+            cursor: nwse-resize;
+        }
+    }
+}

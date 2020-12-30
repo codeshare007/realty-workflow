@@ -1,0 +1,27 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header align-items-center border-0">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="font-weight-bolder text-dark">
+                 {{"FileUpload" | localize}}
+            </span>
+        </h3>
+    </div>
+    <div class="card-body">
+        <label for="DefaultFileUploadFileInput">Default file uploader</label>
+        <p-fileUpload multiple="multiple"
+                      id="DefaultFileUploadFileInput"
+                      name="DefaultFileUploadFileInput[]"
+                      [url]="uploadUrl"
+                      accept="image/*"
+                      maxFileSize="1000000"
+                      (onUpload)="onUpload($event)"
+                      (onBeforeSend)="onBeforeSend($event)">
+
+            <ng-template pTemplate="content">
+                <ul *ngIf="uploadedFiles.length">
+                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                </ul>
+            </ng-template>
+        </p-fileUpload>
+    </div>
+</div>

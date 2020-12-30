@@ -1,0 +1,48 @@
+body {
+    background-color: #f2f3f8;
+}
+
+button:disabled,
+button[disabled] {
+    cursor: not-allowed !important;
+}
+
+.row-centered {
+    text-align: center;
+    display: block !important;
+}
+
+.col-centered {
+    display: inline-table;
+    float: none;
+    /* reset the text-align */
+    text-align: center;
+    /* inline-block space fix */
+    margin-right: -4px;
+}
+
+.pricing-items .pricing-title {
+    font-size: 3rem;
+    font-weight: 700;
+    display: block;
+    margin-top: 5em;
+    color: #6c7293;
+}
+
+.pricing-items .pricing-subtitle {
+    font-size: 1.1rem;
+    color: #adb1c7;
+    font-weight: 500;
+    min-height: 72px;
+}
+
+.pricing-items .pricing-item-icon {
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    position: absolute;
+}
+
+.pricing-items .pricing-item-icon > i {
+    font-size: 8.57rem;
+}

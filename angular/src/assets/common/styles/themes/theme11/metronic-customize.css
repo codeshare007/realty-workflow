@@ -1,0 +1,35 @@
+.header .header-bottom{
+    height: auto;
+  }
+  
+  .unread-notification-count {
+    position: absolute;
+    top: 2px;
+    left: 23px;
+  }
+  
+  .unread-chat-message-count {
+    position: absolute;
+    top: -6px;
+    left: 13px;
+  }
+
+  header-notifications .dropdown-menu{
+    top: 75px !important;
+  }
+  
+  @media(max-width: 768px){
+    header-notifications .dropdown-menu{
+      top: 49px !important;
+    } 
+  }menu-search-bar {
+    min-width: 100px !important;
+}
+
+p-autoComplete{
+    padding: 10px;
+}
+
+.menuSearchBarContainer{
+    width: calc(100% - 20px);
+}

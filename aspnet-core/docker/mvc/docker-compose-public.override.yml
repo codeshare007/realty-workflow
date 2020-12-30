@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+
+  mycompanyname.abpzerotemplate.web.public:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_HTTPS_PORT=44303
+      - Kestrel__Certificates__Default__Password=2825e4d9-5cef-4373-bed3-d7ebf59de216
+      - Kestrel__Certificates__Default__Path=/root/certificate/aspnetzero-devcert.pfx
+      - KestrelServer__IsEnabled=true
+    ports:
+      - "80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ./../certificate/dev-cert:/root/certificate

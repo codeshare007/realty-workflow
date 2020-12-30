@@ -1,0 +1,41 @@
+﻿@using {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Startup
+@using {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Models.{{Entity_Name_Plural_Here}}
+@model {{Entity_Name_Here}}ViewModel
+@{
+    ViewBag.CurrentPageName = {{App_Area_Name_Here}}PageNames.{{Page_Names_Sub_Class_Name_Here}}.{{Entity_Name_Plural_Here}};
+}
+@section Scripts
+{
+    <script abp-src="/view-resources/Areas/{{App_Area_Name_Here}}/Views/{{Entity_Name_Plural_Here}}/CreateOrEdit.js" asp-append-version="true"></script>
+}
+{{Content_Class_After_Metronic_V606}}
+ <div class="kt-subheader kt-grid__item">
+  {{Container_Class_After_Metronic_V606}}
+    <div class="kt-subheader__main">
+        <h3 class="kt-subheader__title">
+            <span>@L("Details")</span>
+        </h3>
+        <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+        <div class="kt-subheader__breadcrumbs">
+            <a href="/{{App_Area_Name_Here}}/{{Entity_Name_Plural_Here}}" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i>&thinsp;@L("{{Entity_Name_Plural_Here}}")</a>
+            <span class="kt-subheader__breadcrumbs-separator"></span>
+            <a href="javascript:;" class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">
+               @L("Details")
+            </a>
+        </div>
+    </div>
+  {{Div_After_Metronic_V606}}
+</div>
+<div class="{{Container_Class_Here}}{{Container_Class_V2_Here}}">
+    <div class="kt-portlet kt-portlet--mobile">
+        <div class="kt-portlet__body">
+             <div id="{{Entity_Name_Here}}InformationsTab">        
+                    <div class="row">
+                        {{Property_Looped_Template_Here}}
+                        {{NP_Looped_Template_Here}}
+                    </div>
+                </div>
+			</div>
+        </div>
+    </div>
+  {{Div_After_Metronic_V606}}

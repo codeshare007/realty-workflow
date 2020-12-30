@@ -1,0 +1,52 @@
+.modal {
+    .modal-header {
+        padding: 24px;
+
+        button.close {
+            span {
+                position: absolute;
+                top: 38px;
+                right: 24px;
+                display: inline-block;
+                margin-bottom: 10px;
+                color: @main-black;
+                font-weight: 100;
+                font-size: 36px;
+                user-select: none;
+
+                &:hover {
+                    color: @main-color-grey;
+                }
+            }
+        }
+
+        .modal-title {
+            span {
+                color: @main-black-second;
+                font-size: 16px;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .modal-body {
+        padding: 0;
+
+        >form,
+        .body-modal {
+            padding: 24px 24px 0 24px;
+
+            label {
+                margin-bottom: 0;
+                font-size: 14px;
+                font-weight: 400;
+            }
+        }
+    }
+
+    .modal-footer {
+        margin-top: 30px;
+        padding: 8px 24px;
+        border: none;
+    }
+}

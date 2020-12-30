@@ -1,0 +1,4 @@
+{
+	"path" : "{{Namespace_Here}}.Web.Mvc\\Areas\\{{App_Area_Name_Here}}\\Views\\{{Entity_Name_Plural_Here}}\\View{{Entity_Name_Here}}.cshtml",
+	"condition" : "{{Create_View_Only_Here}} == true && {{Is_Master_Detail_Page_Here}} == true"
+}

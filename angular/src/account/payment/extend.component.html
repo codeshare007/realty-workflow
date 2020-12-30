@@ -1,0 +1,73 @@
+<div class="login-form" [@routerTransition]>
+    <div class="pb-13 pt-lg-0 pt-5">
+        <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">
+            {{"PaymentInfo" | localize}}
+        </h3>
+    </div>
+    <div class="separator separator-border-dashed"></div>
+
+    <form class="login-form form mt-2" method="post">
+        <h4 class="mb-5">
+            {{"Extend_Edition_Description" | localize:edition.displayName}}
+        </h4>
+
+        <div class="radio-inline">
+            <div class="form-group mr-2" *ngIf="edition.dailyPrice > 0">
+                <label class="radio">
+                    <input class="form-control" type="radio" name="PaymentPeriodType"
+                        [checked]="selectedPaymentPeriodType===paymentPeriodType.Daily"
+                        [value]="paymentPeriodType.Daily"
+                        (change)="onPaymentPeriodChangeChange(paymentPeriodType.Daily)" />
+                    <span></span>
+                    {{"DailyPrice" | localize}}:
+                    {{appSession.application.currencySign}}{{edition.dailyPrice | number : '1.2-2'}}
+                </label>
+            </div>
+
+            <div class="form-group" *ngIf="edition.weeklyPrice > 0">
+                <label class="radio">
+                    <input class="form-control" type="radio" name="PaymentPeriodType"
+                        [checked]="selectedPaymentPeriodType===paymentPeriodType.Weekly"
+                        [value]="paymentPeriodType.Weekly"
+                        (change)="onPaymentPeriodChangeChange(paymentPeriodType.Weekly)" />
+                    <span></span>
+                    {{"WeeklyPrice" | localize}}:
+                    {{appSession.application.currencySign}}{{edition.weeklyPrice | number : '1.2-2'}}
+                </label>
+            </div>
+        </div>
+
+        <div class="radio-inline">
+            <div class="form-group mr-2" *ngIf="edition.monthlyPrice > 0">
+                <label class="radio">
+                    <input class="form-control" type="radio" name="PaymentPeriodType"
+                        [checked]="selectedPaymentPeriodType===paymentPeriodType.Monthly"
+                        [value]="paymentPeriodType.Monthly"
+                        (change)="onPaymentPeriodChangeChange(paymentPeriodType.Monthly)" />
+                    <span></span>
+                    {{"MonthlyPrice" | localize}}:
+                    {{appSession.application.currencySign}}{{edition.monthlyPrice | number : '1.2-2'}}
+                </label>
+            </div>
+
+            <div class="form-group" *ngIf="edition.annualPrice > 0">
+                <label class="radio">
+                    <input class="form-control" type="radio" name="PaymentPeriodType"
+                        [checked]="selectedPaymentPeriodType===paymentPeriodType.Annual"
+                        [value]="paymentPeriodType.Annual"
+                        (change)="onPaymentPeriodChangeChange(paymentPeriodType.Annual)" />
+                    <span></span>
+                    {{"AnnualPrice" | localize}}:
+                    {{appSession.application.currencySign}}{{edition.annualPrice | number : '1.2-2'}}
+                </label>
+            </div>
+        </div>
+
+        <div class="pb-lg-0 pb-5">
+            <button *ngFor="let paymentGateway of paymentGateways" (click)="checkout(paymentGateway.gatewayType)"
+                class="btn btn-success btn-block">
+                {{"CheckoutWith" + getPaymentGatewayType(paymentGateway.gatewayType) | localize}}
+            </button>
+        </div>
+    </form>
+</div>

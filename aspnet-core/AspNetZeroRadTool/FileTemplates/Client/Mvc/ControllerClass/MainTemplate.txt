@@ -1,0 +1,41 @@
+﻿using System;
+using System.Threading.Tasks;
+using Abp.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Models.{{Entity_Name_Plural_Here}};
+using {{Namespace_Here}}.Web.Controllers;
+using {{Namespace_Here}}.Authorization;
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}};
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Dtos;
+using Abp.Application.Services.Dto;
+using Abp.Extensions;
+
+namespace {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Controllers
+{
+    [Area("{{App_Area_Name_Here}}")]
+    [AbpMvcAuthorize(AppPermissions.{{Permission_Name_Here}})]
+    public class {{Entity_Name_Plural_Here}}Controller : {{Project_Name_Here}}ControllerBase
+    {
+        private readonly I{{Entity_Name_Plural_Here}}AppService _{{entity_Name_Plural_Here}}AppService;
+
+        public {{Entity_Name_Plural_Here}}Controller(I{{Entity_Name_Plural_Here}}AppService {{entity_Name_Plural_Here}}AppService)
+        {
+            _{{entity_Name_Plural_Here}}AppService = {{entity_Name_Plural_Here}}AppService;
+        }
+
+        public ActionResult Index()
+        {
+            var model = new {{Entity_Name_Plural_Here}}ViewModel
+			{
+				FilterText = ""
+			};
+
+            return View(model);
+        } 
+       
+{{Create_Or_Edit_Here}}
+{{View_Method_Here}}
+
+{{NP_Looped_Controller_Here}}
+    }
+}

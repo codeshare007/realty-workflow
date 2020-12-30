@@ -1,0 +1,18 @@
+<div id="chat_is_connecting_icon" class="topbar-item" *ngIf="(isHost || ('App.ChatFeature' | checkFeature)) && !chatConnected">
+    <button [class]="customStyle">
+        <img *ngIf="!chatConnected" src="./assets/common/images/loading.gif" style="width: 23px;" tooltip="{{'ChatIsConnecting' | localize}}" placement="left"/>
+    </button>
+</div>
+<div id="kt_quick_sidebar_toggle" class="topbar-item" [hidden]="!(isHost || ('App.ChatFeature' | checkFeature)) || !chatConnected">
+    <button [class]="customStyle">
+        <div id="chatIconUnRead" *ngIf="unreadChatMessageCount">
+            <i class="flaticon-chat-2 unread-notification"></i>
+            <span class="label label-warning unread-chat-message-count">
+                {{unreadChatMessageCount}}
+            </span>
+        </div>
+        <div id="chatIcon" *ngIf="!unreadChatMessageCount">
+            <i class="flaticon-chat-2"></i>
+        </div>
+    </button>
+</div>

@@ -1,0 +1,90 @@
+﻿import { Component, Injector, ViewEncapsulation, ViewChild } from '@angular/core';
+import { ActivatedRoute , Router} from '@angular/router';
+import { {{Entity_Name_Plural_Here}}ServiceProxy, {{Entity_Name_Here}}Dto {{Enum_Import_After_V060600_Here}}{{Enum_Import_Before_V060600_Here}} } from '@shared/service-proxies/service-proxies';
+{{Notify_Service_Here}}
+import { AppComponentBase } from '@shared/common/app-component-base';
+import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
+{{Import_Create_Or_Edit_Component_Here}}
+{{View_Component_Import_Here}}
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+{{DataTable_Import_Here}}{{TurboTable_Import_Here}};
+{{PrimeNG_Imports_Here}}
+import { FileDownloadService } from '@shared/utils/file-download.service';{{EntityTypeHistoryModalComponent_Import_Here}}
+import * as _ from 'lodash';
+import * as moment from 'moment';
+
+@Component({
+    templateUrl: './{{entity_Name_Plural_Here}}.component.html',
+    encapsulation: ViewEncapsulation.None,
+    animations: [appModuleAnimation()]
+})
+export class {{Entity_Name_Plural_Here}}Component extends AppComponentBase {
+    
+    {{EntityTypeHistoryModal_Dev_Here}}
+    {{View_Child_Create_Or_Edit_Modal_Def_Here}}   
+    
+    @ViewChild('dataTable', { static: true }) dataTable: {{DataTable_Dec_Here}}Table;
+    @ViewChild('paginator', { static: true }) paginator: Paginator;
+
+    advancedFiltersAreShown = false;
+    filterText = '';
+{{Property_Filter_Def_Here}}{{NP_Filter_Def_Here}}
+{{Enum_Def_After_V060600_Here}}{{Enum_Def_Before_V060600_Here}}
+{{EntityHistory_Decs_Here}}
+
+    constructor(
+        injector: Injector,
+        private _{{entity_Name_Plural_Here}}ServiceProxy: {{Entity_Name_Plural_Here}}ServiceProxy,
+        private _notifyService: NotifyService,
+        private _tokenAuth: TokenAuthServiceProxy,
+        private _activatedRoute: ActivatedRoute,
+        private _fileDownloadService: FileDownloadService{{Router_Field_Here}}
+    ) {
+        super(injector);
+    }
+{{SetentityHistoryEnabled_Here}}
+    get{{Entity_Name_Plural_Here}}(event?: LazyLoadEvent) {
+        if (this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.shouldResetPaging(event)) {
+            this.paginator.changePage(0);
+            return;
+        }
+
+        this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.showLoadingIndicator();
+
+        this._{{entity_Name_Plural_Here}}ServiceProxy.getAll(
+            this.filterText,{{Property_Filter_Param_Here}}{{NP_Filter_Param_Here}}
+            this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.getSorting(this.dataTable),
+            this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.getSkipCount(this.paginator, event),
+            this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.getMaxResultCount(this.paginator, event)
+        ).subscribe(result => {
+            this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.totalRecordsCount = result.totalCount;
+            this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.records = result.items;
+            this.{{DataTable_Primenghelper_Here}}{{TruboTable_Primenghelper_Here}}.hideLoadingIndicator();
+        });
+    }
+
+    reloadPage(): void {
+        this.paginator.changePage(this.paginator.getPage());
+    }
+
+    create{{Entity_Name_Here}}(): void {
+        {{On_Click_Create_Here}}        
+    }
+
+{{EntityTypeHistoryModal_Open_Here}}
+    delete{{Entity_Name_Here}}({{entity_Name_Here}}: {{Entity_Name_Here}}Dto): void {
+        this.message.confirm(
+            '',
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._{{entity_Name_Plural_Here}}ServiceProxy.delete({{entity_Name_Here}}.id)
+                        .subscribe(() => {
+                            this.reloadPage();
+                            this.notify.success(this.l('SuccessfullyDeleted'));
+                        });
+                }
+            }
+        );
+    }{{Get_Excel_Method_Here}}
+}

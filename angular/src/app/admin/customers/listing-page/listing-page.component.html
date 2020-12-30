@@ -1,0 +1,227 @@
+<!-- <div class="ui stackable grid">
+    <div class="ten wide column main-column">
+        <div class="ui segment">
+            <div class="segment-header has-button">
+                <div class="rental-status  green">On Market</div><i class="fa fa-map-marker"
+                    title="Map Listing"></i>&nbsp;624 Walpole St., Akiachak, AK 02062<a class="ui grey basic button"
+                    href="/rentals/update/239413428"><i class="edit icon"></i></a>
+            </div>
+            <div class="segment-content">
+                <div class="ui grid top-specs underlined-row">
+                    <div class="four wide column"><span><strong>ID</strong><br>{{selectedListing.id}}</span></div>
+                    <div class="four wide column"><strong>Source</strong><br>{{selectedListing.source}}</div>
+                    <div class="four wide column"><strong>Updated</strong><br>{{selectedListing.updateDate}}<i
+                            class="fa fa-refresh" style="margin-left: 5px;"></i></div>
+                    <div class="four wide column"></div>
+                    <div class="four wide column"><strong>Rent</strong><br>${{selectedListing.price}}</div>
+                    <div class="four wide column"><strong>Avail Date</strong><br>{{selectedListing.availableDate}}</div>
+                    <div class="four wide column"><strong>Beds</strong><br>{{selectedListing.beds}}</div>
+                    <div class="four wide column"><strong>Baths</strong><br>{{selectedListing.baths}}</div>
+                    <div class="four wide column"><span><strong>Fee Paid By Owner</strong><br>50% Month</span></div>
+                    <div class="four wide column"><strong>Rent Includes</strong><br>{{selectedListing.rentInclude}}
+                    </div>
+                    <div class="four wide column"><strong>Square Footage</strong><br>--</div>
+                    <div class="four wide column"><strong>Laundry</strong><br>{{selectedListing.laundry}}</div>
+                    <div class="four wide column"><strong>Building Type</strong><br>--</div>
+                    <div class="four wide column"><strong>Heat Source</strong><br>--</div>
+                    <div class="four wide column"><strong>Unit Level</strong><br>{{selectedListing.unitLevel}}</div>
+                    <div class="four wide column"></div>
+                    <div class="eight wide column"><strong>Pet</strong><br>{{selectedListing.pet}}</div>
+                    <div class="eight wide column"><strong>Parking</strong><br>{{selectedListing.parking}}</div>
+                    <div class="sixteen wide column"><strong>Features</strong>
+                        <div *ngFor="let feature of selectedListing.">
+                            <div class="ygl-label label-sm">aaa</div>
+                            <div class="ygl-label label-sm">aasa</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui segment landlord-info">
+            <div class="segment-header has-button">Landlord Info<a class="ui grey basic button"
+                    href="/account?from=rental"><i class="edit icon"></i></a></div>
+            <div class="segment-content">
+                <div class="ui grid top-specs underlined-row">
+                    <div class="four wide column"><strong>Name</strong><br>Levko ind</div>
+                    <div class="four wide column"><strong>Phone</strong><br><span
+                            class="make-phone-call">380681683630</span><span></span></div>
+                    <div class="eight wide column"><strong>Email</strong><br>yurii.levko@rocketharbor.com</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="six wide column secondary-column">
+        <div class="ui segment privacy">
+            <div class="segment-header">Media<a class="ui grey basic button" href="{{selectedListing.photo}}"><i
+                        class="fa fa-upload"></i></a></div>
+            <div class="segment-plain-content">
+                <div class="column photos"><iframe width="100%" title="VR Virtual Tour" height="240px"
+                        src="https://my.matterport.com/show/?m=rSsAGqBSGK9&amp;amp;brand=0&amp;amp;play=1&amp;amp;wh=0"
+                        allowfullscreen=""
+                        allow="vr; xr; gyroscope; accelerometer; magnetometer; fullscreen; autoplay;"></iframe>
+                    <div class="ui grid">
+                        <div class="fourteen wide column"><a
+                                href="https://my.matterport.com/show/?m=rSsAGqBSGK9&amp;amp;brand=0&amp;amp;play=1&amp;amp;wh=0"
+                                target="_blank">https://my.matterport.com/show/?m=rSsAGqBSGK9&amp;amp;brand=0&amp;amp;play=1&amp;amp;wh=0</a>
+                        </div>
+                        <div class="one wide column"><i name="copy-virtual-tour-button" data-clipboard-action="copy"
+                                data-clipboard-text="https://my.matterport.com/show/?m=rSsAGqBSGK9&amp;amp;brand=0&amp;amp;play=1&amp;amp;wh=0"
+                                class="fa fa-copy"></i></div>
+                        <div class="fourteen wide column"><a
+                                href="https://my.matterport.com/show/?m=hbpTJXbohc9&amp;amp;brand=0&amp;amp;play=1&amp;amp;wh=0"
+                                target="_blank">https://my.matterport.com/show/?m=hbpTJXbohc9&amp;amp;brand=0&amp;amp;play=1&amp;amp;wh=0</a>
+                        </div>
+                        <div class="one wide column"><i name="copy-virtual-tour-button" data-clipboard-action="copy"
+                                data-clipboard-text="https://my.matterport.com/show/?m=hbpTJXbohc9&amp;amp;brand=0&amp;amp;play=1&amp;amp;wh=0"
+                                class="fa fa-copy"></i></div>
+                        <div class="fourteen wide column"><a
+                                href="https://my.matterport.com/show/?m=wFHK2vsPJed&amp;amp;brand=0&amp;amp;play=1&amp;amp;wh=0"
+                                target="_blank">https://my.matterport.com/show/?m=wFHK2vsPJed&amp;amp;brand=0&amp;amp;play=1&amp;amp;wh=0</a>
+                        </div>
+                        <div class="one wide column"><i name="copy-virtual-tour-button" data-clipboard-action="copy"
+                                data-clipboard-text="https://my.matterport.com/show/?m=wFHK2vsPJed&amp;amp;brand=0&amp;amp;play=1&amp;amp;wh=0"
+                                class="fa fa-copy"></i></div>
+                    </div>
+                    <hr>S
+                    <div class="photo-box"><img class="photo"
+                            src="https://ygl-photos.s3.amazonaws.com/12424O5fca06fc137ae.jpg" alt="">
+                        <div class="photo-counter">1 Photos</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui segment privacy">
+            <div class="segment-header">Transportation</div>
+            <div class="segment-plain-content" style="padding: 20px;">
+                <div><strong>Bus:</strong><span> <a href="https://www.mbta.com/schedules/34E" target="_blank">34E</a>,
+                    </span>Walpole St opp Garden Pkwy (0.14 mi)</div>
+                <div><strong>Rail:</strong><span> <a href="https://www.mbta.com/schedules/CR-Franklin"
+                            target="_blank">Franklin Line</a>, </span>Windsor Gardens (0.16 mi)</div>
+            </div>
+        </div>
+        <div class="ui segment privacy" style="font-size: 0.8em; text-align: right; font-style: italic;">
+            <div><a href="javascript:void(0);">Update Geo Coordinates</a></div>
+        </div>
+    </div>
+</div> -->
+
+<div class="listing-page-wrapper row">
+
+    <div class="listing-wrapper col-8">
+        <div class="listing-wrapper__row row">
+            <div class="col-3 listing-wrapper__row__col">
+                <h5>Id</h5>
+                <span>{{selectedListing.id}}</span>
+            </div>
+            <div class="col-3 listing-wrapper__row__col">
+                <h5>Source</h5>
+                <span>{{selectedListing.source ? selectedListing.source : '--'}}</span>
+            </div>
+            <div class="col-3 listing-wrapper__row__col">
+                <h5>Updated</h5>
+                <span>{{selectedListing.updateDate ? selectedListing.updateDate : '--'}}</span>
+            </div>
+        </div>
+
+        <div class="listing-wrapper__row row">
+            <div class="col-3 listing-wrapper__row__col">
+                <h5>Rent</h5>
+                <span>{{selectedListing.price ? selectedListing.price : '--'}}</span>
+            </div>
+            <div class="col-3 listing-wrapper__row__col">
+                <h5>Avai Date</h5>
+                <span>{{selectedListing.availableDate ? selectedListing.availableDate : '--'}}</span>
+            </div>
+            <div class="col-3 listing-wrapper__row__col">
+                <h5>Beds</h5>
+                <span>{{selectedListing.beds ? selectedListing.beds : '--'}}</span>
+            </div>
+            <div class="col-3 listing-wrapper__row__col">
+                <h5>Baths</h5>
+                <span>{{selectedListing.baths ? selectedListing.baths : '--'}}</span>
+            </div>
+        </div>
+
+        <div class="listing-wrapper__row row">
+            <div class="col-3 listing-wrapper__row__col">
+                <h5>Fee Paid By Owner</h5>
+                <span>{{selectedListing.fee ? selectedListing.fee : '--'}}</span>
+            </div>
+            <div class="col-3 listing-wrapper__row__col">
+                <h5>Rent Includes</h5>
+                <span>{{rentIncludesString}}</span>
+                <span> </span>
+            </div>
+            <div class="col-3 listing-wrapper__row__col">
+                <h5></h5>
+                <span></span>
+            </div>
+
+            <div class="col-3 listing-wrapper__row__col">
+                <h5>Laundry</h5>
+                <span>{{selectedListing.laundry ? selectedListing.laundry : '--'}}</span>
+            </div>
+        </div>
+
+        <div class="listing-wrapper__row row">
+            <div class="col-3 listing-wrapper__row__col">
+                <h5>Building Type</h5>
+                <span>{{selectedListing.unit ? selectedListing.unit : '--'}}</span>
+            </div>
+            <div class="col-3 listing-wrapper__row__col">
+                <h5></h5>
+                <span></span>
+            </div>
+            <div class="col-3 listing-wrapper__row__col">
+                <h5>Unit Level</h5>
+                <span>{{selectedListing.unitLevel ? selectedListing.unitLevel : '--'}}</span>
+            </div>
+        </div>
+
+        <div class="listing-wrapper__row row">
+            <div class="col-6 listing-wrapper__row__col">
+                <h5>Pet</h5>
+                <span>{{selectedListing.pet ? selectedListing.pet : '--' }}</span>
+            </div>
+            <div class="col-6 listing-wrapper__row__col">
+                <h5>Parking</h5>
+                <span>{{selectedListing.parking ? selectedListing.parking : '--'}}</span>
+            </div>
+        </div>
+
+        <!-- <div class="listing-wrapper__row row">
+            <div class="col-12 listing-wrapper__row__col">
+                <h5>Features</h5>
+                <span>{{}}</span>
+            </div>
+        </div> -->
+    </div>
+
+    <div class="side-bar col-4">
+        <div class="side-bar__list">
+            <div *ngIf="selectedListing.virtualTour && selectedListing.virtualTour.length > 0">
+                <div class="side-bar__list__item">
+                    <iframe [src]="urlVirtualTourString"></iframe>
+                </div>
+                <div class="side-bar__list__item" style="font-size: 7px !important;"
+                    *ngFor="let video of selectedListing.virtualTour">
+                    <a href="{{video}}"> {{video}}</a>
+                </div>
+            </div>
+            <div class="side-bar__list__item" *ngIf="selectedListing.photo && selectedListing.photo.length > 0">
+                <img src="{{selectedListing.photo}}">
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="info-wrapper col-8">
+        <div class="info-wrapper__row row">
+            <h3>Lorem ipsum dolor sit amet.</h3>
+
+            <button type="button" class="btn btn-primary">EDIT</button>
+        </div>
+        <div class="info-wrapper__row row">
+        </div>
+    </div> -->
+
+</div>

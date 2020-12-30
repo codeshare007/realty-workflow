@@ -1,0 +1,50 @@
+﻿{{Enum_Using_Looped_Template_Here}}
+@using System.Globalization
+@using {{Namespace_Here}}.Authorization
+@using {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Models.{{Entity_Name_Plural_Here}}
+@using {{Namespace_Here}}.Web.Areas.{{App_Area_Name_Here}}.Startup
+@model CreateOrEdit{{Entity_Name_Here}}ViewModel
+{{Using_Tag_Helper_Here}}
+@{
+    ViewBag.CurrentPageName = {{App_Area_Name_Here}}PageNames.{{Page_Names_Sub_Class_Name_Here}}.{{Entity_Name_Plural_Here}};
+}
+@section Scripts
+{
+    <script abp-src="/view-resources/Areas/{{App_Area_Name_Here}}/Views/{{Entity_Name_Plural_Here}}/CreateOrEdit.js" asp-append-version="true"></script>
+}
+{{Content_Class_After_Metronic_V606}} 
+{{Content_Class_After_Metronic_V90}}
+{{Page_Header}}
+
+<div class="{{Container_Class_Here}}{{Container_Class_V2_Here}}{{Container_Class_V3_Here}}">
+    <div class="{{Portlet_Class_Here}}{{Card_Class_Here}}">
+        <form name="{{Entity_Name_Here}}InformationsForm" role="form" novalidate class="form-validation">
+            <div class="{{Portlet_Body_Class_Here}}{{Card_Body_Class_Here}}">
+                <div class="{{Form_Class_Here}}">
+                     <div id="{{Entity_Name_Here}}InformationsTab">   
+                            @if (Model.IsEditMode)
+                            {
+                                <input type="hidden" name="id" value="@Model.{{Entity_Name_Here}}.Id" />
+                            }
+
+				            {{NP_Looped_Template_Here}}
+
+				            {{Property_Looped_Template_Here}}                   
+                    </div>
+			    </div>            
+            </div>
+            <div class="{{Portlet_Footer_Here}}{{Card_Footer}}">
+			    <div class="row align-items-center">
+				    <div class="col-lg-12">
+					    <button type="button" id="saveBtn" class="btn btn-success float-right"><i class="fa fa-save"></i> @L("Save")</button>
+					    @if (!Model.IsEditMode)
+                        {
+					        <button type="button" id="saveAndNewBtn" class="btn btn-success float-right"><i class="fa fa-save"></i> @L("SaveAndNew")</button>
+					    }
+				    </div>
+			    </div>
+		    </div>
+         </form>
+    </div>
+  {{Div_After_Metronic_V606}}
+</div>

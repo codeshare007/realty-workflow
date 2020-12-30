@@ -1,0 +1,57 @@
+theme4-layout {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+#kt_wrapper > ng-component {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.subheader {
+    background-color: #663259;
+    background-position: right bottom;
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    background-image: url(/assets/metronic/themes/theme4/images/bg/taieri.svg);
+}
+
+.subheader strong {
+    color: #fff;
+}
+
+.unread-notification-count {
+    position: absolute;
+    top: 5px;
+    left: 23px;
+}
+
+.unread-chat-message-count {
+    position: absolute;
+    top: -6px;
+    left: 13px;
+}
+
+@media (min-width: 992px) {
+    #kt_header_menu_wrapper {
+        padding-top: 15px;
+    }
+}
+
+.mobile-subscription-warning{
+    background-color: #fff;
+}
+
+menu-search-bar {
+    min-width: 100px !important;
+}
+
+p-autoComplete{
+    padding: 10px;
+}
+
+.menuSearchBarContainer{
+    width: calc(100% - 20px);
+}

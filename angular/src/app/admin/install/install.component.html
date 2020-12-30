@@ -1,0 +1,156 @@
+<div [@routerTransition]>
+    <div class="content col-lg-12">
+        <div class="content d-flex flex-column flex-column-fluid">
+            <div class="container container-fluid mt-4">
+                <div class="card card-custom">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <span class="card-icon">
+                                <i class="la la-gear"></i>
+                            </span>
+                            <h3 class="card-label">
+                                Realty Installation
+                            </h3>
+                        </div>
+                    </div>
+                    <form id="installForm" class="form">
+                        <div class="card-body">
+                            <div class="form-section">
+                                <div class="font-size-lg text-dark font-weight-bold mb-6">
+                                    <h5 class="font-size-lg text-dark font-weight-bold mb-6-title">
+                                        Connection String
+                                    </h5>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Connection String"
+                                        [(ngModel)]="setupSettings.connectionString" name="connectionString"
+                                        value="{{setupSettings.connectionString}}" autocomplete="new-password">
+                                </div>
+                                <div class="separator separator-dashed my-5"></div>
+                                <div class="font-size-lg text-dark font-weight-bold mb-6">
+                                    <h5 class="font-size-lg text-dark font-weight-bold mb-6-title">
+                                        Admin Password
+                                    </h5>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control" placeholder="Admin Password"
+                                        [(ngModel)]="setupSettings.adminPassword" name="adminPassword"
+                                        autocomplete="new-password">
+                                </div>
+                                <div class="separator separator-dashed my-5"></div>
+                                <div class="font-size-lg text-dark font-weight-bold mb-6">
+                                    <h5 class="font-size-lg text-dark font-weight-bold mb-6-title">
+                                        Client Side URL
+                                    </h5>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Client Side URL"
+                                        [(ngModel)]="setupSettings.webSiteUrl" name="webSiteUrl"
+                                        value="{{setupSettings.webSiteUrl}}">
+                                </div>
+                                <div class="font-size-lg text-dark font-weight-bold mb-6">
+                                    <h5 class="font-size-lg text-dark font-weight-bold mb-6-title">
+                                        Server Side URL
+                                    </h5>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Server Side URL"
+                                        [(ngModel)]="setupSettings.serverUrl" name="serverUrl"
+                                        value="{{setupSettings.serverUrl}}">
+                                </div>
+                                <div class="separator separator-dashed my-5"></div>
+                                <div class="font-size-lg text-dark font-weight-bold mb-6">
+                                    <h5 class="font-size-lg text-dark font-weight-bold mb-6-title">
+                                        Default Language
+                                    </h5>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control" [(ngModel)]="setupSettings.defaultLanguage"
+                                        name="defaultLanguage">
+                                        <option *ngFor="let language of languages" value="{{language.value}}">
+                                            {{language.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="separator separator-dashed my-5"></div>
+                                <div class="font-size-lg text-dark font-weight-bold mb-6">
+                                    <h5 class="font-size-lg text-dark font-weight-bold mb-6-title">
+                                        SMTP Settings
+                                    </h5>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" placeholder="Default from address" class="form-control"
+                                        [(ngModel)]="setupSettings.smtpSettings.defaultFromAddress"
+                                        name="defaultFromAddress">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" placeholder="Default from displayName" class="form-control"
+                                        [(ngModel)]="setupSettings.smtpSettings.defaultFromDisplayName"
+                                        name="defaultFromDisplayName">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" placeholder="SMTP host" class="form-control"
+                                        [(ngModel)]="setupSettings.smtpSettings.smtpHost" name="smtpHost">
+                                </div>
+                                <div class="form-group">
+                                    <input type="number" placeholder="SMTP port" class="form-control"
+                                        [(ngModel)]="setupSettings.smtpSettings.smtpPort" name="smtpPort">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-12"></label>
+                                    <div class="checkbox-inline">
+                                        <label class="checkbox">
+                                            <input id="Settings_SmtpEnableSsl" type="checkbox"
+                                                [(ngModel)]="setupSettings.smtpSettings.smtpEnableSsl"
+                                                name="smtpEnableSsl" value="true">
+                                            <span></span>
+                                            UseSsl
+                                        </label>
+                                        <label class="checkbox">
+                                            <input id="Settings_SmtpUseDefaultCredentials" type="checkbox"
+                                                [(ngModel)]="setupSettings.smtpSettings.smtpUseDefaultCredentials"
+                                                name="smtpUseDefaultCredentials" value="true">
+                                            <span></span>
+                                            Use Default Credentials
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" placeholder="Domain name" class="form-control"
+                                        [(ngModel)]="setupSettings.smtpSettings.smtpDomain" name="smtpDomain">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" placeholder="User name" class="form-control"
+                                        [(ngModel)]="setupSettings.smtpSettings.smtpUserName" name="smtpUserName">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" placeholder="Password" class="form-control"
+                                        [(ngModel)]="setupSettings.smtpSettings.smtpPassword" name="smtpPassword"
+                                        id="SmtpPassword">
+                                </div>
+                                <div class="separator separator-dashed my-5"></div>
+                                <div class="font-size-lg text-dark font-weight-bold mb-6">
+                                    <h5 class="font-size-lg text-dark font-weight-bold mb-6-title">
+                                        Invoice Info
+                                    </h5>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="legalName"
+                                        [(ngModel)]="setupSettings.billInfo.legalName" placeholder="Legal name">
+                                </div>
+                                <div class="form-group">
+                                    <textarea class="form-control" name="billAddress" rows="5"
+                                        [(ngModel)]="setupSettings.billInfo.address" placeholder="Address"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button id="SaveButton" class="btn btn-primary" [buttonBusy]="saving"
+                                    [busyText]="l('SavingWithThreeDot')" (click)="saveAll()">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

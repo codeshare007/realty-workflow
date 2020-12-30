@@ -1,0 +1,134 @@
+<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="'Dashboard' | localize" [description]="'DashboardHeaderInfo' | localize">
+            <div role="actions">
+                <button type="button" *ngIf="!loading && userDashboard && userDashboard.filters && userDashboard.filters.length > 0"
+                        class="btn btn-brand btn-icon btn-filter" (click)="filterModal.show()"><i
+                    class="fa fa-filter"></i></button>
+
+                <span class="switch m-0 p-0" [class]="{ 'switch-primary' : editModeEnabled }">
+                     <label class="m-0 p-0" style="margin-bottom:-10px !important">
+                         <input type="checkbox" [checked]="editModeEnabled" (change)="changeEditMode()">
+                         <span class="m-0 p-0"></span>
+                     </label>
+                 </span>
+
+                <strong class="p-2 pt-4 dashboard-header-text-edit-mode">
+                    {{"EditMode" | localize}}
+                </strong>
+            </div>
+        </sub-header>
+
+        <div [class]="containerClass" *ngIf="!loading">
+            <div class="row">
+                <div class="col-md-12" style="z-index: 0;">
+                    <tabset #dashboardTabs [justified]="true" [ngClass]="{'nav-hidden': !moreThanOnePage()}">
+                        <tab *ngFor="let page of (userDashboard?.pages || []); let i = index" heading="{{page.name}}"
+                            (selectTab)="selectPageTab(page.id)">
+                            <gridster [options]="options[i]" [ngClass]="{'no-tab': !moreThanOnePage()}"
+                                [perfectScrollbar]="{wheelPropagation: false}">
+                                <gridster-item *ngFor="let widget of page.widgets" [item]="widget.gridInformation">
+                                    <ng-container *ngComponentOutlet="widget.component"></ng-container>
+                                    <button class="btn btn-sm text-white bg-danger deleteWidgetButton"
+                                        *ngIf="editModeEnabled" (click)="removeItem(widget.gridInformation)">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </gridster-item>
+                            </gridster>
+                        </tab>
+                    </tabset>
+                </div>
+                <div class="div-dashboard-customization" *ngIf="editModeEnabled">
+                    <div class="vr">
+                        <button type="button" id="AddWidgetButton"
+                            class="btn btn-sm btn-warning btn-elevate-hover btn-pill" (click)="openAddWidgetModal()"
+                            [disabled]="selectedPage.id===''">
+                            <i class="fa fa-plus"></i>{{"AddWidget" | localize}}</button>
+                        &nbsp;
+                    </div>
+                    <div class="vr">
+                        <div class="btn-group" dropdown #dropdownAddPage="bs-dropdown" (onShown)="addPageDropdownShown()" [dropup]="true" [insideClick]="true">
+                            <button dropdownToggle type="button"
+                                class="btn btn-sm btn-primary dropdown-toggle btn-elevate-hover btn-pill"
+                                aria-controls="dropdown-basic">
+                                <i class="fa fa-plus"></i> {{"AddPage" | localize}}<span class="caret"></span>
+                            </button>
+                            <ul *dropdownMenu class="dropdown-menu p-10" role="menu"
+                                aria-labelledby="button-basic">
+                                <li role="menuitem">
+                                    <div class="form-group">
+                                        <label for="PageNameInput">{{"NewPageName" | localize}}</label>
+                                        <input type="text" class="form-control" placeholder="" [(ngModel)] ="addPageInput">
+                                    </div>
+                                    <button class="btn btn-sm btn-block btn-info"
+                                        (click)="addNewPage(addPageInput);">{{"Save" | localize}}</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="btn-group" dropdown #dropdownRenamePage="bs-dropdown" (onShown)="renamePageDropdownShown();" [dropup]="true" [insideClick]="true"
+                            [isDisabled]="selectedPage.id===''">
+                            <button dropdownToggle type="button"
+                                class="btn btn-sm btn-info btn-elevate-hover btn-pill dropdown-toggle"
+                                aria-controls="dropdown-basic">
+                                <i class="fa fa-edit"></i>{{"RenamePage" | localize}}<span class="caret"></span>
+                            </button>
+                            <ul *dropdownMenu class="dropdown-menu p-10" role="menu"
+                                aria-labelledby="button-basic">
+                                <li role="menuitem">
+                                    <div class="form-group">
+                                        <label for="PageNameInput">{{"PageNewName" | localize}}</label>
+                                        <input type="text" class="form-control"
+                                            placeholder="{{selectedPage.name}}" [(ngModel)] ="renamePageInput">
+                                    </div>
+                                    <button (click)="renamePage(renamePageInput);"
+                                        class="btn btn-sm btn-block btn-info">{{"Save" | localize}}</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <button id="DeletePageButton" class="btn btn-sm btn-danger btn-elevate-hover btn-pill"
+                            (click)="deletePage()" [disabled]="selectedPage.id===''">
+                            <i class="fa fa-trash"></i>
+                            <span *ngIf="userDashboard && userDashboard.pages.length>1">{{"DeletePage" | localize}}</span>
+                            <span *ngIf="userDashboard && userDashboard.pages.length==1">{{"BackToDefaultPage" | localize}}</span>
+                        </button>
+                        &nbsp;
+                    </div>
+                    <button type="button" class="btn btn-sm btn-success btn-elevate-hover btn-pill"
+                        (click)="savePage()">
+                        <i class="fa fa-save"></i>{{"Save" | localize}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <add-widget-modal #addWidgetModal *ngIf="dashboardName" (onClose)="addWidget($event)"> </add-widget-modal>
+
+    <div appBsModal #filterModal="bs-modal" class="modal fade filterModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span>{{"DashboardFilters" | localize}}</span>
+                    </h5>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                         <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body" *ngIf="userDashboard">
+                    <div *ngFor="let filter of userDashboard.filters;let i = index">
+                        <div class="row">
+                            <h6 style="margin-left: 10px;">{{filter.name | localize}}</h6>
+                            <div class="col-md-12">
+                                <ng-container *ngComponentOutlet="filter.component"></ng-container>
+                            </div>
+                        </div>
+                        <hr *ngIf="i!=userDashboard.filters.length-1">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" (click)="close()">{{"Close" | localize}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

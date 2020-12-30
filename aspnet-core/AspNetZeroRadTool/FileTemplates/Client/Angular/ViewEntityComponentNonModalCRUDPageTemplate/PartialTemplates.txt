@@ -1,0 +1,66 @@
+{
+	"enumTemplates":[
+		{
+			"placeholder" : "{{Enum_Import_Before_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} < 060600",
+			"content" : ", {{Entity_Name_Here}}Dto{{Enum_Used_For_Property_Name_Here}}"
+		},
+		{
+			"placeholder" : "{{Enum_Import_After_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} >= 060600",
+			"content" : ", {{Enum_Name_Here}}"
+		},
+		{
+			"placeholder" : "{{enum_Def_Before_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} < 060600",
+			"content" : "    {{enum_Name_Here}} = {{Entity_Name_Here}}Dto{{Enum_Used_For_Property_Name_Here}};
+"
+		},
+		{
+			"placeholder" : "{{enum_Def_After_V060600_Here}}",
+			"condition": "{{Project_Version_Here}} >= 060600",
+			"content" : "    {{enum_Name_Here}} = {{Enum_Name_Here}};
+"
+		}
+	],
+	"conditionalTemplates":[
+		{
+			"placeholder": "{{Primary_Key_Type_Here}}",
+			"condition": "{{Primary_Key_Here}} == 'Guid'",
+			"content": "string"
+		},
+		{
+			"placeholder": "{{Primary_Key_Type_Here}}",
+			"condition": "{{Primary_Key_Here}} == 'string'",
+			"content": "string"
+		},
+		{
+			"placeholder": "{{Primary_Key_Type_Here}}",
+			"condition": "{{Primary_Key_Here}} != 'Guid'",
+			"content": "number"
+		},
+		{
+			"placeholder": "{{Import_Modal_Directive_Here}}",
+			"condition": "{{Project_Version_Here}} < 080500",
+			"content": "import { ModalDirective } from 'ngx-bootstrap';"
+		},
+		{
+			"placeholder": "{{Import_Modal_Directive_Here}}",
+			"condition": "{{Project_Version_Here}} >= 080500",
+			"content": "import { ModalDirective } from 'ngx-bootstrap/modal';"
+		},
+        {
+            "placeholder": "{{Import_Breadcrumb_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "import { BreadcrumbItem } from '@app/shared/common/sub-header/sub-header.component';"
+        },
+        {
+            "placeholder": "{{Breadcrumb_Definitions_Here}}",
+            "condition": "{{Project_Version_Here}} >= 090000",
+            "content": "breadcrumbs: BreadcrumbItem[]= [
+                        new BreadcrumbItem(this.l(\"{{Entity_Name_Here}}\"),\"/app/{{menu_Position_Here}}/{{namespace_Relative_Here}}/{{entity_Name_Plural_Here}}\"),
+                        new BreadcrumbItem(this.l('{{Entity_Name_Plural_Here}}') + '' + this.l('Details')),
+                    ];"
+        }
+    ]
+}

@@ -1,0 +1,139 @@
+<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="'WebhookEventDetail' | localize">
+        </sub-header>
+
+        <div [class]="containerClass">
+            <div class="card card-custom gutter-b">
+                <div class="card-body" *ngIf="webhookEvent">
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">{{'WebhookEvent' | localize}}</label>
+                        <div class="col-10">
+                            {{webhookEvent.webhookName}}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label">{{'CreationTime' | localize}}</label>
+                        <div class="col-10">
+                            {{webhookEvent.creationTime | momentFormat: 'L LT'}}
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label class="col-2 col-form-label">{{'Data' | localize}}</label>
+                        <div class="col-10 text-break" *ngIf="webhookEvent.data.length <= maxDataLength">
+                            {{webhookEvent.data}}
+                        </div>
+                        <div class="col-10 text-break" *ngIf="webhookEvent.data.length > maxDataLength">
+                            <p>
+                                <span id="dataDots">{{webhookEvent.data.slice(0,maxDataLength)}}. . .</span>
+                                <span id="dataMore" class="d-none">
+                                    {{webhookEvent.data}}
+                                </span>
+                            </p>
+                            <button class="btn btn-outline-primary btn-sm" id="dataShowMoreBtn"
+                                (click)="showMoreData()">{{"ShowData" | localize}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-custom gutter-b">
+                <div class="card-header align-items-center border-0 mt-4">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="font-weight-bolder text-dark">  {{"WebhookSendAttempts" | localize}}</span>
+                    </h3>
+                    <div class="card-toolbar">
+                        <button (click)="getSendAttempts()"
+                                class="btn btn-outline-brand btn-sm btn-icon btn-icon-md">
+                            <i class="flaticon2-refresh"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <!--<Primeng-TurboTable-Start>-->
+                        <div class="col primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable (onLazyLoad)="getSendAttempts($event)"
+                                [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [responsive]="primengTableHelper.isResponsive">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 100px;">{{ 'Actions' | localize}}</th>
+                                        <th style="width: 320px;">{{ 'WebhookSubscriptionId' | localize}}</th>
+                                        <th>{{ 'WebhookEndpoint' | localize}}</th>
+                                        <th style="width: 180px;">{{ 'CreationTime' | localize}}</th>
+                                        <th style="width:130px">{{ 'HttpStatusCode' | localize}}</th>
+                                        <th>{{ 'Response' | localize}}</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td>
+                                            <div class="btn-group dropdown" dropdown>
+                                                <button dropdownToggle class="dropdown-toggle btn btn-sm btn-primary">
+                                                    <i class="fa fa-cog"></i><span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" *dropdownMenu>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            *ngIf="('Pages.Administration.Webhook.ResendWebhook' | permission)"
+                                                            (click)="resend(record.id)">{{'Resend' | localize}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" class="dropdown-item"
+                                                            (click)="goToWebhookSubscriptionDetail(record.webhookSubscriptionId)">
+                                                            {{"GoToSubscription" |localize}}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{record.webhookSubscriptionId}}
+                                        </td>
+                                        <td>
+                                            {{record.webhookUri}}
+                                        </td>
+                                        <td>
+                                            {{record.creationTime | momentFormat:'YYYY-MM-DD HH:mm:ss'}}
+                                        </td>
+                                        <td>
+                                            {{record.responseStatusCode }}
+                                        </td>
+                                        <td>
+                                            <span *ngIf="record?.response?.length <= listMaxResponseLength">
+                                                {{record.response}}
+                                            </span>
+                                            <span *ngIf="record?.response?.length > listMaxResponseLength">
+                                                <button class="btn btn-outline-primary btn-sm"
+                                                    (click)="showDetailModal(record.response)">{{'ShowResponse' | localize}}</button>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{'NoData' | localize}}
+                            </div>
+                        </div>
+                        <!--<Primeng-TurboTable-End>-->
+                    </div>
+                </div>
+            </div>
+            <create-or-edit-webhook-subscription #createOrEditWebhookSubscriptionModal (modalSave)="getDetail()">
+            </create-or-edit-webhook-subscription>
+
+            <div bsModal #detailModal="bs-modal" id="detailModal" class="modal fade" tabindex="-1" role="dialog"
+                aria-labelledby="detailModal" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            {{detailModalText}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

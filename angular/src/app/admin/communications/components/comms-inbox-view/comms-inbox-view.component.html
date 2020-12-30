@@ -1,0 +1,31 @@
+<!--begin::View-->
+<div class="flex-row-fluid ml-lg-8 d-block">
+    <!--begin::Card-->
+    <div class="card card-custom card-stretch" *ngIf="topic">
+        <!--begin::Body-->
+        <div class="card-body p-0" *ngIf="contact" [busyIf]="loading">
+            <!--begin::Header-->
+            <div class="d-flex align-items-center justify-content-between flex-wrap card-spacer-x py-5">
+                <!--begin::Title-->
+                <div class="d-flex align-items-center mr-2 py-2">
+                    <div class="font-weight-bold font-size-h3 mr-3">
+                        <ng-container *ngIf="topic.fullName;else contactTmpl" ></ng-container>
+                        {{topic.fullName}} ({{topic.contact}})
+                        <ng-template #contactTmpl>{{topic.contact}}</ng-template>
+                    </div>
+                </div>
+                <!--end::Title-->
+            </div>
+            <!--end::Header-->
+            <!--begin::Messages-->
+            <div class="mb-3">
+                <comms-inbox-message-view [item]="item" *ngFor="let item of topic.items"></comms-inbox-message-view>
+            </div>
+            <!--end::Messages-->
+            <comms-compose-message [contact]="contact" (messageSent)="getItems()"></comms-compose-message>
+        </div>
+        <!--end::Body-->
+    </div>
+    <!--end::Card-->
+</div>
+<!--end::View-->

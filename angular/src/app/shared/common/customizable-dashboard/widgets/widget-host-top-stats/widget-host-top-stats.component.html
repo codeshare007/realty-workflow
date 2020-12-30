@@ -1,0 +1,110 @@
+<div class="row row-no-padding row-col-separator-xl h-100" [perfectScrollbar]>
+    <div class="col">
+        <div class="card card-custom bgi-no-repeat card-stretch new-subscription-statistics h-100">
+            <div class="card-body">
+                <a href="#"
+                   class="card-title text-left font-weight-bolder text-dark font-size-h6 mb-4 text-hover-state-dark d-block">
+                    {{'NewSubscriptionAmount' | localize}}
+                </a>
+                <div class="text-left text-primary font-weight-bolder font-size-h2 mr-2">
+                    <span *ngIf="!topStatsData">...</span>
+                    <span *ngIf="topStatsData" counto [step]="30"
+                          [countTo]="topStatsData.newSubscriptionAmount" [countFrom]="0"
+                          [duration]="5"
+                          (countoChange)="countoNewSubscriptionAmount = $event">{{countoNewSubscriptionAmount | currency:'USD':'symbol':'1.0-0'}}</span>
+                </div>
+                <div class="progress progress-xs mt-7 bg-primary-o-60">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="100"
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="text-left text-dark-75 mt-1 status-title">
+                    {{selectedDateRange[0] | momentFormat: 'L'}} -
+                    {{selectedDateRange[1] | momentFormat: 'L'}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card card-custom bgi-no-repeat card-stretch new-subscription-statistics h-100">
+            <div class="card-body">
+                <a href="#"
+                   class="card-title text-left font-weight-bolder text-dark font-size-h6 mb-4 text-hover-state-dark d-block">
+                    {{'NewTenants' | localize}}
+                </a>
+                <div class="text-left text-info font-weight-bolder font-size-h2 mr-2">
+                    <span *ngIf="!topStatsData">...</span>
+                    <span *ngIf="topStatsData" counto [step]="10"
+                          [countTo]="topStatsData.newTenantsCount" [countFrom]="0"
+                          [duration]="5"
+                          (countoChange)="countoNewTenantsCount = $event">{{countoNewTenantsCount | number:'1.0-0' }}</span>
+                </div>
+                <div class="progress progress-xs mt-7 bg-danger-o-60">
+                    <div class="progress-bar bg-info" role="progressbar" style="width: 100%;" aria-valuenow="100"
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="text-left text-dark-75 mt-1 status-title">
+                    {{selectedDateRange[0] | momentFormat: 'L'}} -
+                    {{selectedDateRange[1] | momentFormat: 'L'}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card card-custom bgi-no-repeat card-stretch new-subscription-statistics h-100">
+            <div class="card-body">
+                <a href="#"
+                   class="card-title text-left font-weight-bolder text-dark font-size-h6 mb-4 text-hover-state-dark d-block">
+                    {{'DashboardSampleStatistics' | localize}}
+                </a>
+                <div class="text-left text-danger font-weight-bolder font-size-h2 mr-2">
+                    <span *ngIf="!topStatsData">...</span>
+                    <span *ngIf="topStatsData" counto [step]="100"
+                          [countTo]="topStatsData.dashboardPlaceholder1" [countFrom]="0"
+                          [duration]="5"
+                          (countoChange)="countoDashboardPlaceholder1 = $event">{{countoDashboardPlaceholder1 | number:'1.0-0' }}</span>
+                </div>
+                <div class="progress progress-xs mt-7 bg-danger-o-60">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: 45%;" aria-valuenow="45"
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-muted mr-2 font-size-sm font-weight-bold">
+                        {{'DashboardSampleStatisticsHelpText' |localize}}
+                    </span>
+                    <span class="text-muted font-size-sm font-weight-bold">
+                        45%
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card card-custom bgi-no-repeat card-stretch new-subscription-statistics h-100">
+            <div class="card-body">
+                <a href="#"
+                   class="card-title text-left font-weight-bolder text-dark font-size-h6 mb-4 text-hover-state-dark d-block">
+                    {{'DashboardSampleStatistics' | localize}} 2
+                </a>
+                <div class="text-left text-success font-weight-bolder font-size-h2 mr-2">
+                    <span *ngIf="!topStatsData">...</span>
+                    <span *ngIf="topStatsData" counto [step]="100"
+                          [countTo]="topStatsData.dashboardPlaceholder2" [countFrom]="0"
+                          [duration]="5"
+                          (countoChange)="countoDashboardPlaceholder2 = $event">{{countoDashboardPlaceholder2 | number:'1.0-0' }}</span>
+                </div>
+                <div class="progress progress-xs mt-7 bg-success-o-60">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 65%;" aria-valuenow="65"
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-muted mr-2 font-size-sm font-weight-bold">
+                        {{'DashboardSampleStatisticsHelpText' |localize}}
+                    </span>
+                    <span class="text-muted font-size-sm font-weight-bold">
+                        65%
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

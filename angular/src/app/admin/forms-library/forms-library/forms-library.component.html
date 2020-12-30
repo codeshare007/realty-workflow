@@ -1,0 +1,32 @@
+<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="'FormsLibrary' | localize">
+            <div role="actions">
+                <!-- TODO: jaerbi => permissions -->
+                <button *ngIf="'Pages.Transactions.Create' | permission"
+                        type="button"
+                        (click)="openModal()"
+                        class="btn btn-primary">
+                    <i class="fa fa-plus"></i>
+                    <!-- {{ 'Create_New_Transacrion' | localize }} -->
+                    Create new Form
+                </button>
+            </div>
+        </sub-header>
+
+        <div [class]="containerClass">
+            <div class="card card-custom">
+                <div class="card-body">
+
+                    <forms-library-table #formLibraryTable
+                                         [libraryId]="selectedLibrary"></forms-library-table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<upload-document-modal #uploadDocumentRef
+                       (modalSave)="onModalSave($event)">
+</upload-document-modal>

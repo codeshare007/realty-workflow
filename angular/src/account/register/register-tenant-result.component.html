@@ -1,0 +1,25 @@
+<div class="login-form" [@routerTransition]>
+    <h4>{{"SuccessfullyRegistered" | localize}}</h4>
+
+    <ul>
+        <li><span class="text-muted">{{"TenancyName" | localize}}:</span> {{model.tenancyName}}</li>
+        <li><span class="text-muted">{{"TenantName" | localize}}:</span> {{model.name}}</li>
+        <li><span class="text-muted">{{"UserName" | localize}}:</span> {{model.userName}}</li>
+        <li><span class="text-muted">{{"EmailAddress" | localize}}:</span> {{model.emailAddress}}</li>
+    </ul>
+
+    <div>
+        <div *ngIf="model.isEmailConfirmationRequired" class="alert alert-warning" role="alert">
+            {{"ConfirmationMailSentPleaseClickLinkInTheEmail" | localize:model.emailAddress}}
+        </div>
+
+        <div *ngIf="!model.isActive" class="alert alert-primary" role="alert">
+            {{"YourAccountIsWaitingToBeActivatedByAdmin" | localize}}
+        </div>
+
+        <div *ngIf="tenantUrl" class="alert alert-secondary" role="alert">
+            {{"TenantRegistrationLoginInfo" | localize}}<br />
+            <a href="{{tenantUrl}}">{{tenantUrl}}</a>
+        </div>
+    </div>
+</div>

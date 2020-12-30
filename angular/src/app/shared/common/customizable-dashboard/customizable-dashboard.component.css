@@ -1,0 +1,144 @@
+ /* The switch - the box around the slider */
+ .switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  margin: 0;
+  top: 0;
+}
+
+  /* Hide default HTML checkbox */
+  .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+  }
+  /* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+  .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+  }
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+  .slider.round:before {
+      border-radius: 50%;
+  }
+
+  .deleteWidgetButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 22px;
+    padding: 0 7px !important;
+    height: 22px;
+    border-radius: 0 0 0 10px;
+    box-shadow: none;
+    outline: none;
+    text-align: center;
+    border: 0 !important;
+    z-index: 1002;
+}
+
+
+
+gridster {
+  height: calc(100vh - 300px);
+  background: none;
+}
+
+gridster.no-tab{
+  height: calc(100vh - 230px);
+}
+
+:host ::ng-deep gridster .gridster-row{
+    border-top: 1px dotted #c1c1c1 !important;
+    border-bottom: 1px dotted #c1c1c1 !important;
+}
+
+:host ::ng-deep gridster .gridster-column {
+    border-left: 1px dotted #c1c1c1 !important;
+    border-right: 1px dotted #c1c1c1 !important;
+}
+
+.div-dashboard-customization {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 120;
+    background-color: #cecece;
+    border-radius: 10px;
+    padding: 15px
+}
+
+.div-dashboard-customization .vr {
+    border-right: 1px solid white;
+    float: left;
+    margin-right: 8px
+}
+
+:host ::ng-deep tabset.nav-hidden .nav-tabs {
+  display: none;
+}
+
+.btn-filter{
+  margin-right: 8px;
+}
+
+:host ::ng-deep gridster .kt-portlet{
+    margin: 0;
+    height: 100%;
+}
+
+:host ::ng-deep gridster .kt-portlet__body{
+ overflow: auto;
+}
+
+.div-dashboard-customization button{
+  margin: 0 3px;
+}
+
+.filterModal h5{
+  margin-bottom:10px
+}
+
+ gridster-item{
+     background:none;
+ }

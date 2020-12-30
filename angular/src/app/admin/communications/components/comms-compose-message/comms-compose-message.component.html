@@ -1,0 +1,43 @@
+<form #composeForm="ngForm" novalidate>
+    <div class="card-spacer mb-3">
+        <div class="card card-custom shadow-sm">
+            <div class="card-body p-0">
+                <!--begin::Form-->
+                <form id="kt_inbox_reply_form">
+                    <!--begin::Body-->
+                    <div class="d-block">
+                        <!--begin::Subject-->
+                        <div class="border-bottom">
+                            <input class="form-control border-0 px-8 min-h-45px" name="ComposeSubject"
+                                [(ngModel)]="input.subject" [placeholder]="'Subject' | localize" required type="text">
+                        </div>
+                        <!--end::Subject-->
+                        <!--begin::Message-->
+                        <textarea class="form-control border-0 px-8" [ngClass]="{'edited':input.message}"
+                            [(ngModel)]="input.message" name="ComposeMessage" [placeholder]="'Message' | localize"
+                            required></textarea>
+                        <!--end::Message-->
+                    </div>
+                    <!--end::Body-->
+                    <!--begin::Footer-->
+                    <div class="d-flex align-items-center justify-content-between py-5 pl-8 pr-5 border-top">
+                        <!--begin::Actions-->
+                        <div class="d-flex align-items-center mr-3">
+                            <!--begin::Send-->
+                            <button type="button" class="btn btn-primary font-weight-bold px-6" [buttonBusy]="saving"
+                                [busyText]="'SendingWithThreeDot' | localize" [disabled]="!input.subject || !input.message"
+                                (click)="sendMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                                {{'Send' | localize}}
+                            </button>
+                            <!--end::Send-->
+                        </div>
+                        <!--end::Actions-->
+                    </div>
+                    <!--end::Footer-->
+                </form>
+                <!--end::Form-->
+            </div>
+        </div>
+    </div>
+</form>

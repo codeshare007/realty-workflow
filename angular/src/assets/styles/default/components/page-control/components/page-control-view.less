@@ -1,0 +1,20 @@
+.page-control__view {
+    display: flex;
+    height: 100%;
+    width: 100%;
+
+    &__text {
+        display: inline-flex;
+        padding: 3px 10px;
+        overflow: hidden;
+        border:1px solid transparent;
+
+        &.control-input,
+        &.control-date,
+        &.control-signature,
+        &.control-initials {
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}

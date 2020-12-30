@@ -1,0 +1,6 @@
+{
+	"path" : "{{Namespace_Here}}.Web.Mvc\\Areas\\{{App_Area_Name_Here}}\\Models\\{{Entity_Name_Plural_Here}}\\{{Entity_Name_Here}}{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableViewModel.cs",
+	"condition": "",
+	"viewType": "LookupTable",
+	"foreach": "navigationProperty"
+}

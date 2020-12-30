@@ -1,0 +1,39 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header align-items-center border-0">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="font-weight-bolder text-dark">
+                 {{"OrganizationTree" | localize}}
+            </span>
+        </h3>
+        <div class="card-toolbar">
+            <button *ngIf="'Pages.Administration.OrganizationUnits.ManageOrganizationTree' | permission" (click)="addUnit(null)" class="btn btn-primary">
+                <i class="fa fa-plus"></i> {{"AddRootUnit" | localize}}
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <p-tree [value]="treeData"
+                selectionMode="single"
+                [(selection)]="selectedOu"
+                (onNodeSelect)="nodeSelect($event)"
+                (onNodeDrop)="nodeDrop($event)"
+                [contextMenu]="ouContextMenu"
+                [draggableNodes]="canManageOrganizationUnits" [droppableNodes]="canManageOrganizationUnits">
+            <ng-template let-node pTemplate="default">
+                <div>
+                    <span>
+                        {{node.label}}
+                    </span>
+                    <small style="font-size: .82em; opacity: .5;">{{node.memberCount}} {{'Members' | localize}}, {{node.roleCount}} {{'Roles' | localize}}</small>
+                </div>
+            </ng-template>
+        </p-tree>
+        <p-contextMenu #ouContextMenu [model]="ouContextMenuItems" appendTo="body" baseZIndex="99999"></p-contextMenu>
+        <div *ngIf="!totalUnitCount" class="text-muted">
+            {{"NoOrganizationUnitDefinedYet" | localize}}
+        </div>
+    </div>
+</div>
+
+<createOrEditOrganizationUnitModal #createOrEditOrganizationUnitModal (unitCreated)="unitCreated($event)" (unitUpdated)="unitUpdated($event)"></createOrEditOrganizationUnitModal>
+<entityTypeHistoryModal #entityTypeHistoryModal></entityTypeHistoryModal>

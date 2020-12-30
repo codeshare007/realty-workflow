@@ -1,0 +1,6 @@
+{
+	"path" : "{{Namespace_Here}}.Web.Mvc\\wwwroot\\view-resources\\Areas\\{{App_Area_Name_Here}}\\Views\\{{Entity_Name_Plural_Here}}\\_{{Entity_Name_Here}}{{NP_Foreign_Entity_Name_Here}}LookupTableModal.js",
+	"condition": "",
+	"viewType": "LookupTable",
+	"foreach": "navigationProperty"
+}

@@ -1,0 +1,38 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal"
+     aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <form *ngIf="active" #editForm="ngForm" novalidate (ngSubmit)="save()">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span *ngIf="organizationUnit.id">{{"Edit" | localize}}: {{organizationUnit.displayName}}</span>
+                        <span *ngIf="!organizationUnit.id">{{"NewOrganizationUnit" | localize}}</span>
+                    </h5>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                        <label for="OrganizationUnitDisplayName">{{"Name" | localize}} *</label>
+                        <input id="OrganizationUnitDisplayName" #organizationUnitDisplayName="ngModel" class="form-control" type="text" name="displayName" [ngClass]="{'edited': organizationUnit.displayName}" [(ngModel)]="organizationUnit.displayName" required maxlength="128">
+                        <validation-messages [formCtrl]="organizationUnitDisplayName"></validation-messages>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold" (click)="close()">{{"Cancel" | localize}}</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!editForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

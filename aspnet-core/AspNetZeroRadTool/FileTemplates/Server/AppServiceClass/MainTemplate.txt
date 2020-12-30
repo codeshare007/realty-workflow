@@ -1,0 +1,101 @@
+﻿{{NP_Using_Looped_Template_Here}}
+{{Enum_Using_Looped_Template_Here}}
+using System;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using Abp.Linq.Extensions;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Abp.Domain.Repositories;{{Excel_Using_Statement_Here}}
+using {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}.Dtos;
+using {{Namespace_Here}}.Dto;
+using Abp.Application.Services.Dto;
+using {{Namespace_Here}}.Authorization;
+using Abp.Extensions;
+using Abp.Authorization;
+using Microsoft.EntityFrameworkCore;
+
+namespace {{Namespace_Here}}.{{Namespace_Relative_Full_Here}}
+{
+	[AbpAuthorize(AppPermissions.{{Permission_Name_Here}})]
+    public class {{Entity_Name_Plural_Here}}AppService : {{Project_Name_Here}}AppServiceBase, I{{Entity_Name_Plural_Here}}AppService
+    {
+		 private readonly IRepository<{{Entity_Name_Here}}{{Primary_Key_With_Comma_Here}}> _{{entity_Name_Here}}Repository;{{Excel_Declaration_Here}}
+		 {{NP_Looped_Declaration_Here}}
+
+		  public {{Entity_Name_Plural_Here}}AppService(IRepository<{{Entity_Name_Here}}{{Primary_Key_With_Comma_Here}}> {{entity_Name_Here}}Repository{{Excel_Constructor_Parameter_Here}} {{NP_Looped_Ctor_Parameter_Here}}) 
+		  {
+			_{{entity_Name_Here}}Repository = {{entity_Name_Here}}Repository;{{Excel_Constructor_Init_Here}}
+			{{NP_Looped_Ctor_Initialize_Here}}
+		  }
+
+		 public async Task<PagedResultDto<Get{{Entity_Name_Here}}ForViewDto>> GetAll(GetAll{{Entity_Name_Plural_Here}}Input input)
+         {
+			{{Property_Enum_Variable_Here}}
+			var filtered{{Entity_Name_Plural_Here}} = _{{entity_Name_Here}}Repository.GetAll(){{NP_Loop_Include_In_GetList_Here}}
+						.WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false {{Property_Looped_Template_Here}}){{Property_Query_Filter_Here}}{{NP_Query_Filter_Here}};
+
+			var pagedAndFiltered{{Entity_Name_Plural_Here}} = filtered{{Entity_Name_Plural_Here}}
+                .OrderBy(input.Sorting ?? "id asc")
+                .PageBy(input);
+
+			var {{entity_Name_Plural_Here}} = from o in pagedAndFiltered{{Entity_Name_Plural_Here}}{{NP_Looped_Query_Join_Here}}
+                         select new Get{{Entity_Name_Here}}ForViewDto() {
+							{{Entity_Name_Here}} = new {{Entity_Name_Here}}Dto
+							{{{Property_Manuel_Mapping_Here}}
+                                Id = o.Id
+							}{{NP_Looped_Map_Join_Here}}
+						};
+
+            var totalCount = await filtered{{Entity_Name_Plural_Here}}.CountAsync();
+
+            return new PagedResultDto<Get{{Entity_Name_Here}}ForViewDto>(
+                totalCount,
+                await {{entity_Name_Plural_Here}}.ToListAsync()
+            );
+         }{{GetForView_Method_Here}}
+		 
+		 [AbpAuthorize(AppPermissions.{{Permission_Name_Here}}_Edit)]
+		 public async Task<Get{{Entity_Name_Here}}ForEditOutput> Get{{Entity_Name_Here}}ForEdit(EntityDto{{Primary_Key_Inside_Tag_Here}} input)
+         {
+            var {{entity_Name_Here}} = await _{{entity_Name_Here}}Repository.FirstOrDefaultAsync(input.Id);
+           
+		    var output = new Get{{Entity_Name_Here}}ForEditOutput {{{Entity_Name_Here}} = ObjectMapper.Map<CreateOrEdit{{Entity_Name_Here}}Dto>({{entity_Name_Here}})};{{NP_Loop_Include_In_Get_Here}}
+			
+            return output;
+         }
+
+		 public async Task CreateOrEdit(CreateOrEdit{{Entity_Name_Here}}Dto input)
+         {
+            if({{Id_Null_Check_Here}}){
+				await Create(input);
+			}
+			else{
+				await Update(input);
+			}
+         }
+
+		 [AbpAuthorize(AppPermissions.{{Permission_Name_Here}}_Create)]
+		 protected virtual async Task Create(CreateOrEdit{{Entity_Name_Here}}Dto input)
+         {
+            var {{entity_Name_Here}} = ObjectMapper.Map<{{Entity_Name_Here}}>(input);
+
+			{{Set_Tenant_Id_Here}}{{Set_String_Id_Here}}
+
+            await _{{entity_Name_Here}}Repository.InsertAsync({{entity_Name_Here}});
+         }
+
+		 [AbpAuthorize(AppPermissions.{{Permission_Name_Here}}_Edit)]
+		 protected virtual async Task Update(CreateOrEdit{{Entity_Name_Here}}Dto input)
+         {
+            var {{entity_Name_Here}} = await _{{entity_Name_Here}}Repository.FirstOrDefaultAsync(({{Primary_Key_Here}})input.Id);
+             ObjectMapper.Map(input, {{entity_Name_Here}});
+         }
+
+		 [AbpAuthorize(AppPermissions.{{Permission_Name_Here}}_Delete)]
+         public async Task Delete(EntityDto{{Primary_Key_Inside_Tag_Here}} input)
+         {
+            await _{{entity_Name_Here}}Repository.DeleteAsync(input.Id);
+         } {{Get_Excel_Method_Here}}{{NP_Looped_GetAllForLookupTable_Here}}
+    }
+}
