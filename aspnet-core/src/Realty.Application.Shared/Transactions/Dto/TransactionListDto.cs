@@ -12,5 +12,6 @@ namespace Realty.Transactions.Dto
         public string Customer { get; set; }
         public string Agent { get; set; }
         public DateTime CreationTime { get; set; }
+        public DateTime? LastModificationTime { get; set; }
     }
 }

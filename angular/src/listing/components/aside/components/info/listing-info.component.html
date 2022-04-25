@@ -1,0 +1,14 @@
+<div class="listing-info">
+    <ng-container *ngFor="let info of listingsInfo">
+        <div class="listing-info__item"
+            *ngIf="info.value">
+       <span class="listing-info__item__title">
+           {{ info.title }}:
+       </span>
+       <span class="listing-info__item__value"
+             [ngClass]="{ 'not-have-data': info.value === 'TEST' }">
+           {{ info.value }}
+       </span>
+   </div>
+    </ng-container>
+</div>

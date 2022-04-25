@@ -1,0 +1,36 @@
+<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="'Signing_Design' | localize"
+                    [breadcrumbs]="breadcrumbs">
+            <div role="actions">
+                <button type="button"
+                        (click)="generateReport()"
+                        class="btn btn-primary mr-3">
+                    {{ 'Print' | localize }}
+                </button> 
+            </div>
+        </sub-header>
+
+        <div [class]="containerClass">
+            <div class="card card-custom"
+                 [busyIf]="loading">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 signing-form-design-page__document new-scrollbar"
+                             *ngIf="signing && signing.id">
+                            <div *ngFor="let form of signing.forms | pageLine; trackBy: trackByIndex">
+                                <document-view *ngIf="form"
+                                               [adminView]="true"
+                                               [document]="form"
+                                               [participants]="signing.participants"
+                                               [accessSetting]="accessLayers"
+                                               [switchSetting]="switchSetting">
+                                </document-view>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

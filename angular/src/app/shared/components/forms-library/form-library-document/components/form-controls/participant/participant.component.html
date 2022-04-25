@@ -1,0 +1,51 @@
+<form class="participant__select">
+    <ng-container *ngIf="isLabel; else noLabel">
+        <span class="title-select">
+            {{ title }}
+        </span>
+        <div class="participant__select__action"
+             (click)="toggleDropDown()">
+            <span
+                  [class]="'participant__select__dropdown__list__item__badge ' + getParticipantClass(selectParticipant)"></span>
+            <input class="click-outside"
+                   type="button"
+                   [value]="participantActionValue" />
+            <span class="click-outside"
+                  [ngClass]="{ 'active': showDropDown }"></span>
+            <i class="fas fa-angle-left click-outside"
+               [ngClass]="{ 'active': showDropDown }"></i>
+        </div>
+    </ng-container>
+
+    <ng-template #noLabel>
+        <div class="participant__select__action"
+             (click)="toggleDropDown()">
+            <span
+                  [class]="'participant__select__dropdown__list__item__badge ' + getParticipantClass(selectParticipant)"></span>
+            <input class="click-outside"
+                   type="button"
+                   [value]="title" />
+            <span class="click-outside"
+                  [ngClass]="{ 'active': showDropDown }"></span>
+            <i class="fas fa-angle-left click-outside"
+               [ngClass]="{ 'active': showDropDown }"></i>
+        </div>
+    </ng-template>
+
+    <div class="participant__select__dropdown"
+         *ngIf="showDropDown"
+         dropDownClickOutside
+         (dropDownClickOutside)="toggleDropDown()">
+        <ul class="participant__select__dropdown__list select--overflow new-scrollbar">
+            <li *ngFor="let item of participants"
+                (click)="selectValue(item)"
+                [ngClass]="{ 'selected' : (selectParticipant ? item.id === selectParticipant.id : false) }"
+                class="participant__select__dropdown__list__item">
+                <span [class]="'participant__select__dropdown__list__item__badge ' + getParticipantClass(item)"></span>
+                <span class="participant__select__dropdown__list__item__name">
+                    {{ item.firstName }} {{ item.middleName }} {{ item.lastName }}
+                </span>
+            </li>
+        </ul>
+    </div>
+</form>

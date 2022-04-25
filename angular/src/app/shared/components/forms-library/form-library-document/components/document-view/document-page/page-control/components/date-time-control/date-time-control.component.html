@@ -1,9 +1,19 @@
-<input type="text"
-       #datePickerRef
-       name="datePicker"
-       class="form-control"
-       bsDatepicker
-       datePickerMomentModifier
-       [(date)]="date"
-       (dateChange)="onDateChange($event)"
-       [bsConfig]="{ adaptivePosition: true }" />
+<span>
+    <input type="text"
+           #datePickerRef
+           [name]="'datePicker' + tabIndex"
+           [tabindex]="tabIndex"
+           [placeholder]="control.placeholder ? control.placeholder : ''"
+           class="form-control"
+           bsDatepicker
+           id="bs-Datepicker"
+           datePickerMomentModifier
+           [(date)]="date"
+           (dateChange)="onDateChange($event)"
+           (keypress)="numberOnly($event)"
+           [bsConfig]="{ adaptivePosition: true }" />
+    <label class="icon-label"
+           for="bs-Datepicker">
+        <i class="fa fa-calendar"></i>
+    </label>
+</span>

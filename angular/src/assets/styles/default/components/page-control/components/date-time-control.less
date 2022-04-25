@@ -15,4 +15,27 @@
     input {
         font-size: inherit;
     }
+
+    label {
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+    }
+
+    .icon-label {
+        display: unset;
+        height: unset;
+        width: unset;
+    }
+
+    &:focus {
+        box-shadow: 0 0 14px 4px @main-color-second;
+    }
+
+    i {
+        position: absolute;
+        left: 8px;
+        top: 50%;
+        transform: translate(0, -50%);
+    }
 }

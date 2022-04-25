@@ -1,16 +1,27 @@
 <div *ngIf="document">
-    <!-- <h2>{{ document.name }}</h2>
-    <p>Modified: {{ document.lastModificationTime | momentFormat:'L LT' }}</p> -->
-
     <div class="document-view__wrapper new-scrollbar">
-        <document-page *ngFor="let page of document.pages; let i = index;"
+        <document-page *ngFor="let page of document.pages; trackBy: trackByIndex"
                        [page]="page"
+                       [mainLayer]="mainLayer"
+                       [publicMode]="publicMode"
+                       [adminView]="adminView"
+                       [participantId]="participantId"
+                       [participants]="participants"
+                       [participantMappingItems]="participantMappingItems"
+                       [accessSetting]="accessSetting"
                        [documentId]="document.id"
-                       [index]="i+1">
+                       (controlDropped)="onControlDropped()"
+                       [pageHeight]="document.height"
+                       [pageWidth]="document.width">
         </document-page>
     </div>
-
 </div>
-<signature-control-modal #signatureControlRef
+<!-- <signature-control-modal #signatureControlRef
                          (modalSave)="onModalSave($event)">
-</signature-control-modal>
+</signature-control-modal> -->
+
+<!-- <mat-signature-control-modal #matSignatureControlRef></mat-signature-control-modal> -->
+
+<upload-attachment-modal #uploadAttachmentRef
+                         (modalSave)="onModalSave($event)">
+</upload-attachment-modal>

@@ -1,5 +1,6 @@
 ﻿using System;
 using Abp.Application.Services.Dto;
+using Realty.Contacts.Dto;
 using Realty.Forms.Dto;
 
 namespace Realty.Signings.Dto
@@ -10,17 +11,18 @@ namespace Realty.Signings.Dto
         {
         }
 
-        public SigningFormEditDto(Guid signingId, string name, FormEditDto[] forms, string publicSigningLink)
+        public SigningFormEditDto(Guid signingId, string name, FormEditDto[] forms, ContactListDto[] participants)
         {
             Id = signingId;
             Name = name;
             Forms = forms;
-            PublicSigningLink = publicSigningLink;
+            Participants = participants;
         }
 
-        public string PublicSigningLink { get; set; }
-
         public string Name { get; set; }
+
         public FormEditDto[] Forms { get; set; }
+
+        public ContactListDto[] Participants { get; set; }
     }
 }

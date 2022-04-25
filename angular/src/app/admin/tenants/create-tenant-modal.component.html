@@ -199,7 +199,7 @@
                 <div class="modal-footer">
                     <button type="button" [disabled]="saving" class="btn btn-light-primary font-weight-bold"
                         (click)="close()">{{"Cancel" | localize}}</button>
-                    <button type="submit" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"
+                    <button type="submit" [buttonBusy]="saving" [busyText]="'SavingWithThreeDot' | localize"
                         class="btn btn-primary font-weight-bold"
                         [disabled]="!tenantCreateForm.form.valid || saving || !subscriptionEndDateIsValid()"><i
                             class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>

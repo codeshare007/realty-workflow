@@ -8,16 +8,16 @@ namespace Realty.Controls.Dto
         {
         }
 
-        public ControlSizeDto(int width, int height)
+        public ControlSizeDto(float width, float height)
         {
             Width = width;
             Height = height;
         }
 
         [Range(Constants.Size.WidthMinValue, Constants.Size.WidthMaxValue)]
-        public int Width { get; set; }
+        public float Width { get; set; }
 
         [Range(Constants.Size.HeightMinValue, Constants.Size.HeightMaxValue)]
-        public int Height { get; set; }
+        public float Height { get; set; }
     }
 }

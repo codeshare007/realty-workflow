@@ -7,9 +7,8 @@ namespace Realty.Storage
     public interface IFileStorageService : IDomainService
     {
         Task<Tuple<byte[],File>> GetFile(Guid fileId);
-
-        Task<File> UploadFile(int tenantId, string fileName, string contentType, byte[] bytes);
-        
+        Task<File> UploadFileFor(IHaveFiles entity, string fileName, string contentType, byte[] bytes);
+        Task<UploadFileResult> Upload(IHaveFiles entity, string fileName, string contentType, byte[] bytes);
         Task DeleteFile(Guid fileId);
     }
 }

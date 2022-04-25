@@ -1,0 +1,59 @@
+.lead-listing-carousel {
+    .ui-carousel {
+        display: flex;
+        justify-content: center;
+        height: 100%;
+
+        &-container {
+            margin: auto;
+            max-width: 900px;
+        }
+    }
+
+    .item-image {
+        display: flex;
+        margin: 24px auto 0;
+        max-width: 100%;
+        max-height: 480px;
+        height: auto;
+    }
+}
+
+.modal-carousel {
+    position: relative;
+    margin: 24px auto 0;
+    width: max-content;
+    height: max-content;
+    background-color: @main-white-second;
+    box-shadow: 0 0 4px 0 @box-shadow;
+    border-radius: 4px;
+
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        transition: all 0.2s ease-in;
+
+        &:hover {
+            transform: scale(1.2);
+        }
+
+        i {
+            font-size: 20px;
+        }
+    }
+
+    .ui-state-disabled {
+        cursor: not-allowed;
+        opacity: 0.3 !important;
+    }
+
+    .ui-button:enabled:focus {
+        outline: none;
+        box-shadow: none;
+    }
+}
+
+lead-images-modal .modal-open .modal {
+    overflow: hidden;
+}

@@ -1,0 +1,14 @@
+<div appBsModal
+     #leadImagesModal="bs-modal"
+     class="modal fade"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="leadImagesModal"
+     aria-hidden="false"
+     [config]="{backdrop: 'static'}">
+    <div class="modal-carousel">
+        <lead-listing-carousel [items]="images"
+                               (onClose)="close()">
+        </lead-listing-carousel>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+<div appBsModal
+     (onShown)="onShown()"
+     #participantMargeModal="bs-modal"
+     class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div *ngIf="active">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>
+                            Merge Participant
+                        </span>
+                    </h4>
+                    <button type="button"
+                            class="close"
+                            (click)="close()"
+                            [attr.aria-label]="'Close' | localize"
+                            [disabled]="saving">
+                        <i aria-hidden="true"
+                           class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <ul class="participant-marge-modal__list">
+                        <li class="participant-marge-modal__list__item"
+                            *ngFor="let form of participantMargeForms">
+                            <h5>{{ form.formName }}</h5>
+                            <div class="divider__line"></div>
+                            <div *ngFor="let control of form.controls; let i = index">
+                                <participant-marge-item [participants]="participants"
+                                                        [control]="control"
+                                                        [participantMappingItems]="form.participantMappingItems"
+                                                        [index]="i+1">
+                                </participant-marge-item>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving"
+                            type="button"
+                            class="btn btn-light-primary"
+                            (click)="close()">
+                        {{ 'Cancel' | localize }}
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-primary"
+                            (click)="save()">
+                        {{ 'Save' | localize }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

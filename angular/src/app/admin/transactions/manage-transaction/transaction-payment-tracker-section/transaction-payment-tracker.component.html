@@ -1,0 +1,251 @@
+<div class="card-body p-0"
+     *ngIf="transactionPaymentTracker">
+    <tabset>
+        <tab heading="{{'Overview' | localize}}">
+            <div class="col-lg-12">
+                <overview-table [dueFromTenant]="dueFromTenant"
+                                [dueFromLandlord]="dueFromLandlord"
+                                [dueLandlord]="dueLandlord"
+                                [totalOfficeFeeEarned]="totalOfficeFeeEarned"
+                                [transactionPaymentTracker]="transactionPaymentTracker">
+                </overview-table>
+            </div>
+        </tab>
+        <tab heading="{{'DealOverview' | localize}}">
+            <div class="row py-3 mx-1">
+                <div class="col-lg-12">
+                    <div class="row mt-5">
+                        <h6 class="font-weight-bold mr-2">Total Monies on Deal:
+                            ${{ getTotalMoneyOnDeal(transactionPaymentTracker) }}</h6>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4 d-flex flex-column py-1 px-0 pr-10">
+                            <span class="font-weight-bold mr-2">First:</span>
+                            <div>
+                                <input id="TransactionFirstPayment"
+                                       type="number"
+                                       name="TransactionFirstPayment"
+                                       class="form-control"
+                                       [(ngModel)]="transactionPaymentTracker.firstPayment"
+                                       (ngModelChange)="saveChanges()" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 d-flex flex-column py-1 px-0 pr-10">
+                            <span class="font-weight-bold mr-2">Last:</span>
+                            <div>
+                                <input id="TransactionLastPayment"
+                                       type="number"
+                                       name="TransactionLastPayment"
+                                       class="form-control"
+                                       [(ngModel)]="transactionPaymentTracker.lastPayment"
+                                       (ngModelChange)="saveChanges()" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 d-flex flex-column py-1 px-0 pr-10">
+                            <span class="font-weight-bold mr-2">Security:</span>
+                            <div>
+                                <input id="TransactionSecurityPayment"
+                                       type="number"
+                                       name="TransactionSecurityPayment"
+                                       class="form-control"
+                                       [(ngModel)]="transactionPaymentTracker.securityPayment"
+                                       (ngModelChange)="saveChanges()" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 d-flex flex-column py-1 px-0 pr-10">
+                            <span class="font-weight-bold mr-2">Key:</span>
+                            <div>
+                                <input id="TransactionKeyPayment"
+                                       type="number"
+                                       name="TransactionKeyPayment"
+                                       class="form-control"
+                                       [(ngModel)]="transactionPaymentTracker.keyPayment"
+                                       (ngModelChange)="saveChanges()" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 d-flex flex-column py-1 px-0 pr-10">
+                            <span class="font-weight-bold mr-2">Other:</span>
+                            <div>
+                                <input id="TransactionOtherPayment"
+                                       type="number"
+                                       name="TransactionOtherPayment"
+                                       class="form-control"
+                                       [(ngModel)]="transactionPaymentTracker.otherPayment"
+                                       (ngModelChange)="saveChanges()" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 d-flex flex-column py-1 px-0 pr-10">
+                            <span class="font-weight-bold mr-2">Fee:</span>
+                            <div>
+                                <input id="TransactionFeePayment"
+                                       type="number"
+                                       name="TransactionFeePayment"
+                                       class="form-control"
+                                       [(ngModel)]="transactionPaymentTracker.feePayment"
+                                       (ngModelChange)="saveChanges()" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="row mt-5">
+                        <h6 class="font-weight-bold mr-2">Fee Structure</h6>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4 d-flex flex-column py-1 px-0 pr-10">
+                            <span class="font-weight-bold mr-2">Tenant (%):</span>
+                            <div>
+                                <input id="TenantFeePercentage"
+                                       type="number"
+                                       name="TenantFeePercentage"
+                                       class="form-control"
+                                       [(ngModel)]="transactionPaymentTracker.tenantFeePercentage"
+                                       (ngModelChange)="saveChanges()" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 d-flex flex-column py-1 px-0 pr-10">
+                            <span class="font-weight-bold mr-2">Landlord (%):</span>
+                            <div>
+                                <input id="LandlordFeePercentage"
+                                       type="number"
+                                       name="LandlordFeePercentage"
+                                       class="form-control"
+                                       [(ngModel)]="transactionPaymentTracker.landlordFeePercentage"
+                                       (ngModelChange)="saveChanges()" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 d-flex flex-column justify-content-center py-1 px-0 pr-10">
+                            <label for="isWithholdingFee"
+                                   class="checkbox">
+                                <input id="isWithholdingFee"
+                                       type="checkbox"
+                                       name="isWithholdingFee"
+                                       [(ngModel)]="transactionPaymentTracker.isWithholdingFee"
+                                       (ngModelChange)="saveChanges()" />
+                                <span></span>
+                                Are we Withholding Fee
+                            </label>
+                        </div>
+                        <div class="col-lg-4 d-flex flex-column py-1 px-0 pr-10">
+                            <span class="font-weight-bold mr-2">Agent (%):</span>
+                            <div>
+                                <input id="AgentFeePercentage"
+                                       type="number"
+                                       name="AgentFeePercentage"
+                                       class="form-control"
+                                       [(ngModel)]="transactionPaymentTracker.agentFeePercentage"
+                                       (ngModelChange)="saveChanges()" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-lg-12 payment-summary">
+                    <div class="row mt-5">
+                        <h6 class="font-weight-bold mr-2">Overview</h6>
+                    </div>
+
+                    <div class="row">
+                        <table>
+                            <tr>
+                                <td class="highlighted-column"></td>
+                                <td class="highlighted-column">Due</td>
+                                <td class="highlighted-column">Received</td>
+                                <td class="highlighted-column">Balance Due</td>
+                            </tr>
+                            <tr>
+                                <td class="highlighted-column">From Tenant</td>
+                                <td>{{ dueFromTenant | currency }}</td>
+                                <td>{{ transactionPaymentTracker.receivedFromTenant | currency }}</td>
+                                <td>{{ (dueFromTenant - transactionPaymentTracker.receivedFromTenant) | currency }}</td>
+                            </tr>
+                            <tr>
+                                <td class="highlighted-column">From Landlord</td>
+                                <td>{{ dueFromLandlord | currency }}</td>
+                                <td>{{ transactionPaymentTracker.receivedFromLandlord | currency }}</td>
+                                <td>{{ (dueFromLandlord - transactionPaymentTracker.receivedFromLandlord) | currency }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="highlighted-column"
+                                    colspan="3">Total Balance Due</td>
+                                <td>{{ ((dueFromTenant - transactionPaymentTracker.receivedFromTenant) + (dueFromLandlord - transactionPaymentTracker.receivedFromLandlord)) | currency }}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="row mt-5">
+                        <table>
+                            <tr>
+                                <td class="highlighted-column">Due Landlord</td>
+                                <td class="highlighted-column">Due</td>
+                                <td class="highlighted-column">Sent</td>
+                                <td class="highlighted-column">Balance Due Landlord</td>
+                            </tr>
+                            <tr>
+                                <td class="highlighted-column"></td>
+                                <td>{{ dueLandlord | currency }}</td>
+                                <td>{{ transactionPaymentTracker.receivedToLandlord | currency }}</td>
+                                <td>{{ (dueLandlord - transactionPaymentTracker.receivedToLandlord) | currency }}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="row mt-5">
+                        <table>
+                            <tr>
+                                <td class="highlighted-column">Fee</td>
+                                <td class="highlighted-column">Uncollected $</td>
+                                <td class="highlighted-column">Total office fee earned</td>
+                                <td class="highlighted-column">Commission Earned by Agent</td>
+                                <td class="highlighted-column">Total Commissions Owed to Agent:</td>
+                            </tr>
+                            <tr>
+                                <td>{{ (transactionPaymentTracker.feePayment) | currency}}</td>
+                                <td>{{ ((dueFromTenant - transactionPaymentTracker.receivedFromTenant) + (dueFromLandlord - transactionPaymentTracker.receivedFromLandlord)) | currency }}
+                                </td>
+                                <td>{{ totalOfficeFeeEarned | currency }}</td>
+                                <td>{{ (totalOfficeFeeEarned * transactionPaymentTracker.agentFeePercentage / 100) | currency }}
+                                </td>
+                                <td>{{ ((totalOfficeFeeEarned * transactionPaymentTracker.agentFeePercentage / 100) - transactionPaymentTracker.receivedToAgent) | currency }}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div> -->
+
+            </div>
+        </tab>
+        <tab heading="{{'ClientPaymentsIn' | localize}}">
+            <transaction-payments class="mt-3 d-flex"
+                                  [transactionId]="transactionId"
+                                  [participantType]="paymentParticipantType.FromClient"
+                                  (updated)="getTransactionPaymentTracker()">
+            </transaction-payments>
+        </tab>
+        <tab heading="{{'OwnerPaymentsOut' | localize}}">
+            <transaction-payments class="mt-3 d-flex"
+                                  [transactionId]="transactionId"
+                                  [participantType]="paymentParticipantType.ToLandlord"
+                                  (updated)="getTransactionPaymentTracker()">
+            </transaction-payments>
+        </tab>
+        <tab heading="{{'OwnerPaymentsIn' | localize}}">
+            <transaction-payments class="mt-3 d-flex"
+                                  [transactionId]="transactionId"
+                                  [participantType]="paymentParticipantType.FromLandlord"
+                                  (updated)="getTransactionPaymentTracker()">
+            </transaction-payments>
+        </tab>
+        <tab heading="{{'AgentCommision' | localize}}">
+            <transaction-payments class="mt-3 d-flex"
+                                  [transactionId]="transactionId"
+                                  [participantType]="paymentParticipantType.ToAgent"
+                                  (updated)="getTransactionPaymentTracker()">
+            </transaction-payments>
+        </tab>
+    </tabset>
+</div>

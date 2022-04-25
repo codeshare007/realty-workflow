@@ -26,7 +26,7 @@ export class Theme11LayoutComponent extends ThemesLayoutBaseComponent implements
 
     ngOnInit() {
         this.installationMode = UrlHelper.isInstallUrl(location.href);
-        this.defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/app-logo-on-light.jpg';
+        this.defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/app-logo-on-light.png';
 
         this.userMenuCanvas = new KTOffcanvas(this.document.getElementById('kt_header_topbar'), {
             overlay: true,

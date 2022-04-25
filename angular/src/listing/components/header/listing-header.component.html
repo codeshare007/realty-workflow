@@ -1,0 +1,20 @@
+<div class="listing-header" *ngIf="recommendedListing">
+    <div class="listing-header__logo">
+        <img src="/assets/common/images/app-logo-on-light.png"
+             alt="logo" />
+    </div>
+    <div class="listing-header__info">
+        <span>{{ recommendedListing.agentFullName }}</span>
+        <div class="listing-header__info-actions not-have-data">
+            <a href="tel:{{recommendedListing.agentPhone}}" class="listing-header__info-actions__tooltip">
+                <i class="fas fa-phone"></i>
+                <span class="listing-header__info-actions__tooltip__text">{{ recommendedListing.agentPhone }}</span>
+            </a>
+
+            <a href="mailto:{{recommendedListing.agentEmail}}" class="listing-header__info-actions__tooltip">
+                <i class="far fa-envelope"></i>
+                <span class="listing-header__info-actions__tooltip__text">{{ recommendedListing.agentEmail }}</span>
+            </a>
+        </div>
+    </div>
+</div>

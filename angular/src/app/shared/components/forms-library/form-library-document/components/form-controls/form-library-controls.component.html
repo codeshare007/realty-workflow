@@ -1,21 +1,173 @@
-<div class="form-library-controls__wrapper">
-    <div class="form-library-controls__wrapper__list">
-        <div *ngFor="let item of formControls"
-             class="form-library-controls__wrapper__list__item"
-             #libraryControl>
-            <div [class]="'form-library-controls__wrapper__list__item-control ' + (item.type | formControlClass)"
-                 [ngClass]="{ 'hover': isHover(item.type), 'disabled': !isEditMod }"
-                 (mousedown)="onSelected($event, libraryControl, item)">
-                {{ item.type | formControlType }}
+<p-accordion [multiple]="true">
+    <p-accordionTab header="Participant Setting"
+                    [selected]="settings.participantsSettingTabSelected"
+                    *ngIf="mainLayer !== controlLayer.Signing">
+        <div class="form-library-controls__wrapper">
+            <div class="form-library-controls__wrapper__participant">
+                <participant-setting [title]="'Participant Setting'"
+                                     [formId]="formId"
+                                     [mainId]="mainId"
+                                     [mainLayer]="mainLayer"
+                                     [participantMappingItems]="participantMappingItems"
+                                     (selectedParticipantSetting)="onParticipantSettingSelect($event)">
+                </participant-setting>
             </div>
         </div>
-    </div>
-</div>
+    </p-accordionTab>
 
-<div class="form-library-controls__wrapper">
-    <div class="form-library-controls__wrapper__content"
-         [ngClass]="{ 'disabled': !formLibrarySettings.allowSwitchMode }">
-        <form-layer></form-layer>
-        <form-switch [formLibrarySettings]="formLibrarySettings"></form-switch>
-    </div>
-</div>
+    <p-accordionTab header="Participant"
+                    [selected]="settings.participantTabSelected"
+                    *ngIf="participants && participants.length">
+        <div class="form-library-controls__wrapper">
+            <div class="form-library-controls__wrapper__participant">
+                <participant [participants]="participants"
+                             [title]="'Participant'"
+                             [isDefault]="false"
+                             (selectedParticipant)="onParticipantSelect($event)">
+                </participant>
+
+                <div class="form-library-controls__wrapper__participant--marge"
+                     *ngIf="this.participantMargeForms && this.participantMargeForms.length > 0">
+                    <button type="button"
+                            class="btn btn-primary"
+                            (click)="showMergeModal()">
+                        {{ 'ConfigureParticipantAssignment' | localize }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </p-accordionTab>
+
+    <p-accordionTab header="Drag & Drop"
+                    [selected]="settings.controlsTabSelected">
+        <div class="form-library-controls__wrapper">
+            <div class="form-library-controls__wrapper__list">
+                <div *ngFor="let item of formControls"
+                     class="form-library-controls__wrapper__list__item"
+                     [ngClass]="{ 'hide-control': isDisablledControl(item.type) }"
+                     #libraryControl>
+                    <div [class]="'form-library-controls__wrapper__list__item-control ' + (item.type | formControlClass)"
+                         [ngClass]="{ 'hover': isHover(item.type) }"
+                         (mousedown)="onSelected($event, libraryControl, item)">
+                        <i [class]="item.type | formControlIconClass"></i>
+                        <span>{{ item.type | formControlType:true }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider__line"></div>
+
+        <div class="form-library-controls__action">
+            <button class="form-library-controls__wrapper__list__item-control control-btn"
+                    (click)="showInitialPage()">
+                <i class="fas fa-file-contract"></i>
+                <span>Initial Pages</span>
+            </button>
+
+            <button class="form-library-controls__wrapper__list__item-control control-btn"
+                    (click)="showSignaturePage()">
+                <i class="fas fa-file-contract"></i>
+                <span>Signature Pages</span>
+            </button>
+        </div>
+
+    </p-accordionTab>
+
+    <p-accordionTab header="Markup"
+                    *ngIf="!isDisabledView"
+                    [selected]="settings.controlMoqups">
+        <div class="form-library-controls__wrapper">
+            <div class="form-library-controls__wrapper__list">
+                <div *ngFor="let item of formControlMoqups"
+                     class="form-library-controls__wrapper__list__item"
+                     #libraryMoqupControl>
+                    <div [class]="'form-library-controls__wrapper__list__item-control ' + (item.type | formControlClass)"
+                         [ngClass]="{ 'hover': isHover(item.type), 'disabled': isDisabledView }"
+                         (mousedown)="onSelected($event, libraryMoqupControl, item)">
+                        <ng-container *ngIf="isMoqupLine(item.type); else noLineRef">
+                            <div class="moqups-line-svg">
+                                <svg>
+                                    <rect x="4"
+                                          y="4"
+                                          width="14"
+                                          height="14"
+                                          rx="2"
+                                          ry="2"
+                                          style="stroke:rgb(54, 153, 255);stroke-width:2;fill-opacity:0;stroke-opacity:1" />
+                                </svg>
+                                <ng-container *ngIf="item.type === controlType.HorizontalLine">
+                                    <svg [class]="item.type | formControlIconClass">
+                                        <line x1="30%"
+                                              x2="70%"
+                                              y1="50%"
+                                              y2="50%"
+                                              style="stroke:rgb(54, 153, 255);stroke-width:2" />
+                                    </svg>
+                                </ng-container>
+                                <ng-container *ngIf="item.type === controlType.VerticalLine">
+                                    <svg [class]="item.type | formControlIconClass">
+                                        <line x1="50%"
+                                              x2="50%"
+                                              y1="30%"
+                                              y2="70%"
+                                              style="stroke:rgb(54, 153, 255);stroke-width:2" />
+                                    </svg>
+                                </ng-container>
+                                <ng-container *ngIf="item.type === controlType.DiagonalLine">
+                                    <svg [class]="item.type | formControlIconClass">
+                                        <line x1="7"
+                                              y1="8"
+                                              x2="67%"
+                                              y2="67%"
+                                              style="stroke:rgb(54, 153, 255);stroke-width:2" />
+                                    </svg>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                        <ng-template #noLineRef>
+                            <i [class]="item.type | formControlIconClass"></i>
+                        </ng-template>
+                        <span>{{ item.type | formControlType:true }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-accordionTab>
+
+    <p-accordionTab header="Controls Mode"
+                    [selected]="settings.layersTabSelected">
+        <ng-container *ngFor="let layerSetting of switchLayers | switchLayersOrder">
+            <div class="form-library-controls__wrapper"
+                 [ngClass]="{ 'disabled': !switchSetting.allowSwitchMode }"
+                 *ngIf="layerSetting.isShow">
+                <div class="form-library-controls__wrapper__content">
+                    <form-switch [switchSetting]="switchSetting"
+                                 [title]="layerSetting.layer | layerLabel"
+                                 [disabled]="!switchSetting.allowSwitchMode"
+                                 [layerComponent]="layer"
+                                 [layer]="layerSetting.layer">
+                    </form-switch>
+                </div>
+            </div>
+        </ng-container>
+    </p-accordionTab>
+
+    <p-accordionTab header="Control Details"
+                    *ngIf="isControlSelected"
+                    [selected]="settings.controlDetails">
+        <control-details [participants]="participants">
+        </control-details>
+    </p-accordionTab>
+</p-accordion>
+
+<initial-page-modal #initialPageRef
+                    (modalSave)="onInitialSave($event)"
+                    [participants]="participants"
+                    [documentInfo]="documentInfo">
+</initial-page-modal>
+
+<participant-marge-modal #participantMargeModalRef
+                         [participants]="participants"
+                         (modalSave)="onParticipantMargeSave($event)">
+</participant-marge-modal>

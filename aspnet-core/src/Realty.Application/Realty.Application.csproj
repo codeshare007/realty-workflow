@@ -15,10 +15,12 @@
   <ItemGroup>
     <PackageReference Include="Abp.EntityFrameworkCore.EFPlus" Version="5.13.0" />
     <PackageReference Include="NPOI" Version="2.5.1" />
+    <PackageReference Include="PdfSharp" Version="1.50.5147" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Realty.Application.Shared\Realty.Application.Shared.csproj" />
     <ProjectReference Include="..\Realty.Core\Realty.Core.csproj" />
     <ProjectReference Include="..\Realty.EntityFrameworkCore\Realty.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\Shark.PdfConvert\Shark.PdfConvert.csproj" />
   </ItemGroup>
 </Project>

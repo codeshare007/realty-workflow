@@ -10,7 +10,10 @@ namespace Realty.Forms.Dto
         public string Name { get; set; }
 
         public string ContentType { get; set; }
+        
+        public int DisplayOrder { get; set; }
 
         public FormStatus Status { get; set; }
+        public bool SignedFileGenerated { get; set; }
     }
 }

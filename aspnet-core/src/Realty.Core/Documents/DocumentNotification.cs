@@ -6,6 +6,8 @@ namespace Realty.Documents
     [Serializable]
     public class DocumentNotification
     {
+        public Guid ParentId { get; set; }
+
         public int TenantId { get; set; }
 
         public long UserId { get; set; }

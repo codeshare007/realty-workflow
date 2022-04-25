@@ -26,7 +26,7 @@
                     </tabset>
                 </div>
                 <div class="modal-footer">
-                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold" (click)="close()">{{l("Cancel")}}</button>
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold save-button" (click)="close()">{{l("Cancel")}}</button>
                     <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!editionForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
                 </div>
             </form>

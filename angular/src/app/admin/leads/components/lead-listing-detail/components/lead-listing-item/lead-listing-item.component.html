@@ -1,0 +1,19 @@
+<div class="lead-listing-detail__list__item">
+    <span class="lead-listing-detail__list__item-title">
+        {{ title }}
+    </span>
+    <ng-container *ngIf="description; else content">
+        <span class="lead-listing-detail__list__item-description">
+            {{ description }}
+        </span>
+    </ng-container>
+
+
+    <ng-template #content>
+        <span class="lead-listing-detail__list__item-tags">
+            <span *ngFor="let tag of tags">
+                {{ tag }}
+            </span>
+        </span>
+    </ng-template>
+</div>

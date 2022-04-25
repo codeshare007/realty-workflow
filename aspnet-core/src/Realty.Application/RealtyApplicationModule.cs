@@ -1,8 +1,11 @@
 ﻿using Abp.AutoMapper;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
+using Castle.Facilities.TypedFactory;
+using Castle.MicroKernel.Registration;
 using Realty.Authorization;
 using Realty.AutoMapping;
+using Realty.Signings;
 using Realty.Storage.Interceptors;
 
 namespace Realty
@@ -26,6 +29,11 @@ namespace Realty
 
             // Add document storage interceptor
             StorageConnectionInterceptorRegistrar.Initialize(Abp.Dependency.IocManager.Instance);
+
+            IocManager.IocContainer.AddFacility<TypedFactoryFacility>();
+            IocManager.IocContainer.Register(
+                Component.For<ISigningRequestValidatingFactory>().AsFactory()
+            );
         }
 
         public override void Initialize()

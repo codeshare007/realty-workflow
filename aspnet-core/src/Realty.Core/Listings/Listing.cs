@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using Abp.Extensions;
 using Realty.Authorization.Users;
 using Realty.Leads;
 using Realty.Transactions;
@@ -38,6 +41,9 @@ namespace Realty.Listings
         public string BedInfo { get; set; }
         public string Room { get; set; }
         public string Baths { get; set; }
+        public string BuildingType { get; set; }
+        public string HeatSource { get; set; }
+        public string StudentPolicy { get; set; }
         public DateTime? AvailableDate { get; set; }
         public string Price { get; set; }
         public string Fee { get; set; }
@@ -69,12 +75,40 @@ namespace Realty.Listings
         public virtual ICollection<ListingDetail> ListingDetails => _listingDetails.AsReadOnly();
         public virtual IReadOnlyCollection<Transaction> Transactions => _transactions.AsReadOnly();
         public virtual IReadOnlyCollection<RecommendedListing> RecommendedListings => _recommendedListings.AsReadOnly();
-
+        
         public void AddListingDetail(ListingDetail item) {
             if (_listingDetails != null &&
                 !_listingDetails.Any(d => d.Type == item.Type && d.Data == item.Data)) 
             {
                 _listingDetails.Add(item);
+            }
+        }
+
+        [NotMapped]
+        public string FullAddress 
+        {
+            get 
+            {
+                var fullAddress = new StringBuilder();
+
+                fullAddress.Append(StreetNumber + " " + StreetName);
+
+                if (!string.IsNullOrEmpty(Unit))
+                {
+                    fullAddress.AppendFormat(", Unit #{0}", Unit);
+                }
+
+                if (!string.IsNullOrEmpty(City))
+                {
+                    fullAddress.AppendFormat(", {0}", City);
+                }
+
+                if (!string.IsNullOrEmpty(State))
+                {
+                    fullAddress.AppendFormat(", {0} {1}", State, Zip);
+                }
+
+                return fullAddress.ToString();
             }
         }
     }
@@ -84,6 +118,8 @@ namespace Realty.Listings
         public string Availability { get; set; }
         public string ParkingNumber { get; set; }
         public string Type { get; set; }
+        public string ParkingPrice { get; set; }
+
     }
 
     public class MoveInCosts

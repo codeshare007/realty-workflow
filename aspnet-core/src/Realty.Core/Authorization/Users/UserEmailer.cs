@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Abp.Authorization.Users;
 using Abp.Configuration;
 using Abp.Dependency;
 using Abp.Domain.Repositories;
@@ -14,9 +13,6 @@ using Realty.Chat;
 using Realty.Editions;
 using Realty.Localization;
 using Realty.MultiTenancy;
-using System.Net.Mail;
-using System.Web;
-using Abp.Runtime.Security;
 using Realty.Net.Emailing;
 
 namespace Realty.Authorization.Users
@@ -24,22 +20,13 @@ namespace Realty.Authorization.Users
     /// <summary>
     /// Used to send email to users.
     /// </summary>
-    public class UserEmailer : RealtyServiceBase, IUserEmailer, ITransientDependency
+    public class UserEmailer : EmailServiceBase, IUserEmailer, ITransientDependency
     {
-        private readonly IEmailTemplateProvider _emailTemplateProvider;
-        private readonly IEmailSender _emailSender;
-        private readonly IRepository<Tenant> _tenantRepository;
-        private readonly ICurrentUnitOfWorkProvider _unitOfWorkProvider;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly ISettingManager _settingManager;
         private readonly EditionManager _editionManager;
         private readonly UserManager _userManager;
-
-        // used for styling action links on email messages.
-        private string _emailButtonStyle =
-            "padding-left: 30px; padding-right: 30px; padding-top: 12px; padding-bottom: 12px; color: #ffffff; background-color: #00bb77; font-size: 14pt; text-decoration: none;";
-        private string _emailButtonColor = "#00bb77";
-
+        
         public UserEmailer(
             IEmailTemplateProvider emailTemplateProvider,
             IEmailSender emailSender,
@@ -48,12 +35,8 @@ namespace Realty.Authorization.Users
             IUnitOfWorkManager unitOfWorkManager,
             ISettingManager settingManager,
             EditionManager editionManager,
-            UserManager userManager)
+            UserManager userManager):base(emailTemplateProvider, emailSender, tenantRepository, unitOfWorkProvider)
         {
-            _emailTemplateProvider = emailTemplateProvider;
-            _emailSender = emailSender;
-            _tenantRepository = tenantRepository;
-            _unitOfWorkProvider = unitOfWorkProvider;
             _unitOfWorkManager = unitOfWorkManager;
             _settingManager = settingManager;
             _editionManager = editionManager;
@@ -106,7 +89,7 @@ namespace Realty.Authorization.Users
 
             mailMessage.AppendLine("<br />");
             mailMessage.AppendLine(L("EmailActivation_ClickTheLinkBelowToVerifyYourEmail") + "<br /><br />");
-            mailMessage.AppendLine("<a style=\"" + _emailButtonStyle + "\" bg-color=\"" + _emailButtonColor + "\" href=\"" + link + "\">" + L("Verify") + "</a>");
+            mailMessage.AppendLine("<a style=\"" + EmailButtonStyle + "\" bg-color=\"" + EmailButtonColor + "\" href=\"" + link + "\">" + L("Verify") + "</a>");
             mailMessage.AppendLine("<br />");
             mailMessage.AppendLine("<br />");
             mailMessage.AppendLine("<br />");
@@ -156,7 +139,7 @@ namespace Realty.Authorization.Users
 
                 mailMessage.AppendLine("<br />");
                 mailMessage.AppendLine(L("PasswordResetEmail_ClickTheLinkBelowToResetYourPassword") + "<br /><br />");
-                mailMessage.AppendLine("<a style=\"" + _emailButtonStyle + "\" bg-color=\"" + _emailButtonColor + "\" href=\"" + link + "\">" + L("Reset") + "</a>");
+                mailMessage.AppendLine("<a style=\"" + EmailButtonStyle + "\" bg-color=\"" + EmailButtonColor + "\" href=\"" + link + "\">" + L("Reset") + "</a>");
                 mailMessage.AppendLine("<br />");
                 mailMessage.AppendLine("<br />");
                 mailMessage.AppendLine("<br />");
@@ -309,59 +292,6 @@ namespace Realty.Authorization.Users
             {
                 Logger.Error(exception.Message, exception);
             }
-        }
-
-        private string GetTenancyNameOrNull(int? tenantId)
-        {
-            if (tenantId == null)
-            {
-                return null;
-            }
-
-            using (_unitOfWorkProvider.Current.SetTenantId(null))
-            {
-                return _tenantRepository.Get(tenantId.Value).TenancyName;
-            }
-        }
-
-        private StringBuilder GetTitleAndSubTitle(int? tenantId, string title, string subTitle)
-        {
-            var emailTemplate = new StringBuilder(_emailTemplateProvider.GetDefaultTemplate(tenantId));
-            emailTemplate.Replace("{EMAIL_TITLE}", title);
-            emailTemplate.Replace("{EMAIL_SUB_TITLE}", subTitle);
-
-            return emailTemplate;
-        }
-
-        private async Task ReplaceBodyAndSend(string emailAddress, string subject, StringBuilder emailTemplate, StringBuilder mailMessage)
-        {
-            emailTemplate.Replace("{EMAIL_BODY}", mailMessage.ToString());
-            await _emailSender.SendAsync(new MailMessage
-            {
-                To = { emailAddress },
-                Subject = subject,
-                Body = emailTemplate.ToString(),
-                IsBodyHtml = true
-            });
-        }
-
-        /// <summary>
-        /// Returns link with encrypted parameters
-        /// </summary>
-        /// <param name="link"></param>
-        /// <param name="encrptedParameterName"></param>
-        /// <returns></returns>
-        private string EncryptQueryParameters(string link, string encrptedParameterName = "c")
-        {
-            if (!link.Contains("?"))
-            {
-                return link;
-            }
-
-            var basePath = link.Substring(0, link.IndexOf('?'));
-            var query = link.Substring(link.IndexOf('?')).TrimStart('?');
-
-            return basePath + "?" + encrptedParameterName + "=" + HttpUtility.UrlEncode(SimpleStringCipher.Instance.Encrypt(query));
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿using Abp.Domain.Entities;
+﻿using Abp.Dependency;
 using Realty.Common;
 
 namespace Realty.Storage.Path.FolderResolver.Strategies
 {
-    public interface IFolderResolverStrategy: IDomainStrategy
+    public interface IFolderResolverStrategy: IDomainStrategy, ITransientDependency
     {
-        bool IsApplied(IEntity<long> entity);
+        bool IsApplied(IHaveFiles entity);
         string GetPath();
     }
 }

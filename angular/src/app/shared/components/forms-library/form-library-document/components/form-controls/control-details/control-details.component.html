@@ -1,0 +1,74 @@
+<div class="control-details">
+    <div class="control-details__item"
+         *ngIf="isAllowedPlaceholder">
+        <label>Placeholder</label>
+        <input type="text"
+               name="controlPlaceholder"
+               class="form-control"
+               [(ngModel)]="controlDetails.placeholder"
+               (ngModelChange)="onPlaceholderChange($event)" />
+    </div>
+    <participant *ngIf="participants && participants.length > 0"
+                 class="control-details__item"
+                 [participants]="participants"
+                 [participantId]="controlDetails.participantId"
+                 [isReload]="isReload"
+                 [title]="'Participant'"
+                 (selectedParticipant)="onParticipantChange($event)">
+    </participant>
+    <div class="ui-checkbox control-details__item"
+         *ngIf="isAllowedProtect">
+        <!-- TODO: hiden disabled field -->
+        <label>
+            {{ 'IsProtected' | localize }}
+            <input type="checkbox"
+                   [disabled]="!isAllowedProtect"
+                   [(ngModel)]="controlDetails.isProtected"
+                   (ngModelChange)="onProtectedChange($event)"
+                   [ngClass]="{ 'checked': controlDetails.isProtected }"
+                   [checked]="controlDetails.isProtected ? true : false"
+                   name="IsProtected">
+            <span class="checkmark"></span>
+
+            <i class="fas fa-info-circle"
+               *ngIf="!isAllowedProtect"
+               [uiTooltip]="'Available only on Text Inputs'"></i>
+        </label>
+    </div>
+    <div class="ui-checkbox control-details__item"
+         *ngIf="isAllowedRequired">
+        <label class="dropdown-control">
+            {{ 'IsRequired' | localize }}
+            <input type="checkbox"
+                   [ngModel]="controlDetails.isRequired"
+                   (ngModelChange)="onRequiredChange($event)"
+                   [ngClass]="{ 'checked': controlDetails.isRequired }"
+                   [disabled]="isRequiredDisabled"
+                   [checked]="controlDetails.isRequired ? true : false"
+                   name="IsRequired">
+            <span class="checkmark"></span>
+            <span *ngIf="isRequiredDisabled"
+                  [uiTooltip]="'DropdownInfoDetail' | localize"
+                  class="dropdown-control__info">
+                <i class="fas fa-info-circle"></i>
+            </span>
+        </label>
+    </div>
+    <div class="control-details__item"
+         *ngIf="isAllowedTitle">
+        <label>Title:</label>
+        <input type="text"
+               name="controlTitle"
+               class="form-control"
+               [(ngModel)]="controlDetails.title"
+               (ngModelChange)="onTitleChange($event)" />
+    </div>
+    <div class="control-details__item">
+        <label>Description</label>
+        <input type="text"
+               name="controlDescription"
+               class="form-control"
+               [(ngModel)]="controlDetails.description"
+               (ngModelChange)="onDescriptionChange($event)" />
+    </div>
+</div>

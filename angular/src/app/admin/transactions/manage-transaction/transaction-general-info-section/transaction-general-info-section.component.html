@@ -2,14 +2,20 @@
     <div class="card-header">
         <div class="w-100 d-flex align-items-center">
             <div class="w-100 d-flex justify-content-between">
-                <h4 class="card-label mb-0 d-flex align-items-center">General Info</h4>
+                <h4 class="card-label mb-0 d-flex align-items-center">Transaction Info</h4>
                 <div>
-                    <a class="card-header-button" (click)="saveTransaction()" *ngIf="isEditMode">
+                    <button class="btn btn-primary mr-3" (click)="saveTransaction()" 
+                        *ngIf="isEditMode" 
+                        title="Save">
                         <i class="la la-save edit-control"></i> {{ 'Save' | localize }}
-                    </a>
-                    <a class="card-header-button" (click)="isEditMode = true" *ngIf="!isEditMode">
-                        <i class="la la-pencil edit-control"></i>
-                    </a>
+                    </button>
+                    
+                    <button class="btn btn-primary mr-3" (click)="isEditMode = true" 
+                        *ngIf="!isEditMode" 
+                        title="Edit">
+                        <i class="la la-pencil edit-control"></i> {{ 'Edit' | localize }}
+                    </button>
+                    
                     <a class="card-header-button chevron" (click)="isOpened = !isOpened">
                         <i class="pi pi-fw pi-chevron-up" 
                             [ngClass]="{'closed': !isOpened }"></i>
@@ -21,7 +27,7 @@
     <div class="card-body py-0" *ngIf="isOpened && transaction">
         <div class="row py-3 mx-1 border-bottom-1">
             <div class="col-lg-12 d-flex flex-column py-1 px-0 pr-10">
-                <span class="font-weight-bold mr-2">Name*:</span>
+                <span class="font-weight-bold mr-2">{{l("TransactionName")}}:</span>
                 <span *ngIf="!isEditMode" class="text-muted text-hover-primary">{{ transaction.name }}</span>
                 <div *ngIf="isEditMode">
                     <input id="TransactionName" #transactionNameInput="ngModel" type="text"
@@ -54,7 +60,7 @@
                     </general-combo>
                 </div>
             </div>
-            <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10">
+            <!-- <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10">
                 <span class="font-weight-bold mr-2">Customer:</span>
                 <autocomplete-user-input
                     [isEditMode]="isEditMode"
@@ -63,7 +69,7 @@
                     [userRole]="'Customer'"
                     >
                 </autocomplete-user-input>
-            </div>
+            </div> -->
             <div class="col-sm-6 col-md-4 col-lg-3 d-flex flex-column py-1 px-0 pr-10"
                 *ngIf="'Pages.Users.Agents' | permission"
                 >

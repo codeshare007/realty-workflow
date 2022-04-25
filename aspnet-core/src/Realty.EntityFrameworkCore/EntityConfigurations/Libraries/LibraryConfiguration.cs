@@ -20,6 +20,10 @@ namespace Realty.EntityConfigurations.Libraries
                 .WithMany()
                 .HasForeignKey(e => e.TenantId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(e => e.Attachments)
+                .WithOne()
+                .OnDelete(DeleteBehavior.ClientCascade);
         }
     }
 }

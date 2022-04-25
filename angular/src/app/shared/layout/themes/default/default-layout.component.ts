@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, Injector, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, Injector, OnInit } from '@angular/core';
 import { StatusDnD } from '@app/shared/components/forms-library/models/table-documents.model';
 import { DndService } from '@app/shared/components/forms-library/services/drag-drop.service';
 import { ThemesLayoutBaseComponent } from '@app/shared/layout/themes/themes-layout-base.component';
@@ -39,6 +39,7 @@ export class DefaultLayoutComponent extends ThemesLayoutBaseComponent implements
         injector: Injector,
         @Inject(DOCUMENT) private document: Document,
         private _dndService: DndService,
+        private _cdr: ChangeDetectorRef,
     ) {
         super(injector);
     }
@@ -55,6 +56,7 @@ export class DefaultLayoutComponent extends ThemesLayoutBaseComponent implements
                 if (this._dndService.onDnd) {
                     this._dndService.moveDnd = true;
                     this._dndService.processMouseMove(event);
+                    // this._dndService.setLineChange(event);
                 } else {
                     this._dndService.moveDnd = false;
                     this._dndService.control = null;

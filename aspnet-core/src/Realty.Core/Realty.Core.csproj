@@ -17,6 +17,11 @@
     <EmbeddedResource Include="Localization\Realty\*.xml;Net\Emailing\EmailTemplates\default.html" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="Signings\Workers\**" />
+    <EmbeddedResource Remove="Signings\Workers\**" />
+    <None Remove="Signings\Workers\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="IronPdf" Version="2020.12.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.5" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.5" />

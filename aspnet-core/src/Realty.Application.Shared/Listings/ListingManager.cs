@@ -39,11 +39,11 @@ namespace Realty.Listings
             requestBody.Add(new KeyValuePair<string, string>("key", input.JglKey));
             if (input.AvailableFrom.HasValue)
             {
-                requestBody.Add(new KeyValuePair<string, string>("avail_from", input.AvailableFrom.ToString()));
+                requestBody.Add(new KeyValuePair<string, string>("avail_from", input.AvailableFrom.Value.ToString("MM/dd/yyyy")));
             }
             if (input.AvailableTo.HasValue)
             {
-                requestBody.Add(new KeyValuePair<string, string>("avail_to", input.AvailableTo.ToString()));
+                requestBody.Add(new KeyValuePair<string, string>("avail_to", input.AvailableTo.Value.ToString("MM/dd/yyyy")));
             }
             if (!input.StreetName.IsNullOrEmpty())
             {
@@ -61,13 +61,17 @@ namespace Realty.Listings
             {
                 requestBody.Add(new KeyValuePair<string, string>("max_rent", input.MaximalRent.ToString()));
             }
-            if (input.MinimumBedrooms.HasValue)
+            if (input.Cities != null && input.Cities.Count > 0)
             {
-                requestBody.Add(new KeyValuePair<string, string>("min_bed", input.MinimumBedrooms.ToString()));
+                requestBody.Add(new KeyValuePair<string, string>("city_neighborhood", string.Join(",", input.Cities.Select(c => c.Replace(" - ", ":")))));
             }
-            if (input.Bathrooms.HasValue)
+            if (input.Bathrooms != null && input.Bathrooms.Count > 0)
             {
-                requestBody.Add(new KeyValuePair<string, string>("baths", input.MaximalRent.ToString()));
+                requestBody.Add(new KeyValuePair<string, string>("baths", string.Join(",", input.Bathrooms)));
+            }
+            if (input.Bedrooms != null && input.Bedrooms.Count > 0)
+            {
+                requestBody.Add(new KeyValuePair<string, string>("beds", string.Join(",", input.Bedrooms)));
             }
             if (!input.ID.IsNullOrEmpty())
             {
@@ -82,6 +86,7 @@ namespace Realty.Listings
             requestBody.Add(new KeyValuePair<string, string>("include_ygl_network", "1"));
             requestBody.Add(new KeyValuePair<string, string>("include_data_entry", "1"));
             requestBody.Add(new KeyValuePair<string, string>("include_internal", "1"));
+            requestBody.Add(new KeyValuePair<string, string>("include_move_in_costs", "1"));
             requestBody.Add(new KeyValuePair<string, string>("detail_level", "2"));
             
             requestBody.Add(new KeyValuePair<string, string>("page_count", input.MaxResultCount.ToString()));
@@ -90,7 +95,7 @@ namespace Realty.Listings
             requestBody.Add(new KeyValuePair<string, string>("page_index", pageIndex.ToString()));
             if (!input.Sorting.IsNullOrEmpty())
             {
-                if (input.Sorting.Contains("DESC"))
+                if (!input.Sorting.Contains("DESC"))
                 {
                     requestBody.Add(new KeyValuePair<string, string>("sort_dir", "asc"));
                     requestBody.Add(new KeyValuePair<string, string>("sort_name", input.Sorting.Split(' ')[0]));

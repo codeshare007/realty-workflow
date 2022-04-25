@@ -140,4 +140,8 @@ export abstract class AppComponentBase implements OnDestroy {
     hideMainSpinner(text?: string): void {
         this.spinnerService.hide();
     }
+
+    public trackByIndex(index: number): number {
+        return index;
+    }
 }

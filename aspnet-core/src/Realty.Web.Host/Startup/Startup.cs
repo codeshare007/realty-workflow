@@ -68,6 +68,9 @@ namespace Realty.Web.Startup
 
             services.AddSignalR();
 
+            services.AddRazorPages()
+                .AddRazorRuntimeCompilation();
+
             //Configure CORS for angular2 UI
             services.AddCors(options =>
             {

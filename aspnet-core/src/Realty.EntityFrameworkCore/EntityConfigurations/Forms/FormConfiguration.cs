@@ -23,7 +23,17 @@ namespace Realty.EntityConfigurations.Forms
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasMany(e => e.ParticipantMappingItems)
+                .WithOne()
+                .HasForeignKey("FormId")
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.HasOne(e => e.File)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(e => e.SignedFile)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
         }

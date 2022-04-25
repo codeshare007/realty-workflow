@@ -1,0 +1,56 @@
+<div class="page-control-actions__dropdown"
+     *ngIf="showDropDown"
+     dropDownClickOutside
+     (dropDownClickOutside)="toggleDropDown()">
+
+    <div class="page-control-actions__dropdown__wrapper">
+        <div class="page-control-actions__dropdown__form new-scrollbar"
+             #formOptionsRef>
+            <div *ngFor="let control of formOptions.controls; index as i"
+                 class="page-control-actions__dropdown__form__item form-group">
+                <input type="text"
+                       class="form-control"
+                       [name]="'control-option__' + i"
+                       [formControl]="formOptions.controls[i]"
+                       (ngModelChange)="onFormOptionChange($event)" />
+                <i class="far fa-times-circle"
+                   (click)="removeOption(i); $event.stopPropagation()"></i>
+            </div>
+        </div>
+
+        <button type="button"
+                class="btn page-control-actions__dropdown__add font-weight-bold"
+                [disabled]="formOptions.invalid"
+                (click)="addOption()">
+            <i class="fas fa-plus"></i>
+            {{ 'Add' }}
+        </button>
+
+        <div class="divider__line"></div>
+
+        <div (click)="setOptions(); $event.stopPropagation()"
+             class="page-control-actions__dropdown__select">
+            <ui-select [uiList]="options"
+                       [model]="model"
+                       [disabled]="formOptions.invalid"
+                       (selected)="onSelectChange($event)">
+            </ui-select>
+        </div>
+
+        <div class="page-control-actions__dropdown__action">
+            <button type="button"
+                    (click)="cancelDropDown()"
+                    class="btn btn-light-primary font-weight-bold">
+                {{ 'Cancel' | localize }}
+            </button>
+
+            <button type="button"
+                    [disabled]="formOptions.invalid"
+                    class="btn btn-primary font-weight-bold"
+                    (click)="saveDropDown()">
+                <i class="fa fa-save"></i>
+                <span>{{ 'Save' | localize }}</span>
+            </button>
+        </div>
+    </div>
+</div>

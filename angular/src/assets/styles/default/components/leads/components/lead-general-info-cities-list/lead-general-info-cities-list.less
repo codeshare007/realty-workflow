@@ -1,0 +1,42 @@
+.lead-general-info-cities-list {
+
+    &__title {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    &__list {
+        display: inline-flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        padding: 0;
+        width: 100%;
+        list-style: none;
+
+        &__item {
+            width: 25%;
+
+            .form-group {
+                margin-bottom: 4px;
+
+                .checkbox {
+                    transition: none;
+
+                    >input:checked~span {
+                        transition: none;
+                    }
+                }
+
+                label {
+                    display: flex;
+                    align-items: baseline;
+                    font-size: 15px;
+
+                    &:hover {
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+    }
+}

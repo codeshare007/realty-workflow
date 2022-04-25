@@ -8,16 +8,16 @@ namespace Realty.Controls.Dto
         {
         }
 
-        public ControlPositionDto(int top, int left)
+        public ControlPositionDto(float top, float left)
         {
             Top = top;
             Left = left;
         }
 
         [Range(Constants.Position.TopMinValue, Constants.Position.TopMaxValue)]
-        public int Top { get; set; }
+        public float Top { get; set; }
 
         [Range(Constants.Position.LeftMinValue, Constants.Position.LeftMaxValue)]
-        public int Left { get; set; }
+        public float Left { get; set; }
     }
 }

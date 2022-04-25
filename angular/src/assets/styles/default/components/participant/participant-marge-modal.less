@@ -1,0 +1,77 @@
+.participant-marge-modal {
+
+    &__list {
+        &__item {
+            margin-bottom: 24px;
+
+            div {
+                &:nth-child(even) {
+                    .participant-marge-item {
+                        background-color: @disabled-color-form;
+                    }
+                }
+
+                &:nth-child(odd) {
+                    .participant-marge-item {
+                        background-color: @disabled-color-third;
+                    }
+                }
+
+                &:last-child {
+                    .participant-marge-item {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .participant-marge-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        padding: 6px;
+        border-radius: 4px;
+
+        &__info {
+            display: flex;
+            align-items: center;
+            width: 39%;
+        }
+
+        &__select {
+            width: 59%;
+
+            .title-select {
+                display: none;
+            }
+        }
+
+        &__number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 24px;
+            width: 24px;
+            border: 1px solid;
+            border-radius: 50%;
+        }
+
+        &__name {
+            margin-left: 8px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+    }
+}

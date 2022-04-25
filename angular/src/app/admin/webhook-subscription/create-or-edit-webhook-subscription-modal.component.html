@@ -44,9 +44,9 @@
                     <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
                         (click)="close()">{{"Cancel" | localize}}</button>
 
-                    <button type="button" class="btn btn-primary font-weight-bold" (click)="save()"
+                    <button type="button" class="btn btn-primary font-weight-bold save-button" (click)="save()"
                         [disabled]="!webhookSubscription.webhookUri || !webhooks || webhooks.length == 0"
-                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        [buttonBusy]="saving" [busyText]="'SavingWithThreeDot' | localize"><i class="fa fa-save"></i>
                         <span>{{"Save" | localize}}</span></button>
                 </div>
             </div>

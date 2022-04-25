@@ -17,7 +17,7 @@ namespace Realty.Listings
 {
     public class ListingYglSyncWorker : PeriodicBackgroundWorkerBase, ISingletonDependency
     {
-        private const int CheckPeriodAsMilliseconds = 1 * 60 * 60 * 1000; //1 hour
+        private const int CheckPeriodAsMilliseconds = 15 * 60 * 1000; //15 minutes
         private readonly IRepository<Tenant> _tenantRepository;
         private readonly IRepository<Listing, Guid> _listingRepository;
         private readonly IObjectMapper _objectMapper;
@@ -96,7 +96,7 @@ namespace Realty.Listings
 
                                     if (dbEntity.UpdateDate != updateDate)
                                     {
-                                        dbEntity = _objectMapper.Map<Listing>(listing);
+                                        _objectMapper.Map(listing, dbEntity);
                                         MapListings(listing, dbEntity);
 
                                         await _listingRepository.InsertOrUpdateAsync(dbEntity);
@@ -155,7 +155,7 @@ namespace Realty.Listings
                 {
                     destination.AddListingDetail(new ListingDetail()
                     {
-                        Type = ListingDetailType.Photos360,
+                        Type = ListingDetailType.Photo,
                         Data = item
                     });
                 }

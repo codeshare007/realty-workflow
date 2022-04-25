@@ -17,9 +17,9 @@
                     <feature-tree #featureTree></feature-tree>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" [disabled]="saving" [buttonBusy]="resettingFeatures" [busyText]="l('SavingWithThreeDot')" class="btn btn-light-primary font-weight-bold pull-left" (click)="resetFeatures()" [tooltipHtml]="l('ResetFeaturesTooltip')" placement="top"><span>{{"ResetSpecialFeatures" | localize}}</span></button>
+                    <button type="button" [disabled]="saving" [buttonBusy]="resettingFeatures" [busyText]="'SavingWithThreeDot' | localize" class="btn btn-light-primary save-button font-weight-bold pull-left" (click)="resetFeatures()" [tooltipHtml]="l('ResetFeaturesTooltip')" placement="top"><span>{{"ResetSpecialFeatures" | localize}}</span></button>
                     <button type="button" [disabled]="saving || resettingFeatures" class="btn btn-light-primary font-weight-bold" (click)="close()">{{"Cancel" | localize}}</button>
-                    <button type="submit" [disabled]="resettingFeatures" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" class="btn btn-primary font-weight-bold"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                    <button type="submit" [disabled]="resettingFeatures" [buttonBusy]="saving" [busyText]="'SavingWithThreeDot' |localize" class="btn btn-primary save-button font-weight-bold"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
                 </div>
             </form>
 

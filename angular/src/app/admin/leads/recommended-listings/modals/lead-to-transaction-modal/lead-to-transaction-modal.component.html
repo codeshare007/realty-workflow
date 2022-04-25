@@ -1,0 +1,62 @@
+<div appBsModal
+     #leadToTransactionModal="bs-modal"
+     class="modal fade">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form *ngIf="active"
+                  #leadToTransactionForm="ngForm"
+                  novalidate
+                  class="form form-label-right">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span>{{l('CreateTransaction')}}</span>
+                    </h5>
+                    <button type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-hidden="true"
+                            (click)="close()">
+                        <i aria-hidden="true"
+                           class="ki ki-close"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>{{l('TransactionName')}}</label>
+                        <input id="TransactionName"
+                               #transactionName="ngModel"
+                               class="form-control"
+                               type="text"
+                               name="TransactionName"
+                               [(ngModel)]="name"
+                               required
+                               maxlength="64">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving"
+                            type="button"
+                            class="btn btn-light-primary font-weight-bold"
+                            (click)="close()">
+                        {{ 'Cancel' | localize }}
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-primary font-weight-bold save-button"
+                            (click)="save()"
+                            [disabled]="!leadToTransactionForm.valid"
+                            [buttonBusy]="saving"
+                            [busyText]="'ProcessingWithThreeDot' | localize">
+                        <i class="fa fa-arrow-circle-right"></i>
+                        {{ 'Save' | localize }}
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

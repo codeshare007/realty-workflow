@@ -1,45 +1,25 @@
-import { ViewMode } from '@app/shared/components/forms-library/models/table-documents.model';
-import { ControlLayer } from '@shared/service-proxies/service-proxies';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { MultiplSelectedMode } from '@app/shared/components/forms-library/models/table-documents.model';
+import { Observable, Subject } from 'rxjs';
 
 export class FormLibraryDocumentService {
 
-    private _layer: ControlLayer = ControlLayer.Form;
-    private _layerChange$: BehaviorSubject<ControlLayer> = new BehaviorSubject<ControlLayer>(this.layer);
-    private _mode: ViewMode;
-    private _modeChange$: Subject<ViewMode> = new Subject<ViewMode>();
+    private _mode: MultiplSelectedMode;
+    private _modeChange$: Subject<MultiplSelectedMode> = new Subject<MultiplSelectedMode>();
 
-    get layer(): ControlLayer {
-        return this._layer;
-    }
-
-    set layer(value: ControlLayer) {
-        this._layer = value;
-    }
-
-    get mode(): ViewMode {
+    get mode(): MultiplSelectedMode {
         return this._mode;
     }
 
-    set mode(value: ViewMode) {
+    set mode(value: MultiplSelectedMode) {
         this._mode = value;
     }
 
-    public getModeChange$(): Observable<ViewMode> {
+    public getModeChange$(): Observable<MultiplSelectedMode> {
         return this._modeChange$.asObservable();
     }
 
-    public setModeChange(mode: ViewMode): void {
+    public setModeChange(mode: MultiplSelectedMode): void {
         this.mode = mode;
         this._modeChange$.next(mode);
-    }
-
-    public getLayerChange$(): Observable<ControlLayer> {
-        return this._layerChange$.asObservable();
-    }
-
-    public setLayerChange(layer: ControlLayer): void {
-        this.layer = layer;
-        this._layerChange$.next(layer);
     }
 }

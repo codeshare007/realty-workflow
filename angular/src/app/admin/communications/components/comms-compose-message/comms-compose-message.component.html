@@ -24,7 +24,7 @@
                         <!--begin::Actions-->
                         <div class="d-flex align-items-center mr-3">
                             <!--begin::Send-->
-                            <button type="button" class="btn btn-primary font-weight-bold px-6" [buttonBusy]="saving"
+                            <button type="button" class="btn btn-primary font-weight-bold px-6 save-button" [buttonBusy]="saving"
                                 [busyText]="'SendingWithThreeDot' | localize" [disabled]="!input.subject || !input.message"
                                 (click)="sendMessage()">
                                 <i class="fas fa-paper-plane"></i>

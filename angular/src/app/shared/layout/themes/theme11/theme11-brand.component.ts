@@ -12,7 +12,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 })
 export class Theme11BrandComponent extends AppComponentBase {
 
-    defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/app-logo-on-light.jpg';
+    defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/app-logo-on-light.png';
     remoteServiceBaseUrl: string = AppConsts.remoteServiceBaseUrl;
 
     constructor(

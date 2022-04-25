@@ -10,7 +10,7 @@ namespace Realty.Authorization.Users.Dto
 
         List<string> Permissions { get; set; }
 
-        int? Role { get; set; }
+        int[] Roles { get; set; }
 
         bool OnlyLockedUsers { get; set; }
 

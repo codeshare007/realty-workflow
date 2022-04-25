@@ -12,3 +12,53 @@
         vertical-align: baseline;
     }
 }
+
+.populate-mode.control-initials,
+.control-optional-initials {
+    .signature-control {
+        label:before {
+            content: 'initial';
+        }
+    }
+}
+
+.control-initials,
+.control-optional-initials {
+    &:before {
+        content: 'initial';
+        position: absolute;
+        top: 1px;
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: capitalize;
+    }
+
+    &.populate-mode {
+        &:before {
+            content: none;
+        }
+    }
+
+    &.resizable-draggable {
+        padding: 0 4px;
+    }
+
+    .resizable-draggable__title,
+    .page-control__view__text {
+        overflow: unset;
+        font-family: @fontDancingScript;
+        text-transform: capitalize;
+        font-weight: 600;
+        font-size: 16px;
+
+        &_inner {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+
+    .resizable-draggable__title {
+        padding-top: 6px;
+    }
+}

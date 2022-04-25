@@ -9,6 +9,26 @@ const routes: Routes = [
         loadChildren: () => import('account/account.module').then(m => m.AccountModule), //Lazy load account module
         data: { preload: true }
     },
+    {
+        path: 'signing',
+        loadChildren: () => import('signing/signing.module').then(m => m.SigningModule), //Lazy signing module
+        data: { preload: true }
+    },
+    {
+        path: 'signing-done',
+        loadChildren: () => import('signing-done/signing-done.module').then(m => m.SigningDoneModule), //Lazy signing module
+        data: { preload: true }
+    },
+    {
+        path: 'signing-rejected',
+        loadChildren: () => import('signing-rejected/signing-rejected.module').then(m => m.SigningRejectedModule), //Lazy signing module
+        data: { preload: true }
+    },
+    {
+        path: 'listing',
+        loadChildren: () => import('listing/listing.module').then(m => m.ListingModule), //Lazy signing module
+        data: { preload: true }
+    },
     { path: '**', redirectTo: '/app/main/dashboard' }
 ];
 
@@ -40,6 +60,8 @@ export class RootRoutingModule {
 
             if (url.indexOf('/account/') >= 0) {
                 this.setAccountModuleBodyClassInternal();
+            } else if (url.indexOf('/signing/') >= 0) {
+                document.body.className = 'new-scrollbar';
             } else {
                 this.setAppModuleBodyClassInternal();
             }

@@ -62,10 +62,16 @@ namespace Realty.Listings
 		public string IncludeHotWater { get; set; }
 		[XmlElement(ElementName = "ListingAgentID")]
 		public string ListingAgentID { get; set; }
+		[XmlElement(ElementName = "HeatSource")]
+		public string HeatSource { get; set; }
+		[XmlElement(ElementName = "StudentPolicy")]
+		public string StudentPolicy { get; set; }
 		[XmlElement(ElementName = "MlsOfficeName")]
 		public string MlsOfficeName { get; set; }
 		[XmlElement(ElementName = "UnitDescription")]
 		public string UnitDescription { get; set; }
+		[XmlElement(ElementName = "BuildingType")]
+		public string BuildingType { get; set; }
 		[XmlElement(ElementName = "RentIncludes")]
 		public RentIncludes RentIncludes { get; set; }
 		[XmlElement(ElementName = "Photos")]
@@ -159,6 +165,8 @@ namespace Realty.Listings
 		public string ParkingNumber { get; set; }
 		[XmlElement(ElementName = "ParkingType")]
 		public string ParkingType { get; set; }
+		[XmlElement(ElementName = "ParkingPrice")]
+		public string ParkingPrice { get; set; }
 	}
 
 	[XmlRoot(ElementName = "Listings")]

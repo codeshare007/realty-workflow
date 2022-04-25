@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Abp;
@@ -10,21 +11,29 @@ using Abp.Linq.Extensions;
 using Castle.Core.Internal;
 using Microsoft.EntityFrameworkCore;
 using Realty.Authorization;
+using Realty.Dto;
 using Realty.Libraries.Input;
+using Realty.Signings.Input;
+using Realty.Storage;
 
 namespace Realty.Libraries
 {
-    [AbpAuthorize(AppPermissions.Pages_Library_Forms)]
     public class LibraryAppService: RealtyAppServiceBase, ILibraryAppService
     {
         private readonly IRepository<Library, Guid> _libraryRepository;
-        
-        public LibraryAppService(IRepository<Library, Guid> libraryRepository)
+        private readonly IFileStorageService _fileStorageService;
+        private readonly ITempFileCacheManager _tempFileCacheManager;
+
+        public LibraryAppService(IRepository<Library, Guid> libraryRepository, 
+            IFileStorageService fileStorageService, 
+            ITempFileCacheManager tempFileCacheManager)
         {
             _libraryRepository = libraryRepository;
+            _fileStorageService = fileStorageService;
+            _tempFileCacheManager = tempFileCacheManager;
         }
 
-        [AbpAuthorize(AppPermissions.Pages_Library_Forms)]
+        [AbpAuthorize(AppPermissions.Pages_Library_Forms, AppPermissions.Pages_LibraryForms_View, RequireAllPermissions = false)]
         public async Task<PagedResultDto<LibraryListDto>> GetAllAsync(GetLibrariesInput input)
         {
             var query = _libraryRepository.GetAll()
@@ -75,6 +84,25 @@ namespace Realty.Libraries
             // DO NOT OPTIMIZE REQUESTS
             var library = await _libraryRepository.GetAsync(id);
             await _libraryRepository.DeleteAsync(library);
+        }
+
+        [AbpAuthorize(AppPermissions.Pages_Library_Forms, AppPermissions.Pages_LibraryForms_View, RequireAllPermissions = false)]
+        public async Task<FileDto> DownloadOriginalDocumentAsync(DownloadOriginalDocumentInput input)
+        {
+            var signing = await _libraryRepository.GetAll()
+                .Where(a => a.Id == input.Id)
+                .Include(t => t.Forms)
+                .ThenInclude(a => a.File)
+                .FirstAsync();
+
+            var form = signing.Forms.First(a => a.Id == input.Form.Id);
+
+            var file = await _fileStorageService.GetFile(form.File.Id);
+
+            var fileDto = new FileDto(form.File.Name, form.File.ContentType);
+            _tempFileCacheManager.SetFile(fileDto.FileToken, file.Item1);
+
+            return fileDto;
         }
     }
 }

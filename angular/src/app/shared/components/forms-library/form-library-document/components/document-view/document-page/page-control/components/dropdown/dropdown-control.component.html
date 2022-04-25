@@ -1,0 +1,16 @@
+<ng-container *ngIf="publicMode ? optionsList.length : true">
+    <label class="dropdown-control"
+           #dropdownControl>
+        <span *ngIf="!optionsList.length"
+              [uiTooltip]="'DropdownInfoNote' | localize"
+              class="dropdown-control__info">
+            <i class="fas fa-info-circle"></i>
+        </span>
+        <ui-select [uiList]="optionsList"
+                   [model]="model"
+                   [isTogle]="!publicMode"
+                   [disabled]="!optionsList.length"
+                   (selected)="onSelectChange($event)">
+        </ui-select>
+    </label>
+</ng-container>

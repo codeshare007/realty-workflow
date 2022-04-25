@@ -1,0 +1,182 @@
+.square-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: @main-status-success-second;
+}
+
+.oval-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: @main-status-warning-second;
+}
+
+.diagonal-line-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top right, transparent calc(50% - 3px), @main-status-error, transparent calc(50% + 3px));
+}
+
+.horizontal-line-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, transparent calc(50% - 3px), @main-status-error, transparent calc(50% + 3px));
+}
+
+.vertical-line-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent calc(50% - 3px), @main-status-error, transparent calc(50% + 3px));
+}
+
+.populate-mode {
+
+    &.control-diagonal-line,
+    &.control-horizontal-line,
+    &.control-vertical-line,
+    &.control-square,
+    &.control-oval {
+        cursor: default;
+    }
+}
+
+.multi-select {
+    .resizable-draggable {
+
+        &.control-square,
+        &.control-diagonal-line,
+        &.control-horizontal-line,
+        &.control-vertical-line,
+        &.control-oval {
+            border: 2px dotted @main-border;
+
+            .resizable-draggable__action,
+            .resizable-draggable__action__top-left {
+                display: block;
+            }
+        }
+    }
+}
+
+.page-control-view-mode {
+
+    .control-diagonal-line,
+    .control-horizontal-line,
+    .control-vertical-line,
+    .control-square,
+    .control-oval {
+        position: absolute;
+        border: 2px solid transparent;
+    }
+}
+
+.control-diagonal-line,
+.control-horizontal-line,
+.control-vertical-line,
+.control-square,
+.control-oval {
+    .moqup-control {
+        background-color: transparent;
+
+        span {
+            &.control-diagonal-line-background {
+                .diagonal-line-background();
+            }
+
+            &.control-square-background {
+                .square-background();
+            }
+
+            &.control-oval-background {
+                .oval-background();
+            }
+        }
+    }
+}
+
+.resizable-draggable {
+
+    &.control-square,
+    &.control-diagonal-line,
+    &.control-horizontal-line,
+    &.control-vertical-line,
+    &.control-oval {
+        background-color: transparent;
+        border-color: transparent;
+
+        .resizable-draggable__action,
+        .resizable-draggable__action__top-left {
+            display: none;
+        }
+    }
+
+    &.control-diagonal-line,
+    &.control-horizontal-line,
+    &.control-vertical-line {
+        padding: 0;
+
+        .moqup-control {
+            height: 100%;
+            width: 100%;
+        }
+    }
+}
+
+.form-library-document__dnd-wrapper {
+    .form-library-controls__wrapper__list__item-control {
+
+        &.control-oval {
+            .oval-background();
+        }
+
+        &.control-square {
+            .square-background();
+        }
+
+        &.control-diagonal-line {
+            .diagonal-line-background();
+        }
+
+        &.control-horizontal-line {
+            .horizontal-line-background();
+        }
+
+        &.control-vertical-line {
+            .vertical-line-background();
+        }
+
+        &.control-square,
+        &.control-diagonal-line,
+        &.control-horizontal-line,
+        &.control-vertical-line,
+        &.control-oval {
+            height: 50px;
+            // border: none;
+            color: transparent;
+        }
+    }
+}
+
+.control-diagonal-line,
+.control-horizontal-line,
+.control-vertical-line {
+    svg {
+        position: absolute;
+        overflow: unset;
+    }
+}

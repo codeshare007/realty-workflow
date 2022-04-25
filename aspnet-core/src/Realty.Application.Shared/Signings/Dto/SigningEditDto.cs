@@ -8,11 +8,15 @@ namespace Realty.Signings.Dto
         public string Name { get; set; }
         public string Notes { get; set; }
 
+        public SigningStatus Status { get; set; }
         public string Agent { get; set; }
         public Guid? AgentId { get; set; }
 
         public string Transaction { get; set; }
         public Guid? TransactionId { get; set; }
         public int DocumentsCount { get; set; }
+        public bool SignedFileGenerated { get; set; }
+
+        public SigningSettingsDto Settings { get; set; }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Realty.Contacts;
 using Realty.Controls;
+using Realty.Forms;
 using Realty.MultiTenancy;
+using Realty.Signings;
 
 namespace Realty.EntityConfigurations.Controls
 {
@@ -16,6 +19,16 @@ namespace Realty.EntityConfigurations.Controls
             builder.HasOne<Tenant>()
                 .WithMany()
                 .HasForeignKey(e => e.TenantId)
+                .OnDelete(DeleteBehavior.ClientNoAction);
+
+            builder.HasOne<SigningParticipant>()
+                .WithMany()
+                .HasForeignKey(e => e.ParticipantId)
+                .OnDelete(DeleteBehavior.ClientNoAction);
+
+            builder.HasOne<ParticipantMappingItem>()
+                .WithMany()
+                .HasForeignKey(e => e.ParticipantMappingItemId)
                 .OnDelete(DeleteBehavior.ClientNoAction);
 
             builder.OwnsOne(e => e.Position, config =>

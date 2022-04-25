@@ -25,13 +25,13 @@ namespace Realty.Url
         {
             throw new NotImplementedException();
         }
-        
-        public string CreatePublicSigingUrlFormat(string tenancyName, long? participantId)
+
+        public string CreatePasswordResetUrlFormat(string tenancyName)
         {
             throw new NotImplementedException();
         }
 
-        public string CreatePasswordResetUrlFormat(string tenancyName)
+        public string CreateSigningReviewUrlFormat(string tenancyName)
         {
             throw new NotImplementedException();
         }

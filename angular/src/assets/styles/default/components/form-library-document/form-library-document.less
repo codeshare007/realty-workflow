@@ -3,6 +3,17 @@
         margin-bottom: 13px;
     }
 
+    &__title {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 16px;
+
+        a {
+            margin-left: 6px;
+        }
+    }
+
     &__dnd-wrapper {
         position: absolute;
         top: 0;
@@ -12,7 +23,6 @@
         overflow: hidden;
 
         >div {
-            user-select: none;
             position: absolute;
             z-index: 1089;
 
@@ -21,7 +31,24 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                opacity: 0.8;
+
+                &.control-initials,
+                &.control-upload-attachment,
+                &.control-optional-initials {
+                    min-width: 50px;
+                    width: 50px;
+                }
+
+                &.control-optional-initials {
+                    width: 60px;
+                }
+
+                &.control-optional-initials {
+                    text-align: center;
+                    white-space: inherit;
+                    font-size: 13px;
+                }
+
 
                 &.control-area {
                     justify-content: flex-start;
@@ -34,7 +61,34 @@
                     background-color: @disabled-color-second;
                     border-color: @disabled-color;
                 }
+
+                &.control-upload-attachment {
+                    i {
+                        display: block;
+                        position: absolute;
+                        color: @main-color;
+                        font-size: 22px;
+                    }
+
+                    span {
+                        display: none;
+                    }
+                }
             }
+        }
+    }
+
+    .signing-form-design-page__document {
+        padding: 24px 0;
+        height: 100vh;
+        background-color: @main-white-second;
+        overflow-y: auto;
+
+        .document-view__wrapper {
+            padding: 0;
+            height: 100%;
+            background-color: transparent;
+            overflow: inherit;
         }
     }
 }

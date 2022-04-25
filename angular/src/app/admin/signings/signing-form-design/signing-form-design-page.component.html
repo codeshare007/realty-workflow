@@ -1,11 +1,23 @@
 <div [@routerTransition]>
     <div class="content d-flex flex-column flex-column-fluid">
         <sub-header [title]="'Signing_Design' | localize"
-            [breadcrumbs]="breadcrumbs"
-            >
+                    [breadcrumbs]="breadcrumbs">
             <div role="actions">
                 <button type="button"
-                        (click)="saveForm()"
+                        (click)="generateReport()"
+                        class="btn btn-primary mr-3">
+                    {{ 'Print' | localize }}
+                </button>
+
+                <button type="button"
+                        [disabled]="!signing || !signing.participants || signing.participants.length == 0"
+                        (click)="saveForm(true)"
+                        class="btn btn-primary mr-3">
+                    {{ 'Finalize' | localize }}
+                </button>
+
+                <button type="button"
+                        (click)="saveForm(false)"
                         class="btn btn-primary">
                     {{ 'Save' | localize }}
                 </button>
@@ -16,18 +28,33 @@
             <div class="card card-custom"
                  [busyIf]="loading">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-9">
-                            <div *ngFor="let form of signing.forms">
+                    <div class="row"
+                         keyDownCmd
+                         keyDownC
+                         keyDownV
+                         keyDownDel>
+                        <div class="col-9 signing-form-design-page__document new-scrollbar"
+                             *ngIf="signing && signing.id"
+                             keyDownCtrl
+                             [mainLayer]="controlLayer.Signing">
+                            <div *ngFor="let form of signing.forms | pageLine; trackBy: trackByIndex">
                                 <document-view *ngIf="form"
-                                                [document]="form"
-                                                [formLibrarySettings]="signingFormSettingService.settings">
+                                               [document]="form"
+                                               [accessSetting]="accessLayers"
+                                               [participants]="signing && signing.participants ? signing.participants : []"
+                                               [mainLayer]="controlLayer.Signing"
+                                               [switchSetting]="switchSetting"
+                                               [accessTypeItem]="accessTypeItem">
                                 </document-view>
                             </div>
                         </div>
                         <div class="col-3">
-                            <form-library-controls (onDropped)="onFormDropped($event)"
-                                                   [formLibrarySettings]="signingFormSettingService.settings">
+                            <form-library-controls [participants]="signing && signing.participants ? signing.participants : []"
+                                                   [accessSetting]="accessLayers"
+                                                   [documentInfo]="documentInfo"
+                                                   [showModal]="signing && signing.forms | isOpenMargingModal"
+                                                   [mainLayer]="controlLayer.Signing"
+                                                   [switchSetting]="switchSetting">
                             </form-library-controls>
                         </div>
                         <div [ngClass]="{ 'form-library-document__dnd-wrapper': isHover }">
@@ -43,3 +70,8 @@
         </div>
     </div>
 </div>
+
+<submit-signing-modal #submitSigningModal
+                      [signingId]="signingId"
+                      (modalSubmit)="onSubmit()">
+</submit-signing-modal>

@@ -13,16 +13,14 @@ using Microsoft.EntityFrameworkCore;
 using Realty.Authorization;
 using Realty.Forms.Dto;
 using Realty.Storage;
-using Realty.Controls.Input;
 using Realty.Controls;
-using Realty.DynamicEntityPropertyValues.Dto;
 using Realty.Forms;
 using Realty.Libraries.Dto;
 using Realty.Libraries.Input;
+using Realty.Forms.Input;
 
 namespace Realty.Libraries
 {
-    [AbpAuthorize(AppPermissions.Pages_Library_Forms)]
     public class LibraryFormAppService : RealtyAppServiceBase, ILibraryFormAppService
     {
         private readonly IRepository<Library, Guid> _libraryRepository;
@@ -42,7 +40,7 @@ namespace Realty.Libraries
             _formAssembler = formAssembler;
         }
 
-        [AbpAuthorize(AppPermissions.Pages_Library_Forms)]
+        [AbpAuthorize(AppPermissions.Pages_Library_Forms, AppPermissions.Pages_LibraryForms_View, RequireAllPermissions = false)]
         public async Task<PagedResultDto<LibraryFormListDto>> GetAllAsync(GetLibraryFormsInput input)
         {
             var query = _libraryRepository.GetAll()
@@ -63,10 +61,28 @@ namespace Realty.Libraries
         }
 
         [AbpAuthorize(AppPermissions.Pages_LibraryForms_Create)]
+        public async Task<List<ParticipantMappingItemDto>> UpdateParticipantMappingItemsAsync(UpdateParticipantMappingItemsInput input)
+        {
+            Check.NotNull(input.Id, nameof(input.Id));
+
+            var library = await _libraryRepository.GetAsync(input.Id);
+            var form = library.Forms.First(f => f.Id == input.FormId);
+
+            var items = input.Items != null ? ObjectMapper.Map<List<ParticipantMappingItem>>(input.Items) : new List<ParticipantMappingItem>();
+            form.UpdateParticipantMappingItems(items);
+            
+            await _libraryRepository.UpdateAsync(library);
+
+            return ObjectMapper.Map<List<ParticipantMappingItemDto>>(form.ParticipantMappingItems);
+        }
+
+        [AbpAuthorize(AppPermissions.Pages_LibraryForms_Create)]
         public async Task<Guid> CreateAsync(CreateLibraryFormInput input)
         {
             var library = await _libraryRepository.GetAsync(input.Id);
             var form = ObjectMapper.Map<Form>(input.Form);
+            form.Height = 1650;
+            form.Width = 1275;
 
             form.File = await _fileRepository.GetAsync(input.Form.FileId);
 
@@ -102,19 +118,6 @@ namespace Realty.Libraries
             _formAssembler.Map(input.Form, form);
 
             await _libraryRepository.UpdateAsync(library);
-        }
-
-        public async Task UpdateControlValueAsync(ControlValueInput input)
-        {
-            Check.NotNull(input.ControlId, nameof(input.ControlId));
-
-            var control = await _controlRepository.GetAsync(input.ControlId);
-
-            if (control != null)
-            {
-                control.SetValue(input.Value);
-                await _controlRepository.UpdateAsync(control);
-            }
         }
 
         [AbpAuthorize(AppPermissions.Pages_LibraryForms_Delete)]

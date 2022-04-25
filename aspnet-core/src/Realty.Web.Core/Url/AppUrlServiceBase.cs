@@ -7,14 +7,13 @@ namespace Realty.Web.Url
 {
     public abstract class AppUrlServiceBase : IAppUrlService, ITransientDependency
     {
-        public abstract string PublicSigningRoute { get; }
+        protected readonly IWebUrlService WebUrlService;
+        protected readonly ITenantCache TenantCache;
+        
         public abstract string EmailActivationRoute { get; }
 
         public abstract string PasswordResetRoute { get; }
-
-        protected readonly IWebUrlService WebUrlService;
-        protected readonly ITenantCache TenantCache;
-
+        
         protected AppUrlServiceBase(IWebUrlService webUrlService, ITenantCache tenantCache)
         {
             WebUrlService = webUrlService;
@@ -43,18 +42,6 @@ namespace Realty.Web.Url
             return activationLink;
         }
 
-        public string CreatePublicSigingUrlFormat(string tenancyName, long? participantId)
-        {
-            var activationLink = WebUrlService.GetSiteRootAddress(tenancyName).EnsureEndsWith('/') + PublicSigningRoute + "?signingId={signingId}&tenantId={tenantId}";
-
-            if (participantId.HasValue)
-            {
-                activationLink = activationLink + "participantId={participantId}";
-            }
-
-            return activationLink;
-        }
-
         public string CreatePasswordResetUrlFormat(string tenancyName)
         {
             var resetLink = WebUrlService.GetSiteRootAddress(tenancyName).EnsureEndsWith('/') + PasswordResetRoute + "?userId={userId}&resetCode={resetCode}";
@@ -66,7 +53,6 @@ namespace Realty.Web.Url
 
             return resetLink;
         }
-
 
         private string GetTenancyName(int? tenantId)
         {

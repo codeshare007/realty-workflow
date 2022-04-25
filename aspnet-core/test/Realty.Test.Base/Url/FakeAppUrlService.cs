@@ -19,12 +19,12 @@ namespace Realty.Test.Base.Url
             return "http://test.com/";
         }
 
-        public string CreatePublicSigingUrlFormat(string tenancyName, long? participantId)
+        public string CreatePasswordResetUrlFormat(string tenancyName)
         {
             return "http://test.com/";
         }
 
-        public string CreatePasswordResetUrlFormat(string tenancyName)
+        public string CreateSigningReviewUrlFormat(string tenancyName)
         {
             return "http://test.com/";
         }

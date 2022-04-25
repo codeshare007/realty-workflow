@@ -17,6 +17,7 @@ import { DynamicPropertyValueModalComponent } from '@app/admin/dynamic-propertie
 import { DynamicPropertyComponent } from '@app/admin/dynamic-properties/dynamic-property.component';
 import { SelectAnEntityModalComponent } from '@app/admin/dynamic-properties/select-an-entity-modal.component';
 import { AppCommonModule } from '@app/shared/common/app-common.module';
+import { SharedModalsModule } from '@app/shared/components/modals/shared-modals.module';
 import { UiComponentsModule } from '@app/shared/layout/components/ui-components.module';
 import { CoreModule } from '@metronic/app/core/core.module';
 import { AppBsModalModule } from '@shared/common/appBsModal/app-bs-modal.module';
@@ -37,6 +38,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ImageCropperModule } from 'ngx-image-cropper';
 // Metronic
 import { PerfectScrollbarConfigInterface, PerfectScrollbarModule, PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
+import { NgxTagsInputModule } from 'ngx-tags-input';
 import { TreeDragDropService } from 'primeng/api';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ContextMenuModule } from 'primeng/contextmenu';
@@ -57,7 +59,8 @@ import { CommsInboxAsideComponent } from './communications/components/comms-inbo
 import { CommsInboxMessageViewComponent } from './communications/components/comms-inbox-message-view/comms-inbox-message-view.component';
 import { CommsInboxViewComponent } from './communications/components/comms-inbox-view/comms-inbox-view.component';
 import { CommsSettingsModalComponent } from './communications/components/comms-settings-modal/comms-settings-modal.component';
-import { CreateEditContactModalComponent } from './contacts/create-transaction-modal/create-edit-contact-modal.component';
+import { ContactsPageComponent } from './contacts/page/contacts-page.component';
+import { ContactsTableComponent } from './contacts/table/contacts-table.component';
 import { CustomersPageComponent } from './customers/customers-page.component';
 import { ListingPage } from './customers/listing-page/listing-page.component';
 import { ManageCustomersComponent } from './customers/manage-customers.component';
@@ -77,9 +80,18 @@ import { CreateOrEditLanguageModalComponent } from './languages/create-or-edit-l
 import { EditTextModalComponent } from './languages/edit-text-modal.component';
 import { LanguageTextsComponent } from './languages/language-texts.component';
 import { LanguagesComponent } from './languages/languages.component';
+import { LeadListingDetailModule } from './leads/components/lead-listing-detail/lead-listing-detail.module';
+import { CreateLeadModalComponent } from './leads/components/lead-listing-detail/modals/create-lead-modal/create-lead-modal.component';
+import { SendRecommendedListingsModalComponent } from './leads/components/lead-listing-detail/modals/send-recommended-listings-modal/send-recommended-listings-modal.component';
+import { LeadContactsComponent } from './leads/lead-contacts-section/lead-contacts/lead-contacts.component';
 import { LeadDetailComponent } from './leads/lead-detail/lead-detail.page.component';
 import { LeadGeneralSectionComponent } from './leads/lead-detail/lead-general-info-section/lead-general-info-section.component';
+import { LeadGeneralInfoSearchFilterComponent } from './leads/lead-detail/lead-general-info-section/search-filter/lead-general-info-search-filter.component';
+import { LeadGeneralInfoCitiesListComponent } from './leads/lead-detail/lead-general-info-section/search-filter/modals/cities/cities-list/lead-general-info-cities-list.component';
+import { LeadGeneralInfoCitiesModalComponent } from './leads/lead-detail/lead-general-info-section/search-filter/modals/cities/lead-general-info-cities-modal.component';
 import { LeadsComponent } from './leads/leads.component';
+import { EmailListingsModalComponent } from './leads/recommended-listings/modals/email-listings-modal/email-listings-modal.component';
+import { LeadToTransactionModalComponent } from './leads/recommended-listings/modals/lead-to-transaction-modal/lead-to-transaction-modal.component';
 import { RecommendedListingsComponent } from './leads/recommended-listings/recommended-listings.component';
 import { SearchListingComponent } from './leads/search-listings/search-listing.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
@@ -95,12 +107,12 @@ import { TenantSettingsComponent } from './settings/tenant-settings.component';
 import { EditionComboComponent } from './shared/edition-combo.component';
 import { FeatureTreeComponent } from './shared/feature-tree.component';
 import { GeneralComboStringComponent } from './shared/general-combo-string.component';
-import { GeneralComboComponent } from './shared/general-combo.component';
 import { OrganizationUnitsTreeComponent } from './shared/organization-unit-tree.component';
 import { PermissionComboComponent } from './shared/permission-combo.component';
 import { PermissionTreeModalComponent } from './shared/permission-tree-modal.component';
 import { PermissionTreeComponent } from './shared/permission-tree.component';
 import { RoleComboComponent } from './shared/role-combo.component';
+import { SharedGeneralComboModule } from './signings/shared/shared-general-combo.module';
 import { InvoiceComponent } from './subscription-management/invoice/invoice.component';
 import { SubscriptionManagementComponent } from './subscription-management/subscription-management.component';
 import { CreateTenantModalComponent } from './tenants/create-tenant-modal.component';
@@ -166,13 +178,16 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         DropdownModule,
         AppBsModalModule,
         CoreModule,
-
+        NgxTagsInputModule,
         MatChipsModule,
         MatIconModule,
         MatAutocompleteModule,
         MatFormFieldModule,
         MatSliderModule,
         UiComponentsModule,
+        LeadListingDetailModule,
+        SharedGeneralComboModule,
+        SharedModalsModule,
     ],
     declarations: [
         UsersComponent,
@@ -184,7 +199,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         FeatureTreeComponent,
         OrganizationUnitsTreeComponent,
         RolesComponent,
-        GeneralComboComponent,
         GeneralComboStringComponent,
         CreateOrEditRoleModalComponent,
         AuditLogsComponent,
@@ -260,11 +274,20 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         ListingPage,
         CustomersPageComponent,
         LeadsComponent,
+        LeadContactsComponent,
+        CreateLeadModalComponent,
         LeadGeneralSectionComponent,
+        LeadGeneralInfoSearchFilterComponent,
+        LeadGeneralInfoCitiesModalComponent,
+        LeadGeneralInfoCitiesListComponent,
         LeadDetailComponent,
+        SendRecommendedListingsModalComponent,
+        LeadToTransactionModalComponent,
         RecommendedListingsComponent,
         SearchListingComponent,
-        CreateEditContactModalComponent,
+        EmailListingsModalComponent,
+        ContactsPageComponent,
+        ContactsTableComponent,
     ],
     exports: [
         AddMemberModalComponent,

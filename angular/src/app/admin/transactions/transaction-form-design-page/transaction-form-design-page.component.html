@@ -1,9 +1,14 @@
 <div [@routerTransition]>
     <div class="content d-flex flex-column flex-column-fluid">
         <sub-header [title]="'Form_Design' | localize"
-            [breadcrumbs]="breadcrumbs"
-            >
+                    [breadcrumbs]="breadcrumbs">
             <div role="actions">
+                <button type="button"
+                        (click)="generateReport()"
+                        class="btn btn-primary mr-3">
+                    {{ 'Print' | localize }}
+                </button>
+
                 <button type="button"
                         (click)="saveForm()"
                         class="btn btn-primary">
@@ -16,25 +21,39 @@
             <div class="card card-custom"
                  [busyIf]="loading">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-9">
+                    <div class="row"
+                         keyDownCmd
+                         keyDownC
+                         keyDownV
+                         keyDownDel>
+                        <div class="col-9"
+                             keyDownCtrl
+                             [mainLayer]="controlLayer.Transaction">
                             <document-view *ngIf="transactionForm"
                                            [document]="transactionForm.form"
-                                           [formLibrarySettings]="transactionFormSettingService.settings">
+                                           [participantMappingItems]="transactionForm.form.participantMappingItems"
+                                           [mainLayer]="controlLayer.Transaction"
+                                           [switchSetting]="switchSetting"
+                                           [accessTypeItem]="accessTypeItem">
                             </document-view>
                         </div>
+
                         <div class="col-3">
-                            <form-library-controls (onDropped)="onFormDropped($event)"
-                                                   [formLibrarySettings]="transactionFormSettingService.settings">
+                            <form-library-controls [accessSetting]="accessLayers"
+                                                   [switchSetting]="switchSetting"
+                                                   [mainLayer]="controlLayer.Transaction"
+                                                   [formId]="transactionForm ? transactionForm.form.id : undefined"
+                                                   [participantMappingItems]="transactionForm ? transactionForm.form.participantMappingItems : []"
+                                                   [mainId]="transactionForm ? transactionForm.id : undefined">
                             </form-library-controls>
                         </div>
+
                         <div [ngClass]="{ 'form-library-document__dnd-wrapper': isHover }">
                             <div [innerHtml]="dragebleElement"
                                  [style.opacity]="0.8"
                                  [style.transform]="'translate3d('+ boxPosition.left + 'px,' + boxPosition.top + 'px,' + '0px)'">
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

@@ -1357,6 +1357,76 @@ namespace Realty.Migrations
                     b.ToTable("AbpWebhookSubscriptions");
                 });
 
+            modelBuilder.Entity("Realty.Attachments.Attachment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("FileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid?>("LibraryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<Guid?>("SigningId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("SigningParticipantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("TransactionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("FileId")
+                        .IsUnique()
+                        .HasFilter("[FileId] IS NOT NULL");
+
+                    b.HasIndex("LibraryId");
+
+                    b.HasIndex("SigningId");
+
+                    b.HasIndex("SigningParticipantId");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("TransactionId");
+
+                    b.ToTable("Attachments");
+                });
+
             modelBuilder.Entity("Realty.Authorization.Delegation.UserDelegation", b =>
                 {
                     b.Property<long>("Id")
@@ -1811,87 +1881,14 @@ namespace Realty.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("Realty.Contacts.Contact", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("AddressId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Company")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("DeleterUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Firm")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("LastModifierUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LegalName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MiddleName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PreferredInitials")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PreferredSignature")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Suffix")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TenantId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
-
-                    b.ToTable("Contacts");
-                });
-
             modelBuilder.Entity("Realty.Controls.Control", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AdditionalSettings")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long?>("ControlValueId")
                         .HasColumnType("bigint");
@@ -1908,12 +1905,17 @@ namespace Realty.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Label")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                    b.Property<bool>("IsProtected")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime2");
@@ -1928,11 +1930,25 @@ namespace Realty.Migrations
                         .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("ParticipantId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid?>("ParticipantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ParticipantMappingItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Placeholder")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
 
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
+
+                    b.Property<int>("TextPosition")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -1944,6 +1960,10 @@ namespace Realty.Migrations
                         .HasFilter("[ControlValueId] IS NOT NULL");
 
                     b.HasIndex("PageId");
+
+                    b.HasIndex("ParticipantId");
+
+                    b.HasIndex("ParticipantMappingItemId");
 
                     b.HasIndex("TenantId");
 
@@ -1969,6 +1989,9 @@ namespace Realty.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("IP")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -1981,9 +2004,11 @@ namespace Realty.Migrations
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("UpdateValueDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(2048)")
-                        .HasMaxLength(2048);
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -2010,8 +2035,14 @@ namespace Realty.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("FileId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Height")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -2029,6 +2060,9 @@ namespace Realty.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
+                    b.Property<Guid?>("SignedFileId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("SigningId")
                         .HasColumnType("uniqueidentifier");
 
@@ -2041,11 +2075,16 @@ namespace Realty.Migrations
                     b.Property<Guid?>("TransactionId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Width")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FileId");
 
                     b.HasIndex("LibraryId");
+
+                    b.HasIndex("SignedFileId");
 
                     b.HasIndex("SigningId");
 
@@ -2054,6 +2093,54 @@ namespace Realty.Migrations
                     b.HasIndex("TransactionId");
 
                     b.ToTable("Forms");
+                });
+
+            modelBuilder.Entity("Realty.Forms.ParticipantMappingItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("FormId")
+                        .IsRequired()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FormId");
+
+                    b.ToTable("ParticipantMappingItem");
                 });
 
             modelBuilder.Entity("Realty.Friendships.Friendship", b =>
@@ -2114,7 +2201,10 @@ namespace Realty.Migrations
                     b.Property<long?>("AgentId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Beds")
+                    b.Property<string>("Bathrooms")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Bedrooms")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Cities")
@@ -2156,9 +2246,6 @@ namespace Realty.Migrations
                     b.Property<decimal?>("MaxRent")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal?>("MinBath")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<decimal?>("MinRent")
                         .HasColumnType("decimal(18,2)");
 
@@ -2180,23 +2267,113 @@ namespace Realty.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<string>("StreetName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StreetNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Tags")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Zip")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AgentId");
-
-                    b.HasIndex("ContactId");
 
                     b.HasIndex("CustomerId");
 
                     b.HasIndex("TenantId");
 
                     b.ToTable("Leads");
+                });
+
+            modelBuilder.Entity("Realty.Leads.LeadContact", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AddressId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Company")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Firm")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("LeadId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LegalName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreferredInitials")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreferredSignature")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Suffix")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("LeadId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("LeadContacts");
                 });
 
             modelBuilder.Entity("Realty.Leads.RecommendedListing", b =>
@@ -2229,7 +2406,7 @@ namespace Realty.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("LastViewDate")
+                    b.Property<DateTime?>("LastViewDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("LeadId")
@@ -2244,8 +2421,11 @@ namespace Realty.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RequestedTourDate")
+                    b.Property<DateTime?>("RequestedTourDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("RequestedTourTime")
+                        .HasColumnType("int");
 
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
@@ -2415,6 +2595,9 @@ namespace Realty.Migrations
                     b.Property<string>("Beds")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BuildingType")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
@@ -2440,6 +2623,9 @@ namespace Realty.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Fee")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HeatSource")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IncludeElectricity")
@@ -2506,6 +2692,9 @@ namespace Realty.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StreetNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StudentPolicy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TenantId")
@@ -3108,6 +3297,70 @@ namespace Realty.Migrations
                     b.ToTable("Pages");
                 });
 
+            modelBuilder.Entity("Realty.Signings.AccessRequests.SigningRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ExtensionData")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastViewDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ParticipantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SigningId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParticipantId");
+
+                    b.HasIndex("SigningId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("SigningRequests");
+                });
+
+            modelBuilder.Entity("Realty.Signings.AccessRequests.ViewRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("LastViewDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ParticipantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SigningId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParticipantId");
+
+                    b.HasIndex("SigningId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("ViewRequests");
+                });
+
             modelBuilder.Entity("Realty.Signings.Signing", b =>
                 {
                     b.Property<Guid>("Id")
@@ -3145,6 +3398,12 @@ namespace Realty.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("SignedFileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
@@ -3155,6 +3414,8 @@ namespace Realty.Migrations
 
                     b.HasIndex("AgentId");
 
+                    b.HasIndex("SignedFileId");
+
                     b.HasIndex("TenantId");
 
                     b.HasIndex("TransactionId");
@@ -3162,14 +3423,17 @@ namespace Realty.Migrations
                     b.ToTable("Signings");
                 });
 
-            modelBuilder.Entity("Realty.Signings.SigningContact", b =>
+            modelBuilder.Entity("Realty.Signings.SigningParticipant", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ContactId")
+                    b.Property<Guid?>("AddressId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Company")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
@@ -3183,6 +3447,15 @@ namespace Realty.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Firm")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -3192,19 +3465,43 @@ namespace Realty.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LegalName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreferredInitials")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreferredSignature")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid?>("SigningId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Suffix")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ContactId");
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("SigningId");
 
-                    b.ToTable("SigningContact");
+                    b.ToTable("SigningParticipants");
                 });
 
             modelBuilder.Entity("Realty.Storage.BinaryObject", b =>
@@ -3276,6 +3573,195 @@ namespace Realty.Migrations
                     b.ToTable("Files");
                 });
 
+            modelBuilder.Entity("Realty.TransactionPaymentTrackers.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Bounced")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CheckNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ExternalPaymentInfo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Gateway")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ParticipantType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("TransactionParticipantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TransactionPaymentTrackerId")
+                        .IsRequired()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("TransactionPaymentTrackerId");
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("Realty.TransactionPaymentTrackers.TransactionAdditionalFee", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("TransactionPaymentTrackerId")
+                        .IsRequired()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("TransactionPaymentTrackerId");
+
+                    b.ToTable("TransactionAdditionalFees");
+                });
+
+            modelBuilder.Entity("Realty.TransactionPaymentTrackers.TransactionPaymentTracker", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float>("AgentFeePercentage")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("FeePayment")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("FirstPayment")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsWithholdingFee")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("KeyPayment")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<float>("LandlordFeePercentage")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("LastPayment")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("OtherPayment")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SecurityPayment")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<float>("TenantFeePercentage")
+                        .HasColumnType("real");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("TransactionPaymentTrackers");
+                });
+
             modelBuilder.Entity("Realty.Transactions.Transaction", b =>
                 {
                     b.Property<Guid>("Id")
@@ -3322,6 +3808,9 @@ namespace Realty.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("PaymentTrackerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -3341,19 +3830,24 @@ namespace Realty.Migrations
 
                     b.HasIndex("ListingId");
 
+                    b.HasIndex("PaymentTrackerId");
+
                     b.HasIndex("TenantId");
 
                     b.ToTable("Transactions");
                 });
 
-            modelBuilder.Entity("Realty.Transactions.TransactionContact", b =>
+            modelBuilder.Entity("Realty.Transactions.TransactionParticipant", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ContactId")
+                    b.Property<Guid?>("AddressId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Company")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
@@ -3367,6 +3861,15 @@ namespace Realty.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Firm")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -3376,21 +3879,45 @@ namespace Realty.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LegalName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreferredInitials")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreferredSignature")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Suffix")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("TransactionId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ContactId");
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("TenantId");
 
                     b.HasIndex("TransactionId");
 
-                    b.ToTable("TransactionContacts");
+                    b.ToTable("TransactionParticipants");
                 });
 
             modelBuilder.Entity("Realty.Editions.SubscribableEdition", b =>
@@ -3598,6 +4125,43 @@ namespace Realty.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Realty.Attachments.Attachment", b =>
+                {
+                    b.HasOne("Realty.Authorization.Users.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("Realty.Storage.File", "File")
+                        .WithOne()
+                        .HasForeignKey("Realty.Attachments.Attachment", "FileId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Realty.Libraries.Library", null)
+                        .WithMany("Attachments")
+                        .HasForeignKey("LibraryId")
+                        .OnDelete(DeleteBehavior.ClientCascade);
+
+                    b.HasOne("Realty.Signings.Signing", null)
+                        .WithMany("Attachments")
+                        .HasForeignKey("SigningId")
+                        .OnDelete(DeleteBehavior.ClientCascade);
+
+                    b.HasOne("Realty.Signings.SigningParticipant", "SigningParticipant")
+                        .WithMany()
+                        .HasForeignKey("SigningParticipantId");
+
+                    b.HasOne("Realty.MultiTenancy.Tenant", null)
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Realty.Transactions.Transaction", null)
+                        .WithMany("Attachments")
+                        .HasForeignKey("TransactionId")
+                        .OnDelete(DeleteBehavior.ClientCascade);
+                });
+
             modelBuilder.Entity("Realty.Authorization.Roles.Role", b =>
                 {
                     b.HasOne("Realty.Authorization.Users.User", "CreatorUser")
@@ -3652,13 +4216,6 @@ namespace Realty.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Realty.Contacts.Contact", b =>
-                {
-                    b.HasOne("Realty.Contacts.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-                });
-
             modelBuilder.Entity("Realty.Controls.Control", b =>
                 {
                     b.HasOne("Realty.Controls.ControlValue", "Value")
@@ -3671,6 +4228,16 @@ namespace Realty.Migrations
                         .HasForeignKey("PageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Realty.Signings.SigningParticipant", null)
+                        .WithMany()
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.ClientNoAction);
+
+                    b.HasOne("Realty.Forms.ParticipantMappingItem", null)
+                        .WithMany()
+                        .HasForeignKey("ParticipantMappingItemId")
+                        .OnDelete(DeleteBehavior.ClientNoAction);
 
                     b.HasOne("Realty.MultiTenancy.Tenant", null)
                         .WithMany()
@@ -3699,11 +4266,11 @@ namespace Realty.Migrations
                             b1.Property<Guid>("ControlId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<int>("Left")
-                                .HasColumnType("int");
+                            b1.Property<float>("Left")
+                                .HasColumnType("real");
 
-                            b1.Property<int>("Top")
-                                .HasColumnType("int");
+                            b1.Property<float>("Top")
+                                .HasColumnType("real");
 
                             b1.HasKey("ControlId");
 
@@ -3718,11 +4285,11 @@ namespace Realty.Migrations
                             b1.Property<Guid>("ControlId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<int>("Height")
-                                .HasColumnType("int");
+                            b1.Property<float>("Height")
+                                .HasColumnType("real");
 
-                            b1.Property<int>("Width")
-                                .HasColumnType("int");
+                            b1.Property<float>("Width")
+                                .HasColumnType("real");
 
                             b1.HasKey("ControlId");
 
@@ -3755,6 +4322,11 @@ namespace Realty.Migrations
                         .HasForeignKey("LibraryId")
                         .OnDelete(DeleteBehavior.ClientCascade);
 
+                    b.HasOne("Realty.Storage.File", "SignedFile")
+                        .WithMany()
+                        .HasForeignKey("SignedFileId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.HasOne("Realty.Signings.Signing", null)
                         .WithMany("Forms")
                         .HasForeignKey("SigningId")
@@ -3772,6 +4344,15 @@ namespace Realty.Migrations
                         .OnDelete(DeleteBehavior.ClientCascade);
                 });
 
+            modelBuilder.Entity("Realty.Forms.ParticipantMappingItem", b =>
+                {
+                    b.HasOne("Realty.Forms.Form", null)
+                        .WithMany("ParticipantMappingItems")
+                        .HasForeignKey("FormId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Realty.Leads.Lead", b =>
                 {
                     b.HasOne("Realty.Authorization.Users.User", "Agent")
@@ -3779,14 +4360,27 @@ namespace Realty.Migrations
                         .HasForeignKey("AgentId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("Realty.Contacts.Contact", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("Realty.Authorization.Users.User", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Realty.MultiTenancy.Tenant", null)
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Realty.Leads.LeadContact", b =>
+                {
+                    b.HasOne("Realty.Contacts.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
+                    b.HasOne("Realty.Leads.Lead", "Lead")
+                        .WithMany("LeadContacts")
+                        .HasForeignKey("LeadId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Realty.MultiTenancy.Tenant", null)
@@ -3899,6 +4493,9 @@ namespace Realty.Migrations
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("ParkingNumber")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("ParkingPrice")
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Type")
@@ -4014,6 +4611,46 @@ namespace Realty.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Realty.Signings.AccessRequests.SigningRequest", b =>
+                {
+                    b.HasOne("Realty.Signings.SigningParticipant", "Participant")
+                        .WithMany()
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Realty.Signings.Signing", null)
+                        .WithMany("SigningRequests")
+                        .HasForeignKey("SigningId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Realty.MultiTenancy.Tenant", null)
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.ClientNoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Realty.Signings.AccessRequests.ViewRequest", b =>
+                {
+                    b.HasOne("Realty.Signings.SigningParticipant", "Participant")
+                        .WithMany()
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Realty.Signings.Signing", null)
+                        .WithMany("ViewRequests")
+                        .HasForeignKey("SigningId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Realty.MultiTenancy.Tenant", null)
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.ClientNoAction)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Realty.Signings.Signing", b =>
                 {
                     b.HasOne("Realty.Authorization.Users.User", "Agent")
@@ -4021,7 +4658,12 @@ namespace Realty.Migrations
                         .HasForeignKey("AgentId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Realty.MultiTenancy.Tenant", null)
+                    b.HasOne("Realty.Storage.File", "SignedFile")
+                        .WithMany()
+                        .HasForeignKey("SignedFileId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Realty.MultiTenancy.Tenant", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4031,20 +4673,95 @@ namespace Realty.Migrations
                         .WithMany()
                         .HasForeignKey("TransactionId")
                         .OnDelete(DeleteBehavior.NoAction);
+
+                    b.OwnsOne("Realty.Signings.ExpirationSettings", "ExpirationSettings", b1 =>
+                        {
+                            b1.Property<Guid>("SigningId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime?>("ExpirationDate")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("SigningId");
+
+                            b1.ToTable("Signings");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SigningId");
+                        });
+
+                    b.OwnsOne("Realty.Signings.ReminderSettings", "ReminderSettings", b1 =>
+                        {
+                            b1.Property<Guid>("SigningId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("DispatchingFrequency")
+                                .HasColumnType("int");
+
+                            b1.Property<DateTime?>("NextDispatchTime")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("SigningId");
+
+                            b1.ToTable("Signings");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SigningId");
+                        });
                 });
 
-            modelBuilder.Entity("Realty.Signings.SigningContact", b =>
+            modelBuilder.Entity("Realty.Signings.SigningParticipant", b =>
                 {
-                    b.HasOne("Realty.Contacts.Contact", "Contact")
+                    b.HasOne("Realty.Contacts.Address", "Address")
                         .WithMany()
-                        .HasForeignKey("ContactId");
+                        .HasForeignKey("AddressId");
 
                     b.HasOne("Realty.Signings.Signing", "Signing")
-                        .WithMany("SigningContacts")
-                        .HasForeignKey("SigningId");
+                        .WithMany("Participants")
+                        .HasForeignKey("SigningId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Realty.Storage.File", b =>
+                {
+                    b.HasOne("Realty.MultiTenancy.Tenant", null)
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Realty.TransactionPaymentTrackers.Payment", b =>
+                {
+                    b.HasOne("Realty.MultiTenancy.Tenant", null)
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Realty.TransactionPaymentTrackers.TransactionPaymentTracker", null)
+                        .WithMany("Payments")
+                        .HasForeignKey("TransactionPaymentTrackerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Realty.TransactionPaymentTrackers.TransactionAdditionalFee", b =>
+                {
+                    b.HasOne("Realty.MultiTenancy.Tenant", null)
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Realty.TransactionPaymentTrackers.TransactionPaymentTracker", null)
+                        .WithMany("AdditionalFees")
+                        .HasForeignKey("TransactionPaymentTrackerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Realty.TransactionPaymentTrackers.TransactionPaymentTracker", b =>
                 {
                     b.HasOne("Realty.MultiTenancy.Tenant", null)
                         .WithMany()
@@ -4075,6 +4792,10 @@ namespace Realty.Migrations
                         .HasForeignKey("ListingId")
                         .OnDelete(DeleteBehavior.NoAction);
 
+                    b.HasOne("Realty.TransactionPaymentTrackers.TransactionPaymentTracker", "PaymentTracker")
+                        .WithMany()
+                        .HasForeignKey("PaymentTrackerId");
+
                     b.HasOne("Realty.MultiTenancy.Tenant", null)
                         .WithMany()
                         .HasForeignKey("TenantId")
@@ -4082,12 +4803,11 @@ namespace Realty.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Realty.Transactions.TransactionContact", b =>
+            modelBuilder.Entity("Realty.Transactions.TransactionParticipant", b =>
                 {
-                    b.HasOne("Realty.Contacts.Contact", "Contact")
+                    b.HasOne("Realty.Contacts.Address", "Address")
                         .WithMany()
-                        .HasForeignKey("ContactId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("AddressId");
 
                     b.HasOne("Realty.MultiTenancy.Tenant", null)
                         .WithMany()
@@ -4096,9 +4816,9 @@ namespace Realty.Migrations
                         .IsRequired();
 
                     b.HasOne("Realty.Transactions.Transaction", "Transaction")
-                        .WithMany("TransactionContacts")
+                        .WithMany("TransactionParticipants")
                         .HasForeignKey("TransactionId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Abp.Application.Features.EditionFeatureSetting", b =>

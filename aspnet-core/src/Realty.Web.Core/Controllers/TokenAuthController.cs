@@ -743,7 +743,6 @@ namespace Realty.Web.Controllers
             return returnUrl;
         }
 
-
         private bool IsRefreshTokenValid(string refreshToken, out ClaimsPrincipal principal)
         {
             principal = null;
@@ -786,7 +785,6 @@ namespace Realty.Web.Controllers
 
             return false;
         }
-
 
         private bool AllowOneConcurrentLoginPerUser()
         {

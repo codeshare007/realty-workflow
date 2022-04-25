@@ -1,157 +1,368 @@
-<ng-container *ngIf="mode === viewModesType.Edit">
-    <ng-container *ngTemplateOutlet="modeEdit"></ng-container>
-</ng-container>
+<div [class]="participantClass"
+     (click)="selectControl()">
+    <!-- <h2>edit => {{mode === viewModesType.Edit || isExceptionControl}} - 1() {{ mode === viewModesType.Edit}} - 2()
+        {{isExceptionControl}}</h2>
+    <h2>populate view => {{!isExceptionControl}}</h2>
+    <h2>populate => {{(mode === viewModesType.Populate || (publicMode && isPublicPopulate()))}} - 1()
+        {{mode === viewModesType.Populate}} -2(){{publicMode && isPublicPopulate()}}</h2>
+    <h2>view => {{(mode === viewModesType.View || (publicMode && !isPublicPopulate()))}}</h2> -->
+    
+    <ng-container *ngIf="mode === viewModesType.Edit || isExceptionControl">
+        <ng-container *ngTemplateOutlet="modeEdit"></ng-container>
+    </ng-container>
 
-<ng-container *ngIf="mode === viewModesType.Populate">
-    <ng-container *ngTemplateOutlet="modePopulate"></ng-container>
-</ng-container>
+    <ng-container *ngIf="!isExceptionControl">
 
-<ng-container *ngIf="mode === viewModesType.View">
-    <ng-container *ngTemplateOutlet="modeView"></ng-container>
-</ng-container>
+        <ng-container *ngIf="(mode === viewModesType.Populate || (publicMode && isPublicPopulate()))">
+            <ng-container *ngTemplateOutlet="modePopulate"></ng-container>
+        </ng-container>
 
-<!-- Statr Edit -->
-<ng-template #modeEdit>
-    <div cdkDrag
-         (cdkDragEnded)="onControlStoped($event)"
-         (cdkDragMoved)="onControlMoved($event)"
-         [cdkDragDisabled]="isResize"
-         class="page-control"
-         [ngClass]="{ 'top-control': isShowAction() }"
-         [style.transform]="'translate3d('+ control.position.left + 'px,' + control.position.top + 'px,' + '0px)'">
+        <ng-container *ngIf="(mode === viewModesType.View || (publicMode && !isPublicPopulate()))">
+            <ng-container *ngTemplateOutlet="modeView"></ng-container>
+        </ng-container>
 
-        <div #controlRef
-             (click)="changeStyle(statusControlAction.Show)"
-             [class]="'resizable-draggable ' + (control.type | formControlClass)"
-             [ngStyle]="styleControl"
-             [class.active]="status === statusControl.Resize || status === statusControl.Move">
+    </ng-container>
 
-            <span class="resizable-draggable__title">{{ control.type | formControlType }}</span>
+    <!-- Statr Edit -->
+    <!-- TODO: drag position just in page field -->
+    <!-- [cdkDragFreeDragPosition]="dragPosition"  -->
+    <ng-template #modeEdit>
+        <!-- [style.left]="control.position.left + 'px'" -->
+        <!-- [style.top]="control.position.top + 'px'" -->
+        <!-- [style.transform]="'translate3d('+ control.position.left + 'px,' + control.position.top + 'px,' + '0px)'" -->
+        <div cdkDrag
+             (click)="multiSelect($event)"
+             (cdkDragStarted)="onDragingStarted($event)"
+             (cdkDragMoved)="onControlMoved($event)"
+             (cdkDragEnded)="onDragingEnded($event)"
+             [cdkDragDisabled]="isDisabledDragging ? isDisabledDragging : isDisabledDraging()"
+             class="page-control"
+             [ngClass]="{ 'top-control': isShowAction(),
+                        'no-actions': !isAllowedSetting,
+                        'multi-select': isMultiSelected(),
+                        'hide-dragging': isHasMatch && isMovedControl,
+                        'signature-design': control.type === controlType.Signature }"
+             [style.transform]="'translate3d('+ control.position.left + 'px,' + control.position.top + 'px,' + '0px)'">
+            <div #controlRef
+                 (click)="changeStyle(statusControlAction.Show)"
+                 [class]="'resizable-draggable ' + (control.type | formControlClass)"
+                 [ngStyle]="styleControl"
+                 [class.active]="status === statusControl.Resize || status === statusControl.Move">
+                <!-- <span class="test-page-control-info">
+                    E - {{ control.layer }}
+                </span> -->
+                <moqup-control *ngIf="isMoqups"
+                               [control]="control"
+                               [height]="height"
+                               [width]="width"
+                               [rgbaColor]="rgbaColor">
+                </moqup-control>
 
-            <div class="resizable-draggable__action resize resize__bottom--right"
-                 (resize)="onResize($event)"
-                 (resizeEnd)="resizeEnd($event)"
-                 (resizeStart)="resizeStart($event)"
-                 [targetElement]="controlRef"
-                 [direction]="AngularResizeElementDirection.BOTTOM_RIGHT">
+                <ng-container *ngIf="control.type === controlType.OptionalInitials
+                        || control.type === controlType.OptionalSigning">
+                    <div class="optional__permissions-action">
+                        <button type="button"
+                                disabled
+                                class="btn">
+                            <ng-container *ngIf="control.type === controlType.OptionalInitials; else signingRef">
+                                <i class="fas fa-times"></i>
+                            </ng-container>
+                            <ng-template #signingRef>
+                                <span>{{ 'Declined' }}</span>
+                            </ng-template>
+                        </button>
+
+                        <button type="button"
+                                disabled
+                                class="btn">
+                            <ng-container *ngIf="control.type === controlType.OptionalInitials; else initialRef">
+                                <i class="fas fa-check"></i>
+                            </ng-container>
+                            <ng-template #initialRef>
+                                <span>{{ 'Approved' }}</span>
+                            </ng-template>
+                        </button>
+                    </div>
+                </ng-container>
+
+                <span class="resizable-draggable__title capitalize"
+                      [ngStyle]="{ 'font-size': getFontSize(control) + 'px',
+                                'text-align': getTextPosition(control) }"
+                      *ngIf="!isMoqups">
+                    <ng-container *ngIf="control.type === controlType.UploadAttachment; else defaultRef">
+                        <i class="fa-paperclip fas"></i>
+                    </ng-container>
+                    <ng-template #defaultRef>
+                        {{ control.type | formControlType:false:participants:control.participantId }}
+                    </ng-template>
+                </span>
+
+                <!-- <ng-container *ngIf="control.type === controlType.DiagonalLine">
+                    <div class="resizable-draggable__action__top-left resize resize__top--left"
+                         (resize)="onResizeTop($event)"
+                         (resizeEnd)="resizeEnd($event)"
+                         (resizeStart)="resizeStart($event)"
+                         [targetElement]="controlRef"
+                         [direction]="AngularResizeElementDirection.TOP_LEFT">
+                    </div>
+                </ng-container> -->
+
+                <div class="resizable-draggable__action resize resize__bottom--right"
+                     *ngIf="isAllowedSetting
+                        && control.type !== controlType.UploadAttachment"
+                     (resize)="onResize($event)"
+                     (resizeEnd)="resizeEnd($event)"
+                     (resizeStart)="resizeStart($event)"
+                     [targetElement]="controlRef"
+                     [direction]="AngularResizeElementDirection.BOTTOM_RIGHT">
+                </div>
             </div>
+
+            <page-control-actions [controlIndex]="index"
+                                  [control]="control"
+                                  [mainLayer]="mainLayer"
+                                  [pageId]="pageId"
+                                  [documentId]="documentId"
+                                  [participants]="participants"
+                                  [participantMappingItems]="participantMappingItems"
+                                  [(rgbaColor)]="rgbaColor"
+                                  [(isDisabledDragging)]="isDisabledDragging"
+                                  (onControlActions)="onControlActions.emit($event)"
+                                  (onMultipleCopy)="onMultipleCopy.emit($event)"
+                                  (onChangeClass)="onChangeClass()">
+            </page-control-actions>
         </div>
+    </ng-template>
+    <!-- End Edit -->
 
-        <div class="page-control__actions"
-             [ngClass]="{ 'show-action': isShowAction() }">
+    <!-- Statr Populate -->
+    <!-- [style.transform]="'translate3d('+ (control.position.left) + 'px,' + (control.position.top) + 'px,' + '0px)'" -->
+    <!-- [style.left]="control.position.left + 'px'" -->
+    <!-- [style.top]="control.position.top + 'px'" -->
+    <ng-template #modePopulate>
+        <div [style.transform]="'translate3d('+ (control.position.left) + 'px,' + (control.position.top) + 'px,' + '0px)'"
+             [ngStyle]="{ 'font-size': control.font.sizeInPx + 'px' }"
+             class="page-control"
+             [ngClass]="{ 'page-control__focused': (isMoqups ? false : tabIndex === focusStartedControl) }"
+             (click)="setTabIndex()">
+            <!-- <span class="test-page-control-info">
+                P - {{ control.layer }}
+            </span> -->
+            <ng-container *ngIf="control.type === controlType.DateTime">
+                <ng-container *ngTemplateOutlet="dateTimeControl"></ng-container>
+            </ng-container>
 
-            <i class="fas fa-cog"
-               [ngClass]="{ 'opened-icon': showSettings }"
-               (click)="onControlSetting()"></i>
+            <ng-container *ngIf="control.type === controlType.Signature
+            || control.type === controlType.Initials
+            || control.type === controlType.OptionalInitials
+            || control.type === controlType.UploadAttachment
+            || control.type === controlType.OptionalSigning">
+                <ng-container *ngTemplateOutlet="signatureControl"></ng-container>
+            </ng-container>
 
-            <div *ngIf="showSettings"
-                 class="page-control__actions__wrapper">
-                <i class="fas fa-text-height click-outside"
-                   (click)="onActions(typeControlAction.TextSize)">
-                </i>
-                <i class="fas fa-user-plus"
-                   (click)="onActions(typeControlAction.Assign)">
-                </i>
-                <i class="fas fa-object-ungroup"
-                   (click)="onActions(typeControlAction.Coppy)">
-                </i>
-                <i class="fas fa-trash-alt"
-                   (click)="onActions(typeControlAction.Delete)">
-                </i>
+            <ng-container *ngIf="control.type === controlType.TextArea">
+                <ng-container *ngTemplateOutlet="textAreaControl"></ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="control.type === controlType.TextField">
+                <ng-container *ngTemplateOutlet="textFieldControl"></ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="isMoqups">
+                <ng-container *ngTemplateOutlet="moqupControl"></ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="control.type === controlType.SigningDate">
+                <ng-container *ngTemplateOutlet="signingDateControl"></ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="control.type === controlType.Dropdown">
+                <ng-container *ngTemplateOutlet="dropdownControl"></ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="control.type === controlType.SignerName">
+                <ng-container *ngTemplateOutlet="signerNameControl"></ng-container>
+            </ng-container>
+        </div>
+        <!-- Start Populate Controls -->
+        <ng-template #dateTimeControl>
+            <div [ngStyle]="styleControl">
+                <date-time-control [control]="control"
+                                   [pageId]="pageId"
+                                   [documentId]="documentId"
+                                   [publicMode]="publicMode"
+                                   [tabIndex]="tabIndex">
+                </date-time-control>
             </div>
-            <div class="page-control__actions__font-size"
-                 *ngIf="showDropDown"
-                 dropDownClickOutside
-                 (dropDownClickOutside)="toggleDropDown()">
-                <ul class="page-control__actions__font-size__list new-scrollbar">
-                    <li *ngFor="let item of fontSizeList"
-                        [ngClass]="{ 'active': control.font.sizeInPx === item.value }"
-                        (click)="selectSize(item)"
-                        class="page-control__actions__font-size__list__item">
-                        <span>{{ item.name }}</span>
-                    </li>
-                </ul>
+        </ng-template>
+
+        <ng-template #signatureControl>
+            <div [ngStyle]="styleControl"
+                 [class]="'populate-mode ' + (control.type | formControlClass)">
+                <signature-control [control]="control"
+                                   [pageId]="pageId"
+                                   [documentId]="documentId"
+                                   [participants]="participants"
+                                   [publicMode]="publicMode"
+                                   [tabIndex]="tabIndex"
+                                   [participantId]="participantId">
+                </signature-control>
             </div>
-        </div>
+        </ng-template>
 
-    </div>
-</ng-template>
-<!-- End Edit -->
+        <ng-template #textAreaControl>
+            <div [ngStyle]="styleControl">
+                <text-area-control [control]="control"
+                                   [documentId]="documentId"
+                                   [tabIndex]="tabIndex"
+                                   [publicMode]="publicMode"
+                                   [pageId]="pageId"
+                                   [participantId]="participantId">
+                </text-area-control>
+            </div>
+        </ng-template>
 
-<!-- Statr Populate -->
-<ng-template #modePopulate>
-    <div [style.transform]="'translate3d('+ (control.position.left) + 'px,' + (control.position.top-3) + 'px,' + '0px)'"
-         class="page-control">
+        <ng-template #textFieldControl>
+            <div [ngStyle]="styleControl">
+                <text-field-control [pageId]="pageId"
+                                    [documentId]="documentId"
+                                    [control]="control"
+                                    [tabIndex]="tabIndex"
+                                    [publicMode]="publicMode"
+                                    [participantId]="participantId">
+                </text-field-control>
+            </div>
+        </ng-template>
 
-        <ng-container *ngIf="control.type === controlType.DateTime">
-            <ng-container *ngTemplateOutlet="dateTimeControl"></ng-container>
-        </ng-container>
+        <ng-template #moqupControl>
+            <div [ngStyle]="styleControl"
+                 [class]="'resizable-draggable populate-mode ' + (control.type | formControlClass)">
+                <moqup-control [control]="control"
+                               [height]="height"
+                               [width]="width"
+                               [rgbaColor]="rgbaColor">
+                </moqup-control>
+            </div>
+        </ng-template>
 
-        <ng-container *ngIf="control.type === controlType.Initials">
-            <ng-container *ngTemplateOutlet="initialsControl"></ng-container>
-        </ng-container>
+        <ng-template #signingDateControl>
+            <div [ngStyle]="styleControl">
+                <signing-date-control [control]="control"
+                                      [documentId]="documentId"
+                                      [pageId]="pageId"
+                                      [participantId]="participantId">
+                </signing-date-control>
+            </div>
+        </ng-template>
 
-        <ng-container *ngIf="control.type === controlType.Signature">
-            <ng-container *ngTemplateOutlet="signatureControl"></ng-container>
-        </ng-container>
+        <ng-template #dropdownControl>
+            <div [ngStyle]="styleControl">
+                <dropdown-control [pageId]="pageId"
+                                  [control]="control"
+                                  [tabIndex]="tabIndex"
+                                  [documentId]="documentId"
+                                  [publicMode]="publicMode"
+                                  [participantId]="participantId">
+                </dropdown-control>
+            </div>
+        </ng-template>
 
-        <ng-container *ngIf="control.type === controlType.TextArea">
-            <ng-container *ngTemplateOutlet="textAreaControl"></ng-container>
-        </ng-container>
+        <ng-template #signerNameControl>
+            <div [ngStyle]="styleControl">
+                <signer-name-control
+                                     [signerName]="control.type | formControlParticipantName:participants:control.participantId">
+                </signer-name-control>
+            </div>
+        </ng-template>
 
-        <ng-container *ngIf="control.type === controlType.TextField">
-            <ng-container *ngTemplateOutlet="textFieldControl"></ng-container>
-        </ng-container>
-    </div>
-    <!-- Start Populate Controls -->
-    <ng-template #dateTimeControl>
-        <div [ngStyle]="styleControl">
-            <date-time-control></date-time-control>
+        <!-- End Populate Controls -->
+    </ng-template>
+    <!-- End Populate -->
+
+    <!-- Statr View -->
+    <ng-template #modeView>
+        <!-- [style.left]="control.position.left + 'px'" -->
+        <!-- [style.top]="control.position.top + 'px'" -->
+        <!-- [style.transform]="'translate3d('+ (control.position.left) + 'px,' + (control.position.top) + 'px,' + '0px)'" -->
+        <div [style.transform]="'translate3d('+ (control.position.left) + 'px,' + (control.position.top) + 'px,' + '0px)'"
+             class="page-control page-control-view-mode">
+            <!-- <span class="test-page-control-info">
+                V - {{ control.layer }}
+            </span> -->
+            <!-- [ngClass]="{ 'moqup-control': isMoqups }" -->
+            <span [class]="(!isMoqups ? 'page-control__view__text ' : '') + (control.type | formControlClass)"
+                  [ngStyle]="styleControl">
+                <ng-container *ngIf="!isMoqups; else moqupsControl">
+                    <ng-container *ngIf="!isSigning(); else signatureBox">
+                        <ng-container *ngTemplateOutlet="defaultSpanTemplate"></ng-container>
+                    </ng-container>
+                </ng-container>
+            </span>
+            <ng-template #moqupsControl>
+                <moqup-control [control]="control"
+                               [height]="height"
+                               [width]="width"
+                               [rgbaColor]="rgbaColor">
+                </moqup-control>
+            </ng-template>
+            <ng-template #signatureBox>
+                <span [class]="'page-control__view__permission ' + (control.value | controlValueSigningPermission)">
+                    {{ control.value | controlValueSigningPermission }}
+                </span>
+                <ng-container *ngIf="isBase64(); else signatureSpane">
+                    <img [src]="getValueSrc(control.value.value)"
+                         [ngStyle]="styleControl"
+                         alt="signature" />
+                </ng-container>
+
+                <ng-template #signatureSpane>
+                    <span class="page-control__view__text">
+                        <span class="page-control__view__text_inner"
+                              [ngStyle]="{ 'font-size': control.font.sizeInPx + 'px' }">
+                            {{ control.value ? (control.value.value | controlValueSigningText) : '' }}
+                        </span>
+                    </span>
+                </ng-template>
+                <span class="page-control__view__update-date">
+                    {{ control.value ? (control.value.updateValueDate | momentFormat:'L') : '' }}
+                </span>
+            </ng-template>
         </div>
     </ng-template>
 
-    <ng-template #initialsControl>
-        <div [ngStyle]="styleControl">
-            <initials-control></initials-control>
-        </div>
-    </ng-template>
+    <ng-template #defaultSpanTemplate>
+        <ng-container *ngIf="control.isProtected; else defoultContolView">
+            <input type="password"
+                   readonly
+                   [hideShowPass]="control.isProtected && !publicMode"
+                   name="protectedControl"
+                   class="form-control page-control__view__readonly"
+                   [value]="getControlValue(control.value)" />
+            <!-- {{ getControlValue(control.value) }} -->
+        </ng-container>
 
-    <ng-template #signatureControl>
-        <div [ngStyle]="styleControl">
-            <signature-control></signature-control>
-        </div>
+        <ng-template #defoultContolView>
+            <span class="page-control__view__text">
+                <ng-container *ngIf="control.type === controlType.DateTime; else otherControls">
+                    {{ control.value ? (control.value.value | momentFormat:'L') : '' }}
+                </ng-container>
+                <ng-template #otherControls>
+                    <ng-container *ngIf="control.type === controlType.SignerName; else defaultControl">
+                        {{ control.type | formControlParticipantName:participants:control.participantId }}
+                    </ng-container>
+                    <ng-template #defaultControl>
+                        <ng-container *ngIf="control.type !== controlType.TextArea; else textAreaControl">
+                            <span [innerHTML]="control.value | controlValueText"></span>
+                        </ng-container>
+                        <ng-template #textAreaControl>
+                            <span [innerHTML]="control.value | controlValueText"
+                                  style="white-space: pre-line"
+                                  [ngStyle]="styleControl"></span>
+                        </ng-template>
+                    </ng-template>
+                </ng-template>
+            </span>
+        </ng-template>
     </ng-template>
-
-    <ng-template #textAreaControl>
-        <div [ngStyle]="styleControl">
-            <text-area-control [control]="control"
-                               [pageId]="pageId"
-                               [documentId]="documentId">
-            </text-area-control>
-        </div>
-    </ng-template>
-
-    <ng-template #textFieldControl>
-        <div [ngStyle]="styleControl">
-            <text-field-control [pageId]="pageId"
-                                [control]="control"
-                                [documentId]="documentId">
-            </text-field-control>
-        </div>
-    </ng-template>
-    <!-- End Populate Controls -->
-</ng-template>
-<!-- End Populate -->
-
-<!-- Statr View -->
-<ng-template #modeView>
-    <div [style.transform]="'translate3d('+ (control.position.left-1) + 'px,' + (control.position.top-3) + 'px,' + '0px)'"
-         class="page-control">
-        <span [class]="'page-control__view__text ' + (control.type | formControlClass)"
-              [ngStyle]="styleControl">
-            {{ control.value ? control.value.value: '' }}
-        </span>
-        <!-- <span>{{ control.value.date | momentFormat:'L' }}</span> -->
-    </div>
-</ng-template>
-<!-- End View -->
+    <!-- End View -->
+</div>

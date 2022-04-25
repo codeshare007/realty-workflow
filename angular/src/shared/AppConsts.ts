@@ -9,6 +9,10 @@ export class AppConsts {
     static appBaseUrlFormat: string;
     static recaptchaSiteKey: string;
     static subscriptionExpireNootifyDayCount: number;
+    static readonly emailRegExp = '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$';
+
+    static widthPageDragDrop: 1240;
+    static heightPageDragDrop: 1754;
 
     static localeMappings: any = [];
 

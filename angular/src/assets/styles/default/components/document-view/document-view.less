@@ -1,6 +1,5 @@
 .document {
     &-view {
-        user-select: none;
 
         &__wrapper {
             padding: 24px 0;
@@ -8,8 +7,6 @@
             background-color: @main-white-second;
             overflow-y: auto;
         }
-
-        @import './signature-control-modal.less';
     }
 
     &-page {
@@ -17,19 +14,17 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            user-select: none;
             position: relative;
         }
 
         &__url {
             position: relative;
             margin-bottom: 24px;
-            height: 297mm;
-            width: 210mm;
-            background-size: 210mm 297mm;
+            height: @heightPageDragDrop;
+            width: @widthPageDragDrop;
+            background-size: @widthPageDragDrop @heightPageDragDrop;
             border: 2px solid @main-border;
-            user-select: none;
-            overflow: hidden;
+            overflow: visible;
 
             &__count {
                 position: absolute;
@@ -54,6 +49,86 @@
                     right: -16px;
                 }
             }
+
+            &.mouse-over-element {
+                position: absolute;
+                background-color: transparent;
+                height: @heightPageDragDrop;
+                width: @widthPageDragDrop;
+                overflow: hidden;
+
+                .control-apex-dot {
+                    position: absolute;
+                    height: 5px;
+                    width: 5px;
+                    z-index: 3;
+
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        height: 5px;
+                        width: 5px;
+                        background-color: crimson;
+                        border-radius: 50%;
+                        z-index: 3;
+                    }
+                }
+
+                &.higher-level {
+                    z-index: 3;
+                }
+
+                .test-div {
+                    position: absolute;
+                    height: 5px;
+                    width: 5px;
+                    background-color: crimson;
+                    z-index: 5;
+                    // opacity: .5;
+                    // z-index: 1;
+                }
+
+                .control-line {
+                    .line-style {
+                        position: absolute;
+                        background-color: @main-border-second;
+                        transform: scale(2);
+                        transform-origin: 0 0;
+
+                        &.show-line {
+                            z-index: 3;
+                        }
+                    }
+
+                    &__vertical {
+                        .line-style();
+                        top: 0;
+                        height: 100%;
+                        width: 1px;
+
+                        &.gree-line {
+                            width: 1px;
+
+                            background-color: aquamarine;
+                        }
+                    }
+
+                    &__horizontal {
+                        .line-style();
+                        left: 0;
+                        height: 1px;
+                        width: 100%;
+
+                        &.gree-line {
+                            height: 1px;
+
+                            background-color: aquamarine;
+                        }
+                    }
+                }
+            }
         }
     }
 }
+
+@import './signature-control-modal.less';

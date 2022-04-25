@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using Abp.IdentityServer4;
 using Abp.Zero.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,6 @@ using Realty.Authorization.Roles;
 using Realty.Authorization.Users;
 using Realty.Chat;
 using Realty.Communications;
-using Realty.Contacts;
 using Realty.Controls;
 using Realty.Editions;
 using Realty.EntityConfigurations;
@@ -23,6 +23,7 @@ using Realty.MultiTenancy.Accounting;
 using Realty.MultiTenancy.Payments;
 using Realty.Reflection;
 using Realty.Signings;
+using Realty.Signings.AccessRequests;
 using Realty.Storage;
 using Realty.Transactions;
 
@@ -49,7 +50,7 @@ namespace Realty.EntityFrameworkCore
         public virtual DbSet<SubscriptionPaymentExtensionData> SubscriptionPaymentExtensionDatas { get; set; }
 
         public virtual DbSet<UserDelegation> UserDelegations { get; set; }
-        
+
         public virtual DbSet<CommunicationMessage> CommunicationMessages { get; set; }
         public virtual DbSet<UsersFilters> UsersFilters { get; set; }
         public virtual DbSet<FiltersFeaturesSelected> FiltersFeaturesSelected { get; set; }
@@ -60,14 +61,13 @@ namespace Realty.EntityFrameworkCore
         public virtual DbSet<ParkingFilterSelected> ParkingFilterSelected { get; set; }
         public virtual DbSet<Lead> Leads { get; set; }
         public virtual DbSet<Listing> Listings { get; set; }
-        public virtual DbSet<RecommendedListing> RecommendedListings { get; set; }
-        public virtual DbSet<Contact> Contacts { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<Library> Libraries { get; set; }
         public virtual DbSet<Signing> Signings { get; set; }
-        public virtual DbSet<TransactionContact> TransactionContacts { get; set; }
         public virtual DbSet<File> Files { get; set; }
         public virtual DbSet<Control> Controls { get; set; }
+        public virtual DbSet<SigningRequest> SigningRequests { get; set; }
+        public virtual DbSet<ViewRequest> ViewRequests { get; set; }
 
         public RealtyDbContext(DbContextOptions<RealtyDbContext> options)
             : base(options)

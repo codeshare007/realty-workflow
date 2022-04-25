@@ -1,0 +1,29 @@
+.signing-settings {
+    &__expiration-date {
+
+        &__group {
+            position: relative;
+
+            .form-control {
+                padding-right: 24px;
+                width: 226px;
+            }
+
+            &_close {
+                cursor: pointer;
+                position: absolute;
+                top: 50%;
+                right: 10px;
+                color: @main-black-third;
+                opacity: 0.8;
+                transform: translate(0, -50%);
+                transition: opacity 150ms ease-in;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+
+    }
+}

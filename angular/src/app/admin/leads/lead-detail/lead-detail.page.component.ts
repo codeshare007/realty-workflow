@@ -1,17 +1,16 @@
-import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BreadcrumbItem } from '@app/shared/common/sub-header/sub-header.component';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { AddressDto, ContactDto, ContactType, CreateRecommendedListingInput, LeadEditDto, LeadServiceProxy, LeadSource, LeadStatus, RecommendedListingServiceProxy } from '@shared/service-proxies/service-proxies';
+import { AddressDto, ContactDto, CreateRecommendedListingInput, LeadEditDto, LeadServiceProxy, LeadSource, LeadStatus, RecommendedListingServiceProxy } from '@shared/service-proxies/service-proxies';
 import { Paginator, Table } from 'primeng';
 import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
+import { LeadListingDetailService } from '../components/lead-listing-detail/services/lead-listing-detail.service';
 import { RecommendedListingsComponent } from '../recommended-listings/recommended-listings.component';
 
 @Component({
     templateUrl: './lead-detail.page.component.html',
-    styleUrls: ['./lead-detail.page.component.less'],
-    encapsulation: ViewEncapsulation.None,
     animations: [accountModuleAnimation()]
 })
 export class LeadDetailComponent extends AppComponentBase implements OnInit {
@@ -26,7 +25,6 @@ export class LeadDetailComponent extends AppComponentBase implements OnInit {
         recommendedListingsOpened: true,
         communicationOpened: false,
     };
-
     breadcrumbs;
 
     @ViewChild('recommendedListings', { static: true }) recommendedListings: RecommendedListingsComponent;
@@ -35,10 +33,15 @@ export class LeadDetailComponent extends AppComponentBase implements OnInit {
 
     lead: LeadEditDto = new LeadEditDto();
 
+    get isShowDetail(): boolean {
+        return this._leadListingDetailService.showDetail;
+    }
+
     constructor(
         injector: Injector,
         private _activatedRoute: ActivatedRoute,
         private _leadService: LeadServiceProxy,
+        private _leadListingDetailService: LeadListingDetailService,
         private _recommendedListingService: RecommendedListingServiceProxy,
     ) {
         super(injector);
@@ -52,10 +55,25 @@ export class LeadDetailComponent extends AppComponentBase implements OnInit {
             takeUntil(this.onDestroy$)
         ).subscribe((lead: LeadEditDto) => {
             this.lead = lead;
+            
+            if (this.lead.cities && this.lead.cities.length) {
+                this.lead.cities = this.lead.cities.filter(c => c !== 'System.String[]');
+            } 
+            
+            if (this.lead.pets && this.lead.pets.length) {
+                this.lead.pets = this.lead.pets.filter(c => c !== 'System.String[]');
+            } 
 
-            this.breadcrumbs = [
-                new BreadcrumbItem(this.lead.externalId),
-            ];
+            if (lead.contact) {
+                this.breadcrumbs = [
+                    new BreadcrumbItem(lead.contact.firstName
+                        + (lead.contact.middleName && lead.contact.middleName.length
+                            ? (' ' + lead.contact.middleName)
+                            : '') 
+                        + ' ' 
+                        + lead.contact.lastName),
+                ];
+            }
         });
 
         this._activatedRoute.data.pipe(
@@ -67,38 +85,36 @@ export class LeadDetailComponent extends AppComponentBase implements OnInit {
                 this.lead = new LeadEditDto();
                 this.lead.status = LeadStatus.New;
                 this.lead.source = LeadSource.Manual;
-                this.lead.contact = new ContactDto({
-                    type: ContactType.General,
-                    firstName: '',
-                    middleName: '',
-                    lastName: '',
-                    email: '',
-                    phone: '',
-                    legalName: '',
-                    preferredSignature: '',
-                    preferredInitials: '',
-                    firm: '',
-                    suffix: '',
-                    company: '',
-                    lastModificationTime: undefined,
-                    id: undefined,
-                    address: new AddressDto({
-                        streetNumber: '',
-                        streetName: '',
-                        unitNumber: '',
-                        city: '',
-                        state: '',
-                        zipCode: '',
-                        id: undefined
-                    })
-                });
+                this.lead.contact = new ContactDto();
+                this.lead.contact.address = new AddressDto();
+                this.lead.zip = '';
+                this.lead.streetName = '';
+                this.lead.streetNumber = '';
+                this.lead.pets = [];
+                this.lead.tags = [];
+                this.lead.cities = [];
+                this.lead.bedrooms = [];
+                this.lead.bathrooms = [];
+                this.lead.minRent = undefined;
+                this.lead.maxRent = undefined;
+                this.lead.moveFrom = undefined;
+                this.lead.moveTo = undefined;
+
                 this.isEditMode = true;
             }
         });
+
+        this._activatedRoute.data.pipe(
+            map(data => data.searchListings),
+            filter(searchListings => searchListings),
+            takeUntil(this.onDestroy$)
+        ).subscribe(searchListings => {
+            this.searchListingMode = searchListings;
+        });
     }
 
-    getStatusDescription(status: LeadStatus) {
-        switch(status) {
+    public getStatusDescription(status: LeadStatus): string {
+        switch (status) {
             case LeadStatus.New: return 'New';
             case LeadStatus.Active: return 'Active';
             case LeadStatus.Closed: return 'Closed';
@@ -106,16 +122,17 @@ export class LeadDetailComponent extends AppComponentBase implements OnInit {
         }
     }
 
-    onSaveListings() {
+    public onSaveListings(): void {
         let input = new CreateRecommendedListingInput();
         input.leadId = this.lead.id;
         input.yglListingIds = this.recommendListingIds;
 
-        this._recommendedListingService.create(input).subscribe(result => {
-            if (result) {
-                this.searchListingMode = false;
-                this.recommendedListings.getItems();
-            }
-        });
+        this._recommendedListingService.create(input)
+            .subscribe((result) => {
+                if (result) {
+                    this.searchListingMode = false;
+                    this.recommendedListings.getItems();
+                }
+            });
     }
 }

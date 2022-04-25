@@ -12,7 +12,7 @@ export class ThemesLayoutBaseComponent extends AppComponentBase {
     editionPaymentType: typeof EditionPaymentType = EditionPaymentType;
     installationMode = true;
 
-    defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/app-logo-on-' + this.currentTheme.baseSettings.menu.asideSkin + '.jpg';
+    defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/app-logo-on-' + this.currentTheme.baseSettings.menu.asideSkin + '.png';
 
     constructor(
         injector: Injector

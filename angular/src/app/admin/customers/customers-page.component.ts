@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, Injector, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ManageValuesModalComponent } from '@app/admin/dynamic-properties/dynamic-entity-properties/value/manage-values-modal.component';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppConsts } from '@shared/AppConsts';
@@ -56,6 +56,7 @@ export class CustomersPageComponent extends AppComponentBase implements OnInit, 
         private _fileDownloadService: FileDownloadService,
         private _activatedRoute: ActivatedRoute,
         private _httpClient: HttpClient,
+        private _router: Router,
         private _localStorageService: LocalStorageService
     ) {
         super(injector);
@@ -99,7 +100,7 @@ export class CustomersPageComponent extends AppComponentBase implements OnInit, 
         this._userServiceProxy.getUsers(
             this.filterText,
             this.permissionFilterTreeModal.getSelectedPermissions(),
-            this.role !== '' ? parseInt(this.role) : undefined,
+            this.role !== '' ? [parseInt(this.role)] : undefined,
             this.userRole,
             this.onlyLockedUsers,
             this.primengTableHelper.getSorting(this.dataTable),
@@ -111,6 +112,12 @@ export class CustomersPageComponent extends AppComponentBase implements OnInit, 
             this.setUsersProfilePictureUrl(this.primengTableHelper.records);
             this.primengTableHelper.hideLoadingIndicator();
         });
+    }
+
+    public clickEditAction(record: UserListDto): void {
+        if (this.userPermissions.isGrantedEdit) {
+            this._router.navigate(['/app/admin/customer/' + record.publicId + '/tab/edit-tab']);
+        }
     }
 
     unlockUser(record): void {
@@ -141,18 +148,18 @@ export class CustomersPageComponent extends AppComponentBase implements OnInit, 
         this.paginator.changePage(this.paginator.getPage());
     }
 
-    exportToExcel(): void {
-        this._userServiceProxy.getUsersToExcel(
-            this.filterText,
-            this.permissionFilterTreeModal.getSelectedPermissions(),
-            this.role !== '' ? parseInt(this.role) : undefined,
-            this.userRole,
-            this.onlyLockedUsers,
-            this.primengTableHelper.getSorting(this.dataTable))
-            .subscribe(result => {
-                this._fileDownloadService.downloadTempFile(result);
-            });
-    }
+    // exportToExcel(): void {
+    //     this._userServiceProxy.getUsersToExcel(
+    //         this.filterText,
+    //         this.permissionFilterTreeModal.getSelectedPermissions(),
+    //         this.role !== '' ? [parseInt(this.role)] : undefined,
+    //         this.userRole,
+    //         this.onlyLockedUsers,
+    //         this.primengTableHelper.getSorting(this.dataTable))
+    //         .subscribe(result => {
+    //             this._fileDownloadService.downloadTempFile(result);
+    //         });
+    // }
 
     createUser(): void {
         this.createOrEditUserModal.show(this.userRole, this.userRoleNamePlural);

@@ -4,7 +4,15 @@ import { isNumber } from 'lodash';
 
 export class DocumentViewService {
 
+    private _signingModalOn = false;
     formSetting: SwitchSetting = new SwitchSetting();
+
+    get signingModalOn(): boolean {
+        return this._signingModalOn;
+    }
+    set signingModalOn(value: boolean) {
+        this._signingModalOn = value;
+    }
 
     public getMode(layer: ControlLayer): ViewMode {
         if (!isNumber(layer)) { return; }

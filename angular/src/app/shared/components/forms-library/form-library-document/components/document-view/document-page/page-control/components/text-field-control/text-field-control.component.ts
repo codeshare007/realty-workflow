@@ -1,32 +1,44 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, Injector, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Injector, Input, OnInit, ViewChild } from '@angular/core';
+import { ControlValueInput, TypeIndex } from '@app/shared/components/forms-library/models/table-documents.model';
+import { FormUrlService } from '@app/shared/components/forms-library/services/http/form-url.service';
+import { HttpService } from '@app/shared/components/forms-library/services/http/http.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { ControlEditDto, ControlValueDto, ControlValueInput, LibraryFormServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ControlEditDto, ControlValueDto } from '@shared/service-proxies/service-proxies';
 import { get } from 'lodash';
 import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { debounceTime, delay, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
+import { SigningService } from 'signing/services/signing.service';
+import { ControlDetailsService } from '../../../../../form-controls/services/control-details.service';
 
 @Component({
     selector: 'text-field-control',
     templateUrl: './text-field-control.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TextFieldControlComponent extends AppComponentBase implements OnInit, AfterViewInit {
+export class TextFieldControlComponent extends AppComponentBase implements OnInit {
 
     @HostBinding('class.text-field-control') class = true;
 
+    @ViewChild('textField') textFieldRef: ElementRef;
+
     @Input() control: ControlEditDto;
     @Input() index: number;
-    @Input() documentId: string;
+    @Input() tabIndex: number;
     @Input() pageId: string;
+    @Input() documentId: string;
+    @Input() participantId: string;
+    @Input() publicMode = false;
 
     textChanged$: Subject<string> = new Subject<string>();
-
     text: string;
 
     constructor(
         injector: Injector,
-        private _cdk: ChangeDetectorRef,
-        private _libraryFormService: LibraryFormServiceProxy,
+        private _cdr: ChangeDetectorRef,
+        private _signingService: SigningService,
+        private _controlDetailsService: ControlDetailsService,
+        private _httpService: HttpService,
+        private _formUrlService: FormUrlService,
     ) {
         super(injector);
     }
@@ -35,30 +47,11 @@ export class TextFieldControlComponent extends AppComponentBase implements OnIni
         if (get(this.control, 'value')) {
             this.text = this.control.value.value;
         }
-
-        this.textChanged$
-            .pipe(
-                debounceTime(1000),
-                distinctUntilChanged(),
-                takeUntil(this.onDestroy$)
-            ).subscribe(() => {
-                const input: ControlValueInput = new ControlValueInput();
-                input.controlId = this.control.id;
-                input.pageId = this.pageId;
-                input.documentId = this.documentId;
-                input.value = this.text;
-                this._libraryFormService.updateControlValue(input)
-                    .subscribe(() => {
-                        this.notify.success(this.l('SuccessfullySaved'));
-                        this._cdk.markForCheck();
-                    });
-            });
-
+        this._textChanged();
+        if (this.publicMode) {
+            this._setFocusControl();
+        }
     }
-
-    ngAfterViewInit() {
-    }
-
 
     public onTextFieldChange(event: string): void {
         if (get(this.control, 'value')) {
@@ -68,5 +61,54 @@ export class TextFieldControlComponent extends AppComponentBase implements OnIni
             this.control.value.value = '';
         }
         this.textChanged$.next(event);
+    }
+
+    private _setFocusControl(): void {
+        this._signingService.getTabChange$()
+            .pipe(
+                delay(300),
+                takeUntil(this.onDestroy$)
+            ).subscribe((type: TypeIndex) => {
+                if (this.tabIndex === this._signingService.focusStartedControl) {
+                    this.textFieldRef.nativeElement.focus();
+                    this.textFieldRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                    this._controlDetailsService.selectControlDetails(this.control);
+                    this._cdr.markForCheck();
+                } else {
+                    this.textFieldRef.nativeElement.blur();
+                }
+            });
+    }
+
+    private _setFilledProgress(): void {
+        this._signingService.setFilledProgress(this.control, this.participantId);
+    }
+
+    private _textChanged(): void {
+        this.textChanged$
+            .pipe(
+                debounceTime(1500),
+                distinctUntilChanged(),
+                takeUntil(this.onDestroy$)
+            ).subscribe(() => {
+                const input: ControlValueInput = this._formUrlService.getControlInput();
+                input.controlId = this.control.id;
+                input.pageId = this.pageId;
+                input.formId = this.documentId;
+                input.value = this.text;
+
+                this._httpService.post(this._formUrlService.controlUrl, input)
+                    .pipe(
+                        delay(0),
+                        finalize(() => {
+                            this.control.value.value = this.text;
+                            this._setFilledProgress();
+                        })
+                    )
+                    .subscribe(() => {
+                        this.notify.success(this.l('SuccessfullySaved'));
+                        this._cdr.markForCheck();
+                    });
+            });
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Abp;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
@@ -9,7 +10,7 @@ using Realty.Storage;
 
 namespace Realty.Pages
 {
-    public class Page: FullAuditedEntity<Guid>, IMustHaveTenant
+    public class Page: FullAuditedEntity<Guid>, IMustHaveTenant, IHaveFile
     {
         private List<Control> _controls = new List<Control>();
 
@@ -31,6 +32,33 @@ namespace Realty.Pages
         public int TenantId { get; set; }
 
         public virtual IReadOnlyCollection<Control> Controls => _controls.AsReadOnly();
+
+        public Page Clone(bool forNextSigning = false) 
+        {
+            var file = new File(new UploadFileResult()
+            {
+                ContentType = this.File.ContentType,
+                Name = this.File.Name,
+                Path = this.File.Path,
+                Id = this.File.ExternalId,
+            });
+            var clonedPage = new Page(Number, file);
+
+            if (!forNextSigning)
+            {
+                Controls.ToList();
+                foreach (var control in this._controls)
+                {
+                    clonedPage.AddControl(control.Clone());
+                }
+            }
+
+            return clonedPage;
+        }
+        public void UpdateFile(Storage.File file)
+        {
+            this.File = file;
+        }
 
         public void RemoveControl(Control control)
         {

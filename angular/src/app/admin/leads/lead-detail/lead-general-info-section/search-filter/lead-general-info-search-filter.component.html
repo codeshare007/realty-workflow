@@ -1,0 +1,184 @@
+<div class="row mx-1 border-bottom-1">
+
+    <div class="col-12 p-0">
+        <div class="row">
+            <div class="col-2">
+                <div class="form-group">
+                    <label>
+                        Street Number
+                        <input type="text"
+                               class="form-control"
+                               name="streetNumberFilter"
+                               [disabled]="disabled"
+                               [(ngModel)]="lead.streetNumber"
+                               (ngModelChange)="searchSubject.next(true)" />
+                    </label>
+                </div>
+            </div>
+            
+            <div class="col-2">
+                <div class="form-group">
+                    <label>
+                        Street Name
+                        <input type="text"
+                               class="form-control"
+                               name="streetNameFilter"
+                               [disabled]="disabled"
+                               [(ngModel)]="lead.streetName"
+                               (ngModelChange)="searchSubject.next(true)" />
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-2">
+                <div class="row">
+                    <div class="lead-general-info-search-filter__label">
+                        Cities
+                    </div>
+                    <button class="lead-general-info-search-filter__action form-control"
+                            type="button"
+                            [disabled]="disabled"
+                            (click)="showCitiesModal()">
+                        <span class="lead-general-info-search-filter__action--placeholder"
+                              *ngIf="lead && !(lead.cities && lead.cities.length > 0)">
+                            Cities...
+                        </span>
+                        <ol *ngIf="lead && lead.cities && lead.cities.length"
+                            class="lead-general-info-search-filter__action__list">
+                            <li class="lead-general-info-search-filter__action__list__item"
+                                *ngFor="let item of lead.cities">
+                                <div class="lead-general-info-search-filter__action__list__item--elem">
+                                    <span>
+                                        {{ item }}
+                                    </span>
+                                </div>
+                            </li>
+                        </ol>
+                        <span class="ui-multi-select__action__arrow"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-2">
+                <ui-multi-select [title]="'Bedrooms'"
+                                 [uiList]="leadGeneral.bedroomList"
+                                 [model]="lead.bedrooms"
+                                 [disabled]="disabled"
+                                 (selected)="onSelectedBedrooms($event)">
+                </ui-multi-select>
+            </div>
+
+            <div class="col-2">
+                <div class="form-group">
+                    <label>
+                        Minimal Rent
+                        <input type="number"
+                               class="form-control"
+                               name="minimalrent"
+                               [disabled]="disabled"
+                               [(ngModel)]="lead.minRent"
+                               (ngModelChange)="searchSubject.next(true)" />
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-2">
+                <div class="form-group">
+                    <label>
+                        Maximal Rent
+                        <input type="number"
+                               class="form-control"
+                               name="MaximalRent"
+                               [disabled]="disabled"
+                               [(ngModel)]="lead.maxRent"
+                               (ngModelChange)="searchSubject.next(true)" />
+
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 p-0">
+        <div class="row">
+            <div class="col-2">
+                <div class="form-group">
+                    <label>
+                        Zip
+                        <input type="text"
+                               class="form-control"
+                               name="zip"
+                               [disabled]="disabled"
+                               [(ngModel)]="lead.zip"
+                               (ngModelChange)="searchSubject.next(true)" />
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-2">
+                <div class="row ml-0 mr-0">
+                    <div class="form-group">
+                        <label class="mb-0">{{ 'Pets' | localize }}:</label>
+                        <div class="checkbox-inline"
+                             *ngFor="let petsFilter of petsFilters">
+                            <label class="checkbox">
+                                <input type="checkbox"
+                                       [disabled]="disabled"
+                                       [name]="'petsFilter' + petsFilter.value"
+                                       [(ngModel)]="petsFilter.checked"
+                                       (ngModelChange)="updatePats()">
+                                <span></span>
+                                {{ petsFilter.label }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-2">
+                <ui-multi-select [title]="'Bathrooms'"
+                                 [uiList]="leadGeneral.bathroomList"
+                                 [model]="lead.bathrooms"
+                                 [disabled]="disabled"
+                                 (selected)="onSelectedBathrooms($event)">
+                </ui-multi-select>
+            </div>
+
+            <div class="col-2">
+                <div class="form-group">
+                    <label>
+                        Available From
+                        <input type="text"
+                               bsDatepicker
+                               class="form-control"
+                               name="AvailableFrom"
+                               [disabled]="disabled"
+                               [(ngModel)]="lead.moveFrom"
+                               (ngModelChange)="searchSubject.next(true)" />
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-2">
+                <div class="form-group">
+                    <label>
+                        Available To
+                        <input type="text"
+                               bsDatepicker
+                               class="form-control"
+                               name="AvailableTo"
+                               [disabled]="disabled"
+                               [(ngModel)]="lead.moveTo"
+                               (ngModelChange)="searchSubject.next(true)" />
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<lead-general-info-cities-modal #leadGeneralInfoCitiesRef
+                                [citiesList]="citiesList"
+                                (modalSave)="onSetCities($event)">
+</lead-general-info-cities-modal>

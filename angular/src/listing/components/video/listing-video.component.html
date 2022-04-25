@@ -1,0 +1,30 @@
+<div class="listing-video">
+    <p-carousel [value]="items"
+                [circular]="false"
+                [numVisible]="1"
+                [numScroll]="1">
+        <ng-template let-item
+                     pTemplate="item">
+            <div class="listing-video__wrapper"
+                 *ngIf="item.name">
+                <ng-container *ngIf="isVideo(item.name); else imageRef">
+                    <iframe width="100%"
+                            height="100%"
+                            title="Youtube Virtual Tour"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen=""
+                            [src]="item.url | listingUrlSafe"></iframe>
+                </ng-container>
+
+                <ng-template #imageRef>
+                    <div class="listing-video__wrapper__item">
+                        <img class="listing-video__image"
+                            src="{{ item.url }}"
+                            alt="listing video image">
+                    </div>
+                </ng-template>
+            </div>
+        </ng-template>
+    </p-carousel>
+</div>

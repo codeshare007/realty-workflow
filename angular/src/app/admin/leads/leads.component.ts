@@ -1,22 +1,25 @@
-import { Component, Injector, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, HostBinding, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UiTableActionItem } from '@app/shared/layout/components/ui-table-action/models/ui-table-action.model';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { GetUsersInput, LeadServiceProxy, LeadStatus, PagedResultDtoOfLeadListDto, UserSearchDto, UserServiceProxy } from '@shared/service-proxies/service-proxies';
+import { GetUsersInput, LeadListDto, LeadServiceProxy, LeadStatus, PagedResultDtoOfLeadListDto, UserSearchDto, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 import { LazyLoadEvent, Paginator, Table } from 'primeng';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { LeadToTransactionModalComponent } from './recommended-listings/modals/lead-to-transaction-modal/lead-to-transaction-modal.component';
 
 @Component({
     templateUrl: './leads.component.html',
-    styleUrls: ['./leads.component.less'],
-    encapsulation: ViewEncapsulation.None,
     animations: [accountModuleAnimation()]
 })
 export class LeadsComponent extends AppComponentBase implements OnInit, OnDestroy {
+
+    @HostBinding('class.leads') class = true;
+
     @ViewChild('dataTable', { static: true }) dataTable: Table;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
+    @ViewChild('leadToTransactionModalRef') leadToTransactionModal: LeadToTransactionModalComponent;
 
     public filterTextSubject: Subject<string> = new Subject<string>();
     active = false;
@@ -24,7 +27,7 @@ export class LeadsComponent extends AppComponentBase implements OnInit, OnDestro
 
     filter = {
         filterText: '',
-        agent: new UserSearchDto(),
+        agentId: undefined,
         customer: new UserSearchDto(),
     };
     filteredAgents: UserSearchDto[];
@@ -32,8 +35,6 @@ export class LeadsComponent extends AppComponentBase implements OnInit, OnDestro
 
 
     actionsList: UiTableActionItem[] = [
-        new UiTableActionItem(this.l('Edit')),
-        new UiTableActionItem(this.l('CreateCustomer')),
         new UiTableActionItem(this.l('CreateTransaction')),
         new UiTableActionItem(this.l('Delete')),
     ];
@@ -45,6 +46,7 @@ export class LeadsComponent extends AppComponentBase implements OnInit, OnDestro
         private _router: Router,
     ) {
         super(injector);
+        this.filter.agentId = this.appSession.user.publicId;
     }
 
     ngOnInit(): void {
@@ -67,14 +69,14 @@ export class LeadsComponent extends AppComponentBase implements OnInit, OnDestro
 
         this._leadServiceProxy.getLeads(
             this.filter.filterText,
-            this.filter.agent?.publicId,
+            this.filter.agentId,
             this.filter.customer?.publicId,
             this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
             this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(res => {
-            this.primengTableHelper.records = res.items;
-            this.primengTableHelper.totalRecordsCount = res.totalCount;
-        });
+                this.primengTableHelper.records = res.items;
+                this.primengTableHelper.totalRecordsCount = res.totalCount;
+            });
     }
 
     filterAgents(event): void {
@@ -105,25 +107,34 @@ export class LeadsComponent extends AppComponentBase implements OnInit, OnDestro
         return this.actionsList;
     }
 
+    public clickEditAction(record: LeadListDto): void {
+        this._router.navigate(['app/admin/lead', record.id]);
+    }
+
     public selectOption(element: { item: UiTableActionItem, id: string }): void {
         switch (element.item.name) {
-            case this.l('Edit'):
-                this._router.navigate(['app/admin/lead', element.id]);
-                break;
-            // case this.l('CreateCustomer'):
-            //     this._leadServiceProxy.createLead
-            //     console.log('Delete: ');
-            //     break;
             case this.l('CreateTransaction'):
-                this._leadServiceProxy.createTransaction(element.id, undefined).subscribe(transactionId => {
-                    this._router.navigate(['app/admin/transactions', transactionId]);
-                });
+                this.leadToTransactionModal.show('', element.id, undefined);
+                break;
+            case this.l('Delete'):
+                this.message.confirm(
+                    this.l('DeleteWarningMessage'),
+                    this.l('AreYouSure'),
+                    (isConfirmed) => {
+                        if (isConfirmed) {
+                            this._leadServiceProxy.delete(element.id).subscribe(transactionId => {
+                                this.getLeads();
+                                this.notify.success(this.l('SuccessfullyDeleted'));
+                            });
+                        }
+                    }
+                );
                 break;
         }
     }
 
     clearAgentFilter() {
-        this.filter.agent = undefined;
+        this.filter.agentId = undefined;
         this.getLeads();
     }
 
@@ -133,11 +144,11 @@ export class LeadsComponent extends AppComponentBase implements OnInit, OnDestro
     }
 
     getStatusDescription(status: LeadStatus) {
-        switch(status) {
-            case LeadStatus.New: return 'New'; break;
-            case LeadStatus.Active: return 'Active'; break;
-            case LeadStatus.Closed: return 'Closed'; break;
-            case LeadStatus.Disqualified: return 'Disqualified'; break;
+        switch (status) {
+            case LeadStatus.New: return 'New';
+            case LeadStatus.Active: return 'Active';
+            case LeadStatus.Closed: return 'Closed';
+            case LeadStatus.Disqualified: return 'Disqualified';
             default: return '';
         }
     }

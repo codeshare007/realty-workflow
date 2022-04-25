@@ -11,8 +11,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Realty.Core.Shared\Realty.Core.Shared.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TransactionContacts\Dto\" />
-    <Folder Include="SigningContacts\Dto\" />
-  </ItemGroup>
 </Project>

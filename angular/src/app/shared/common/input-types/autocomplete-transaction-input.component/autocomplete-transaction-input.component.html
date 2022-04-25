@@ -1,0 +1,26 @@
+<div class="autocomplete-transaction-container">
+    <label for="transactionInput" *ngIf="label">{{ label }}</label>
+    <span class="text-muted" *ngIf="!isEditMode && transaction">{{ transaction.name }}</span>
+
+    <div *ngIf="transaction && transaction.id && isEditMode">
+        <span class="autoComplete-selected d-flex align-items-center">{{transaction.name}}
+            <a class="btn p-0 pl-1" (click)="clear()">
+                <i class="fa fa-times"></i>
+            </a>
+        </span>
+    </div>
+
+    <p-autoComplete *ngIf="isEditMode && (!transaction || !transaction.id)"
+        [(ngModel)]="transaction"
+        (onSelect)="onSelect()"
+        id="transactionInput"
+        [suggestions]="filteredTransactions"
+        (completeMethod)="filterTransactions($event)"
+        field="name"
+        [placeholder]="'Transaction'"
+        [minLength]="2"
+        name="transactionInput"
+        inputStyleClass="form-control"
+        styleClass="width-percent-100 p-0">
+    </p-autoComplete>
+</div>

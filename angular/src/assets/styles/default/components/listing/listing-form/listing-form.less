@@ -1,0 +1,100 @@
+.listing-form {
+    margin: 0 auto;
+    padding: 40px 20px;
+    max-width: 400px;
+    width: 100%;
+    background-color: @main-white-second;
+    border: 1px solid @disabled-color;
+    box-shadow: 0 0 4px 0 @box-shadow;
+    border-radius: 4px;
+    box-sizing: border-box;
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-bottom: 1px solid @disabled-color;
+
+
+        &-image {
+            margin: 0 auto 25px;
+            width: 100px;
+            height: 100px;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-image: url('https://s3.amazonaws.com/ygl-agent-avatar/579.jpg');
+            border: 1px solid @disabled-color;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        &-description {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 14px;
+            line-height: 1;
+
+            span {
+                margin-bottom: 8px;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+
+    .listing-h4 {
+        h4 {
+            margin: 24px 0 16px;
+            font-size: 20px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+    }
+
+    button {
+        width: 100%;
+    }
+
+    &__request {
+        margin-bottom: 10px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid @disabled-color;
+
+        .listing-h4();
+
+        .form-group {
+            margin-bottom: 16px;
+
+            label {
+                margin-bottom: 0;
+                width: 100%;
+
+                span {
+                    display: inline-block;
+                    margin-bottom: 4px;
+                    font-weight: 400;
+                    font-size: 14px;
+                }
+
+                .form-control {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+
+    &__question {
+        .listing-h4();
+
+        .form-group {
+            .form-control {
+                background-color: transparent;
+            }
+        }
+    }
+}

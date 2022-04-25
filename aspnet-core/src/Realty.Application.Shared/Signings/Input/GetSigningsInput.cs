@@ -15,7 +15,7 @@ namespace Realty.Signings.Input
         {
             if (string.IsNullOrEmpty(Sorting))
             {
-                Sorting = "Name";
+                Sorting = "LastModificationTime DESC";
             }
 
             Filter = Filter?.Trim();

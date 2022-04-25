@@ -20,6 +20,7 @@ using Realty.EntityFrameworkCore;
 using Realty.Listings;
 using Realty.MultiTenancy;
 using Realty.Web.Startup.ExternalLoginInfoProviders;
+using Realty.Web.Workers;
 
 namespace Realty.Web.Startup
 {
@@ -65,7 +66,7 @@ namespace Realty.Web.Startup
                 workManager.Add(IocManager.Resolve<SubscriptionExpirationCheckWorker>());
                 workManager.Add(IocManager.Resolve<SubscriptionExpireEmailNotifierWorker>());
             }
-
+            
             if (Configuration.Auditing.IsEnabled && ExpiredAuditLogDeleterWorker.IsEnabled)
             {
                 workManager.Add(IocManager.Resolve<ExpiredAuditLogDeleterWorker>());
@@ -73,6 +74,7 @@ namespace Realty.Web.Startup
             
             workManager.Add(IocManager.Resolve<CommunicationImapBackgroundWorker>());
             workManager.Add(IocManager.Resolve<ListingYglSyncWorker>());
+            workManager.Add(IocManager.Resolve<SigningRequestReminderEmailDeliveryWorker>());
 
             ConfigureExternalAuthProviders();
         }

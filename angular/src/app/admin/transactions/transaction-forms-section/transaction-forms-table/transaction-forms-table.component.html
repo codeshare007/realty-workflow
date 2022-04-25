@@ -1,25 +1,75 @@
 <div>
     <div class="d-flex justify-content-end pb-3">
-        <button *ngIf="'Pages.Transactions.Create' | permission"
-                type="button"
-                (click)="openModal()"
-                class="btn btn-primary">
-            <i class="fa fa-plus"></i>
-            {{ 'Create_New_Form' | localize }}
-        </button>
+        <div>
+            <button class="btn btn-primary mr-3 save-button"
+                    *ngIf="selectedIds && selectedIds.length > 0"
+                    (click)="createSigning()"
+                    [buttonBusy]="updateFormListenerService.isLoading"
+                    [busyText]="'SavingWithThreeDot' | localize">
+                <i class="fa fa-plus"></i>
+                {{ 'CreateNewSigning' | localize }}
+            </button>
+
+            <div class="btn-group"
+                 dropdown
+                 #dropdown>
+                <button dropdownToggle
+                        type="button"
+                        class="btn btn-primary dropdown-toggle save-button"
+                        aria-controls="dropdown-basic"
+                        [buttonBusy]="updateFormListenerService.isLoading"
+                        [busyText]="'SavingWithThreeDot' | localize">
+                    <i class="fa fa-plus"></i>
+                    {{ 'Add_Form' | localize }}
+                    <span class="caret"></span>
+                </button>
+                <ul id="dropdown-basic"
+                    *dropdownMenu
+                    class="dropdown-menu"
+                    role="menu"
+                    aria-labelledby="button-basic">
+                    <li role="menuitem"><a class="dropdown-item"
+                           (click)="openModal();"
+                           href="javascript:void(0)">{{ 'Create_New_Form' | localize }}</a></li>
+                    <li role="menuitem"><a class="dropdown-item"
+                           (click)="formLibraryModal.show();"
+                           href="javascript:void(0)">{{ 'Add_Form_From_Library' | localize }}</a></li>
+                    <li role="menuitem"><a class="dropdown-item"
+                           (click)="anotherTransactionFormModal.show();"
+                           href="javascript:void(0)">{{ 'Add_Form_From_Another_Transaction' | localize }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 
-    <div>
+    <div class="row-action-click">
         <forms-table #formTable
-            [items]="items"
-            [totalCount]="totalCount"
-            (onGetAll)="getAll($event)"
-            (onEdit)="edit($event)"
-            (onDelete)="delete($event)"></forms-table>
+                     [items]="items"
+                     [totalCount]="totalCount"
+                     [(selectedIds)]="selectedIds"
+                     [options]="options"
+                     [doNotShowMulti]="true"
+                     (onGetAll)="getAll($event)"
+                     (onEdit)="edit($event)"
+                     (onDelete)="delete($event)"
+                     (onDownloadOriginalDocument)="onDownloadOriginalDocument($event)"
+                     [showDownloadOriginal]="true">
+        </forms-table>
     </div>
 </div>
 
 <upload-document-modal #uploadDocumentRef
-                        [transactionId]="transactionId"
+                       [transactionId]="transactionId"
                        (modalSave)="fileSaved($event)">
 </upload-document-modal>
+
+<select-form-library-modal #formLibraryModal
+                           [libraryId]="libraryId"
+                           (onSelect)="addFromLibrary($event)"
+                           (onSelectMany)="addFromLibraries($event)">
+</select-form-library-modal>
+
+<select-form-another-transaction-modal #anotherTransactionFormModal
+                                       (onSelect)="addTransactionForm($event.form.id, $event.transactionId)">
+</select-form-another-transaction-modal>

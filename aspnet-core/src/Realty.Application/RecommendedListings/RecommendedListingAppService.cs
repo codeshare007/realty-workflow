@@ -4,6 +4,7 @@ using Abp.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Realty.Leads;
 using System;
+using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
 using System.Linq.Dynamic.Core;
 using System.Linq;
@@ -14,67 +15,203 @@ using Realty.RecommendedListings.Dto;
 using Realty.RecommendedListings.Input;
 using Realty.Listings;
 using Realty.Transactions;
+using Abp.Timing;
+using Realty.TransactionPaymentTrackers;
 
 namespace Realty.RecommendedListings
 {
     [AbpAuthorize(AppPermissions.Pages_Leads)]
     public class RecommendedListingAppService : RealtyAppServiceBase, IRecommendedListingAppService
     {
-        private readonly IRepository<RecommendedListing, Guid> _recommendedListingRepository;
         private readonly IRepository<Lead, Guid> _leadRepository;
         private readonly IRepository<Listing, Guid> _listingRepository;
         private readonly IRepository<Transaction, Guid> _transactionRepository;
+        private readonly IRecommendedListingEmailService _recommendedListingEmailService;
 
         public RecommendedListingAppService(
-            IRepository<RecommendedListing, Guid> recommendedListingRepository,
             IRepository<Lead, Guid> leadRepository,
             IRepository<Listing, Guid> listingRepository, 
-            IRepository<Transaction, Guid> transactionRepository)
+            IRepository<Transaction, Guid> transactionRepository, 
+            IRecommendedListingEmailService recommendedListingEmailService)
         {
-            _recommendedListingRepository = recommendedListingRepository;
             _leadRepository = leadRepository;
             _listingRepository = listingRepository;
             _transactionRepository = transactionRepository;
+            _recommendedListingEmailService = recommendedListingEmailService;
         }
 
         public async Task<PagedResultDto<RecommendedListingListDto>> GetListAsync(GetRecommendedListingsInput input)
         {
-            var query = _recommendedListingRepository.GetAll()
-                .Include(c => c.Listing)
-                .Where(c => c.LeadId == input.LeadId);
+            var query = GetLeads()
+                .Include(l => l.RecommendedListings)
+                .ThenInclude(l => l.Listing)
+                .Where(l => l.Id == input.LeadId);
 
-            query = await AddCheckAccess(query);
+            var recommendedListingQuery = query
+                .SelectMany(l => l.RecommendedListings);
 
-            if (!PermissionChecker.IsGranted(AppPermissions.Pages_Leads_AccessAll)) {
-                var user = await GetCurrentUserAsync();
-                query = query.Where(c => c.Lead.AgentId == user.Id);
-            }
+            var recommendedListingCount = await recommendedListingQuery.CountAsync();
 
-            var listingCount = await query.CountAsync();
-
-            var listings = await query
+            var recommendedListings = await recommendedListingQuery
                 .OrderBy(input.Sorting)
                 .PageBy(input)
                 .ToListAsync();
 
-            var listingListDtos = ObjectMapper.Map<List<RecommendedListingListDto>>(listings);
+            var recommendedListingListDtos = ObjectMapper.Map<List<RecommendedListingListDto>>(recommendedListings);
             return new PagedResultDto<RecommendedListingListDto>(
-                listingCount,
-                listingListDtos
+                recommendedListingCount,
+                recommendedListingListDtos
                 );
         }
 
-        public async Task<Guid> CreateTransactionAsync(Guid Id)
+        [AbpAllowAnonymous]
+        public async Task<List<RecommendedPublicListingDto>> GetPublicRecommendationListAsync(GetPublicRecommendationListInput input)
         {
-            var query = _recommendedListingRepository.GetAll()
+            var lead = await _leadRepository.GetAll()
+                .Include(l => l.RecommendedListings)
+                .ThenInclude(l => l.Listing)
+                .ThenInclude(l => l.MoveInCosts)
+                .Include(l => l.RecommendedListings)
+                .ThenInclude(l => l.Listing)
+                .ThenInclude(l => l.ListingDetails)
+                .Where(l => l.Id == input.LeadId)
+                .FirstOrDefaultAsync();
+
+            return ObjectMapper.Map<List<RecommendedPublicListingDto>>(lead.RecommendedListings.OrderBy(r => r.DisplayOrder));
+        }
+
+        [AbpAllowAnonymous]
+        public async Task<RecommendedPublicListingDto> GetPublicRecommendationAsync(GetPublicRecommendationInput input)
+        {
+            var lead = await _leadRepository.GetAll()
+                .Include(l => l.Agent)
+                .Include(l => l.RecommendedListings)
+                .ThenInclude(l => l.Listing)
+                .ThenInclude(l => l.MoveInCosts)
+                .Include(l => l.RecommendedListings)
+                .ThenInclude(l => l.Listing)
+                .ThenInclude(l => l.ListingDetails)
+                .Where(l => l.RecommendedListings.Any(r => r.Id == input.Id))
+                .FirstOrDefaultAsync();
+
+            if (lead != null)
+            {
+                var recommendedListing = lead
+                    .RecommendedListings
+                    .Where(r => r.Id == input.Id)
+                    .FirstOrDefault();
+
+                recommendedListing.LastViewDate = Clock.Now;
+                await _leadRepository.UpdateAsync(lead);
+
+                return ObjectMapper.Map<RecommendedPublicListingDto>(recommendedListing);
+            }
+
+            return null;
+        }
+
+        [AbpAllowAnonymous]
+        public async Task RequestTourAsync(RequestTourInput input)
+        {
+            var lead = await _leadRepository.GetAll()
+                .Include(l => l.Agent)
+                .Include(l => l.LeadContacts)
+                .Include(l => l.RecommendedListings)
+                .ThenInclude(l => l.Listing)
+                .Where(l => l.RecommendedListings.Any(r => r.Id == input.Id))
+                .FirstOrDefaultAsync();
+
+            var recommendedListing = lead
+                .RecommendedListings
+                .Where(r => r.Id == input.Id)
+                .FirstOrDefault();
+
+            recommendedListing.SetRequestedTour(input.RequestedTourTime, input.RequestedTourDate);
+            await _leadRepository.UpdateAsync(lead);
+
+            await _recommendedListingEmailService.NotifyAgentAboutRecommendedListingAsync(lead, recommendedListing);
+        }
+
+        [AbpAllowAnonymous]
+        public async Task AskQuestionAsync(AskQuestionInput input)
+        {
+            var lead = await _leadRepository.GetAll()
+                .Include(l => l.RecommendedListings)
+                .ThenInclude(l => l.Listing)
+                .Where(l => l.RecommendedListings.Any(r => r.Id == input.Id))
+                .FirstOrDefaultAsync();
+
+            var recommendedListing = lead
+                .RecommendedListings
+                .Where(r => r.Id == input.Id)
+                .FirstOrDefault();
+
+            recommendedListing.SetLeadQuestion(input.Question);
+            await _leadRepository.UpdateAsync(lead);
+        }
+
+        public async Task<RecommendedListingDto> GetRecommendedListingAsync(GetRecommendedListingInput input)
+        {
+            var lead = await GetLeads()
+                .Include(l => l.RecommendedListings)
+                .ThenInclude(l => l.Listing)
+                .ThenInclude(l => l.MoveInCosts)
+                .Include(l => l.RecommendedListings)
+                .ThenInclude(l => l.Listing)
+                .ThenInclude(l => l.ListingDetails)
+                .Where(l => l.RecommendedListings.Any(r => r.Id == input.Id))
+                .FirstOrDefaultAsync();
+
+            var recommendedListing = lead
+                .RecommendedListings
+                .Where(r => r.Id == input.Id)
+                .FirstOrDefault();
+
+            return ObjectMapper.Map<RecommendedListingDto>(recommendedListing);
+        }
+
+        public async Task SendRecommendedListings(SendRecommendedListingsInput input)
+        {
+            var lead = await GetLeads()
+                .Include(l => l.Agent)
+                .Include(l => l.RecommendedListings)
+                .ThenInclude(l => l.Listing)
+                .ThenInclude(l => l.MoveInCosts)
+                .Include(l => l.RecommendedListings)
+                .ThenInclude(l => l.Listing)
+                .ThenInclude(l => l.ListingDetails)
+                .Where(l => l.Id == input.Id)
+                .FirstOrDefaultAsync();
+
+            await _leadRepository.UpdateAsync(lead);
+
+            var ccEmails = new List<string>();
+            if (input.CCEmailAddresses != null)
+            {
+                ccEmails.AddRange(input.CCEmailAddresses);
+            }
+
+            if (lead.Agent != null)
+            {
+                ccEmails.Add(lead.Agent.EmailAddress);
+            }
+
+            await _recommendedListingEmailService.SendRecommendedListingsAsync(lead, input.EmailAddress, ccEmails.ToArray(), input.Subject, input.Body);
+        }
+
+        public async Task<Guid> CreateTransactionAsync(string name, Guid id)
+        {
+            var leadQuery = GetLeads()
+                .Include(l => l.RecommendedListings)
+                .Where(l => l.RecommendedListings.Any(r => r.Id == id));
+            
+            var recommendation = await leadQuery
+                .SelectMany(l => l.RecommendedListings)
                 .Include(c => c.Listing)
                 .Include(c => c.Lead)
-                .ThenInclude(c => c.Contact)
-                .Where(c => c.Id == Id);
-
-            query = await AddCheckAccess(query);
-
-            var recommendation = await query.FirstOrDefaultAsync();
+                .ThenInclude(c => c.LeadContacts)
+                .Where(c => c.Id == id)
+                .FirstOrDefaultAsync();
 
             if (recommendation != null)
             {
@@ -86,13 +223,19 @@ namespace Realty.RecommendedListings
                     CustomerId = recommendation.Lead.CustomerId,
                     LeadId = recommendation.Lead.Id,
                     ListingId = recommendation.ListingId,
-                    Name = $"Transaction from lead {recommendation.Lead.ExternalSource}"
+                    Name = name ?? $"Transaction from lead",
+                    PaymentTracker = new TransactionPaymentTracker()
                 };
 
+                transaction.LastModificationTime = Clock.Now;
                 await _transactionRepository.InsertAndGetIdAsync(transaction);
                 await CurrentUnitOfWork.SaveChangesAsync();
 
-                transaction.AddContact(recommendation.Lead.Contact);
+                foreach (var contact in recommendation.Lead.LeadContacts)
+                {
+                    transaction.AddParticipant(ObjectMapper.Map<TransactionParticipant>(contact));
+                }
+
                 await _transactionRepository.InsertOrUpdateAndGetIdAsync(transaction);
                 await CurrentUnitOfWork.SaveChangesAsync();
 
@@ -105,46 +248,42 @@ namespace Realty.RecommendedListings
         public async Task<bool> CreateAsync(CreateRecommendedListingInput input)
         {
             var result = false;
-            var hasAccessToLead = PermissionChecker.IsGranted(AppPermissions.Pages_Leads_AccessAll);
 
-            if (!hasAccessToLead) 
-            {
-                var user = await GetCurrentUserAsync();
-                hasAccessToLead = await _leadRepository
-                    .GetAll()
-                    .AnyAsync(s => s.Id == input.LeadId && s.AgentId == user.Id);
-            }
+            var lead = await GetLeads()
+                        .Include(l => l.RecommendedListings)
+                        .Where(l => l.Id == input.LeadId)
+                        .FirstOrDefaultAsync();
 
-            if (hasAccessToLead) 
-            {
-                var displayOrder = _recommendedListingRepository.GetAll()
-                    .Where(r => r.LeadId == input.LeadId)
+            if (lead != null) 
+            { 
+                var displayOrder = lead.RecommendedListings
                     .OrderByDescending(r => r.DisplayOrder)
                     .Select(r => r.DisplayOrder)
                     .FirstOrDefault();
 
                 foreach (var yglListingId in input.YglListingIds) 
                 {
-                    if (!_recommendedListingRepository.GetAll().Any(r => r.LeadId == input.LeadId && r.Listing.YglID == yglListingId)) {
-                        var listingId = await _listingRepository
+                    var listingId = await _listingRepository
                             .GetAll()
                             .Where(l => l.YglID == yglListingId)
                             .Select(l => l.Id)
                             .FirstOrDefaultAsync();
 
-                        if (listingId != Guid.Empty) {
-                            var recommendedListing = new RecommendedListing()
-                            {
-                                ListingId = listingId,
-                                LeadId = input.LeadId,
-                                DisplayOrder = ++displayOrder
-                            };
+                    if (listingId != Guid.Empty && !lead.RecommendedListings.Any(r => r.ListingId == listingId)) {
+                        
+                        var recommendedListing = new RecommendedListing()
+                        {
+                            ListingId = listingId,
+                            LeadId = input.LeadId,
+                            DisplayOrder = ++displayOrder
+                        };
 
-                            await _recommendedListingRepository.InsertAsync(recommendedListing);
-                            await CurrentUnitOfWork.SaveChangesAsync();
-                        }
+                        lead.AddRecommendedListing(recommendedListing);
                     }
                 }
+
+                await _leadRepository.UpdateAsync(lead);
+                await CurrentUnitOfWork.SaveChangesAsync();
                 result = true;
             }
 
@@ -154,46 +293,53 @@ namespace Realty.RecommendedListings
         public async Task<bool> MoveAsync(MoveRecommendedListingInput input)
         {
             var result = false;
-            var dbEntity = await GetById(input.Id);
+            var lead = await GetLeads()
+                .Include(l => l.RecommendedListings)
+                .Where(l => l.RecommendedListings.Any(r => r.Id == input.Id))
+                .FirstOrDefaultAsync();
 
-            if (dbEntity != null)
+            if (lead != null)
             {
-                var recommendations = await _recommendedListingRepository
-                    .GetAll()
-                    .Where(s => s.LeadId == dbEntity.LeadId)
-                    .OrderBy(s => s.DisplayOrder)
-                    .ToListAsync();
 
-                for (var i = 0; i < recommendations.Count; i++)
+                var recommendation = lead.RecommendedListings
+                    .FirstOrDefault(r => r.Id == input.Id);
+
+                if (recommendation != null)
                 {
-                    var currentItem = recommendations[i];
-                    if (currentItem.Id == input.Id) 
+                    var orderedRecommendations = lead.RecommendedListings
+                            .OrderBy(s => s.DisplayOrder)
+                            .ToList();
+
+                    for (var i = 0; i < orderedRecommendations.Count; i++)
                     {
-                        RecommendedListing neighboringItem = null;
-
-                        if (i >= 0 && input.Direction == MoveDirection.Up)
+                        var currentItem = orderedRecommendations[i];
+                        if (currentItem.Id == input.Id)
                         {
-                            neighboringItem = recommendations[i - 1];
-                            
-                        }
-                        else if (i < recommendations.Count && input.Direction == MoveDirection.Down) 
-                        {
-                            neighboringItem = recommendations[i + 1];
-                        }
+                            RecommendedListing neighboringItem = null;
 
-                        if (neighboringItem != null) 
-                        {
-                            var currentDisplayOrder = currentItem.DisplayOrder;
-                            currentItem.DisplayOrder = neighboringItem.DisplayOrder;
-                            neighboringItem.DisplayOrder = currentDisplayOrder;
+                            if (i >= 0 && input.Direction == MoveDirection.Up)
+                            {
+                                neighboringItem = orderedRecommendations[i - 1];
 
-                            await _recommendedListingRepository.UpdateAsync(currentItem);
-                            await _recommendedListingRepository.UpdateAsync(neighboringItem);
-                            result = true;
+                            }
+                            else if (i < orderedRecommendations.Count && input.Direction == MoveDirection.Down)
+                            {
+                                neighboringItem = orderedRecommendations[i + 1];
+                            }
+
+                            if (neighboringItem != null)
+                            {
+                                var currentDisplayOrder = currentItem.DisplayOrder;
+                                currentItem.DisplayOrder = neighboringItem.DisplayOrder;
+                                neighboringItem.DisplayOrder = currentDisplayOrder;
+
+                                await _leadRepository.UpdateAsync(lead);
+                                result = true;
+                            }
+
+                            break;
                         }
-
-                        break;
-                    }    
+                    }
                 }
             }
 
@@ -204,35 +350,34 @@ namespace Realty.RecommendedListings
         {
             var result = false;
 
-            var item = await GetById(id);
-            if (item != null)
+            var lead = await GetLeads()
+                .Include(l => l.RecommendedListings)
+                .Where(l => l.RecommendedListings.Any(r => r.Id == id))
+                .FirstOrDefaultAsync();
+
+            if (lead != null)
             {
-                await _recommendedListingRepository.DeleteAsync(item);
-                result = true;
+                var recommendation = lead.RecommendedListings
+                    .FirstOrDefault(r => r.Id == id);
+
+                if (recommendation != null)
+                {
+                    lead.DeleteRecommendedListing(recommendation);
+                    await _leadRepository.UpdateAsync(lead);
+                    result = true;
+                }
             }
 
             return result;
         }
-
-        private async Task<RecommendedListing> GetById(Guid id) 
+        
+        private IQueryable<Lead> GetLeads()
         {
-            var query = _recommendedListingRepository.GetAll()
-                .Where(s => s.Id == id);
+            var user = GetCurrentUser();
 
-            query = await AddCheckAccess(query);
-
-            return query.FirstOrDefault();
-        }
-
-        private async Task<IQueryable<RecommendedListing>> AddCheckAccess(IQueryable<RecommendedListing> query) 
-        {
-            if (!PermissionChecker.IsGranted(AppPermissions.Pages_Leads_AccessAll)) 
-            {
-                var user = await GetCurrentUserAsync();
-                query = query.Where(s => s.Lead.AgentId == user.Id);
-            }
-
-            return query;
+            return _leadRepository.GetAll()
+                .WhereIf(!PermissionChecker.IsGranted(AppPermissions.Pages_Leads_AccessAll),
+                    l => l.AgentId == user.Id);
         }
     }
 }

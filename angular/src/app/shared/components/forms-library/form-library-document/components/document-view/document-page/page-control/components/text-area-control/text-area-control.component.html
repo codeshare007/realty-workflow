@@ -1,5 +1,10 @@
-<textarea type="text"
-          name="textArea"
-          class="form-control"
-          [(ngModel)]="text"
-          (ngModelChange)="onTextAreaChange($event)"></textarea>
+<!-- <label> -->
+    <textarea type="text"
+              #textField
+              [name]="'textArea'+ tabIndex"
+              [tabindex]="tabIndex"
+              [placeholder]="control.placeholder ? control.placeholder : ''"
+              class="form-control"
+              [(ngModel)]="text"
+              (ngModelChange)="onTextAreaChange($event)"></textarea>
+<!-- </label> -->

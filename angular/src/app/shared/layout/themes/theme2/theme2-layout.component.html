@@ -1,9 +1,9 @@
 <div id="kt_header_mobile" class="header-mobile ">
     <a routerLink="/" target="_blank">
-        <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" [src]="defaultLogo" alt="logo" height="28" />
+        <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" [src]="defaultLogo" alt="logo" height="50" />
         <img *ngIf="appSession.tenant && appSession.tenant.logoId"
             [src]="remoteServiceBaseUrl + '/TenantCustomization/GetTenantLogo?skin=' + currentTheme.baseSettings.menu.asideSkin + '&tenantId=' + appSession.tenant.id + '&id=' + appSession.tenant.logoId"
-            alt="logo" height="38" />
+            alt="logo" height="65" />
     </a>
     <div class="d-flex align-items-center">
         <button class="btn p-0 burger-icon burger-icon-left ml-4" id="kt_header_mobile_toggle">

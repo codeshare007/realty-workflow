@@ -12,7 +12,7 @@ import * as moment from 'moment';
 import { LazyLoadEvent, Paginator, Table } from 'primeng';
 import { Observable, Subject } from 'rxjs';
 import { filter, finalize, map, tap } from 'rxjs/operators';
-import { CheckListItem } from '../shared/general-combo.component';
+import { CheckListItem } from '../shared/general-combo-string.component';
 
 @Component({
     templateUrl: './manage-customers.component.html',
@@ -39,7 +39,7 @@ export class ManageCustomersComponent extends AppComponentBase implements OnInit
     setRandomPassword = true;
     passwordComplexityInfo = '';
     profilePicture: string;
-    listenings: ListingResposeDto
+    listenings: ListingResposeDto;
     advancedFiltersAreShown: boolean;
     input: GetListingInput = new GetListingInput();
     userPasswordRepeat = '';
@@ -218,7 +218,7 @@ export class ManageCustomersComponent extends AppComponentBase implements OnInit
         this._lintingService.getListing(this.input).subscribe(res => {
             this.primengTableHelper.records = res.listing;
             this.primengTableHelper.totalRecordsCount = res.totalCount;
-        })
+        });
     }
 
     fromNow(date: moment.Moment): string {

@@ -1,0 +1,48 @@
+.lead-listing-video {
+    position: relative;
+    margin-bottom: 10px;
+    height: auto;
+    border-bottom: 1px solid @disabled-color-second;
+
+    &__wrapper {
+        position: relative;
+        display: block;
+        margin: 0 auto;
+        padding-top: 75%;
+        width: 100%;
+        background-color: @main-black-second;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 100%;
+
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    }
+
+    .ui-carousel-content {
+        padding: 0;
+    }
+
+    .ui-carousel-container {
+        .ui-button {
+            position: absolute;
+            z-index: 1;
+
+            &.ui-carousel-prev {
+                left: 0;
+            }
+
+            &.ui-carousel-next {
+                right: 0;
+            }
+        }
+    }
+}
+
+lead-listing-video {
+    width: 100%;
+}

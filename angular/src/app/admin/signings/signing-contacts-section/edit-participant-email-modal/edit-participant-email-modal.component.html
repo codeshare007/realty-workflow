@@ -1,0 +1,65 @@
+<div appBsModal
+     #updateModalRef="bs-modal"
+     (onShown)="onShown()"
+     class="modal fade"
+     [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form *ngIf="active"
+                  #contactForm="ngForm"
+                  novalidate
+                  (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{ 'EditEmail' | localize}}</span>
+                    </h4>
+                    <button type="button"
+                            class="close"
+                            (click)="close()"
+                            [attr.aria-label]="'Close' | localize"
+                            [disabled]="saving">
+                        <i aria-hidden="true"
+                           class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="SigningRequestAccessEmail">
+                                    {{ 'Email' | localize }}
+                                </label>
+                                <input id="SigningRequestAccessEmail"
+                                        class="form-control"
+                                        #emailName="ngModel"
+                                        type="text"
+                                        name="SigningRequestAccessEmail"
+                                        required
+                                        [pattern]="regexp"
+                                        [(ngModel)]="data.email" />
+                                <validation-messages [formCtrl]="emailName"></validation-messages>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving"
+                            type="button"
+                            class="btn btn-light-primary font-weight-bold"
+                            (click)="close()">
+                        {{ 'Cancel' | localize }}
+                    </button>
+                    <button type="submit"
+                            class="btn btn-primary font-weight-bold save-button"
+                            [disabled]="!contactForm.form.valid"
+                            [buttonBusy]="saving"
+                            [busyText]="'SavingWithThreeDot' | localize">
+                        <i class="fa fa-save"></i>
+                        <span>{{ 'Save' | localize }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

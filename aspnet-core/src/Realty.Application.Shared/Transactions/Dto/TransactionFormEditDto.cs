@@ -10,9 +10,10 @@ namespace Realty.Transactions.Dto
         {
         }
 
-        public TransactionFormEditDto(Guid transactionId, FormEditDto form)
+        public TransactionFormEditDto(Guid transactionId, string name, FormEditDto form)
         {
             Id = transactionId;
+            Name = name;
             Form = form;
         }
 

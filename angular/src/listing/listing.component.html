@@ -1,0 +1,38 @@
+<ng-container *ngIf="recommendedListing">
+    <div class="listing__wrapper">
+
+        <listing-header [recommendedListing]="recommendedListing"></listing-header>
+
+        <h1 class="listing__title">
+            {{ recommendedListing.listing.streetName + ', '+ recommendedListing.listing.city }}
+        </h1>
+
+        <div class="listing__wrapper__main">
+            <ng-container *ngIf="videos && videos.length >= 1">
+                <listing-video [items]="videos"></listing-video>
+            </ng-container>
+
+            <ng-container *ngIf="recommendedListing.listing">
+                <listing-features [features]="recommendedListing.listing.feature">
+                </listing-features>
+
+                <listing-map [lat]="recommendedListing.listing.latitude"
+                             [long]="recommendedListing.listing.longitude">
+                </listing-map>
+            </ng-container>
+
+        </div>
+
+        <div class="listing__wrapper__aside">
+            <ng-container *ngIf="recommendedListing.listing">
+                <listing-info [listing]="recommendedListing.listing">
+                </listing-info>
+
+                <listing-form 
+                    [recommendedListing]="recommendedListing"></listing-form>
+            </ng-container>
+        </div>
+    </div>
+
+    <listing-footer [recommendedListing]="recommendedListing"></listing-footer>
+</ng-container>

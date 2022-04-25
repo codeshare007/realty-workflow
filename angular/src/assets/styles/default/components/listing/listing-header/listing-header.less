@@ -1,0 +1,76 @@
+.listing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 24px -30px 0;
+
+    &__logo {
+        width: 50%;
+        height: 100%;
+
+        img {
+            height: 100%;
+            max-height: 50px;
+            width: auto;
+        }
+    }
+
+    &__info {
+        width: 50%;
+        height: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        &-actions {
+            >span {
+                font-size: 16px;
+            }
+            &__tooltip {
+                position: relative;
+                display: inline-block;
+
+                &:hover .listing-header__info-actions__tooltip__text {
+                    visibility: visible;
+                    opacity: 1;
+                }
+
+                i {
+                    cursor: pointer;
+                    margin-left: 16px;
+                    padding: 6px;
+                    border: 1px solid @disabled-color;
+                    border-radius: 50%;
+                }
+
+                &__text {
+                    position: absolute;
+                    top: 125%;
+                    left: 50%;
+                    padding: 6px;
+                    width: max-content;
+                    color: @main-white;
+                    background-color: @main-black-second;
+                    border-radius: 6px;
+                    text-align: center;
+                    visibility: hidden;
+                    opacity: 0;
+                    transition: opacity 0.3s;
+                    transform: translate(-43%, 0%);
+                    z-index: 1;
+
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        top: 100%;
+                        left: 50%;
+                        margin-left: -6px;
+                        border-width: 6px;
+                        border-style: solid;
+                        border-color: @disabled-color-third transparent transparent transparent;
+                    }
+                }
+            }
+        }
+    }
+}

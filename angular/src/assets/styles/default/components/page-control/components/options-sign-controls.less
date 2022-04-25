@@ -1,0 +1,59 @@
+.control-optional-initials {
+
+    .before-class {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .after-class {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .resizable-draggable__title {}
+}
+
+.control-optional-signing {}
+
+.optional__permissions-action {
+    position: absolute;
+    bottom: -8px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    z-index: 1;
+
+    .optional__permissions-action--selected {
+        &.btn {
+            color: @main-color;
+            font-weight: 700;
+
+            i {
+                color: @main-color;
+            }
+        }
+    }
+
+    .btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2px;
+        height: 14px;
+        color: @disabled-color;
+        background-color: @main-white;
+        border: 1px solid @main-color;
+        border-radius: 4px;
+        font-size: 10px;
+        line-height: 0;
+        font-weight: 500;
+        opacity: 1;
+
+        i {
+            padding: 0;
+        }
+    }
+}
+

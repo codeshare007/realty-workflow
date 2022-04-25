@@ -22,6 +22,7 @@
         CondoSale = 6,
         ResidentialLease = 7,
         ResidentialListing = 8,
-        ResidentialSale = 9
+        ResidentialSale = 9,
+        Renewal = 10
     }
 }

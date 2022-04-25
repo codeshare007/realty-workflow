@@ -1,17 +1,107 @@
+
 <div>
-    <div class="document-page__wrapper">
+    <div class="document-page__wrapper" style="background-color: #fff">
+        <div class="document-page__url mouse-over-element"
+             #onMouseRef
+             [ngClass]="{ 'higher-level': isHover }"
+             (mousemove)="onControlMove($event)">
+            <!-- <div class="test-div"
+                 *ngIf="dndControl"></div> -->
+
+            <!-- <ng-container *ngFor="let dot of getPageLineControls().controls">
+                <div class="control-apex-dot"
+                     [style.transform]="'translate3d('+ dot.leftTop.left + 'px,' + dot.leftTop.top + 'px,' + '0px)'">
+                </div>
+                <div class="control-apex-dot"
+                     [style.transform]="'translate3d('+ dot.leftBottom.left + 'px,' + dot.leftBottom.top + 'px,' + '0px)'">
+                </div>
+                <div class="control-apex-dot"
+                     [style.transform]="'translate3d('+ dot.rightTop.left + 'px,' + dot.rightTop.top + 'px,' + '0px)'">
+                </div>
+                <div class="control-apex-dot"
+                     [style.transform]="'translate3d('+ dot.rightBottom.left + 'px,' + dot.rightBottom.top + 'px,' + '0px)'">
+                </div>
+                <div class="control-apex-dot"
+                     [style.transform]="'translate3d('+ dot.center.left + 'px,' + dot.center.top + 'px,' + '0px)'">
+                </div>
+            </ng-container> -->
+            <!-- [style.transform]="'translate3d('+ stickingVertical + 'px,' + stickingHorisontal + 'px,' + '0px)'" -->
+            <!-- [style.top]="stickingVertical + 'px'" -->
+            <!-- [style.left]="stickingHorisontal + 'px'" -->
+            <div class="sticking-point document-page__item"
+                 [ngClass]="{ 'moqup-control' : isMoqups }"
+                 *ngIf="isShowStickingBlock"
+                 [style.transform]="'translate3d('+ stickingVertical + 'px,' + stickingHorisontal + 'px,' + '0px)'">
+                <ng-container *ngIf="dndControl">
+                    <div [class]="dndControl.participantId | getParticipantClass:controlParticipants">
+                        <div [class]="'resizable-draggable ' + (dndControl.type | formControlClass)"
+                             [ngStyle]="styleControl()">
+
+                            <span class="resizable-draggable__title capitalize"
+                                  *ngIf="!isMoqups(dndControl.type)">
+                                <ng-container *ngIf="dndControl.type === controlType.UploadAttachment; else defaultRef">
+                                    <i class="fa-paperclip fas"></i>
+                                </ng-container>
+                                <ng-template #defaultRef>
+                                    {{ dndControl.type | formControlType:false:participants:dndControl.participantId }}
+                                </ng-template>
+                            </span>
+
+                            <div class="resizable-draggable__action resize resize__bottom--right"></div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+
+            <ng-container *ngFor="let vertical of getPageLineControls().matchingDots.verticalDots; trackBy: trackByIndex">
+                <div class="control-line__vertical"
+                     [ngClass]="{ 'show-line': showLine }"
+                     [style.left]="vertical + 'px'">
+                </div>
+            </ng-container>
+            <ng-container *ngFor="let horizontal of getPageLineControls().matchingDots.horizontalDots; trackBy: trackByIndex">
+                <div class="control-line__horizontal"
+                     [ngClass]="{ 'show-line': showLine }"
+                     [style.top]="horizontal + 'px'">
+                </div>
+            </ng-container>
+
+
+            <!-- <ng-container *ngFor="let vertical of getDragVerticalDots()">
+                <div class="control-line__vertical gree-line"
+                     [style.left]="vertical + 'px'">
+                </div>
+            </ng-container>
+            <ng-container *ngFor="let horizontal of getDragHorizontalDots()">
+                <div class="control-line__horizontal gree-line"
+                     [style.top]="horizontal + 'px'">
+                </div>
+            </ng-container> -->
+
+        </div>
+
         <div [ngStyle]="urlPage"
+             (mousemove)="onMouseEvent($event, statusPage.Allowed)"
              #urlPageRef
-             class="document-page__url"
-             (mousemove)="onMouseEvent($event, statusPage.Allowed)">
-            <div *ngFor="let control of page.controls; let i = index"
+             class="document-page__url">
+            <div *ngFor="let control of page.controls; let i = index; trackBy: trackByIndex"
                  #libraryControl
                  class="document-page__item">
                 <page-control [control]="control"
                               [index]="i"
                               [pageId]="page.id"
+                              [publicMode]="publicMode"
                               [documentId]="documentId"
-                              (onControlActions)="onControlAction($event)">
+                              [adminView]="adminView"
+                              [participants]="participants"
+                              [participantMappingItems]="participantMappingItems"
+                              [accessSetting]="accessSetting"
+                              [mainLayer]="mainLayer"
+                              [participantId]="participantId"
+                              (onControlActions)="onControlAction($event)"
+                              (onAddedControlDots)="onAddedControlDots($event)"
+                              (onRemovedControlDots)="onRemovedControlDots($event)"
+                              (onMultipleCopy)="onMultipleCopy($event)">
                 </page-control>
             </div>
         </div>

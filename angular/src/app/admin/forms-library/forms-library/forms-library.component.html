@@ -16,10 +16,17 @@
 
         <div [class]="containerClass">
             <div class="card card-custom">
-                <div class="card-body">
+                <div class="card-body row-action-click">
 
-                    <forms-library-table #formLibraryTable
-                                         [libraryId]="selectedLibrary"></forms-library-table>
+                    <forms-table #formTable
+                        [items]="items"
+                        [options]="options"
+                        [totalCount]="totalCount"
+                        (onGetAll)="getAll($event)"
+                        (onEdit)="edit($event)"
+                        (onDelete)="delete($event)"
+                        (onDownloadOriginalDocument)="onDownloadOriginalDocument($event)"
+                        [showDownloadOriginal]="true"></forms-table>
 
                 </div>
             </div>
@@ -28,5 +35,5 @@
 </div>
 
 <upload-document-modal #uploadDocumentRef
-                       (modalSave)="onModalSave($event)">
+                       (modalSave)="fileSaved($event)">
 </upload-document-modal>

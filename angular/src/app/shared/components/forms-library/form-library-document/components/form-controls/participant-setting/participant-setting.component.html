@@ -1,0 +1,63 @@
+<ng-container *ngIf="!isAction">
+    <div class="participant-setting__dropdown__form new-scrollbar"
+         #formParticipantsSettingRef>
+        <div *ngFor="let control of formParticipantsSetting.controls; index as i"
+             class="participant-setting__dropdown__form__item form-group">
+            <input type="text"
+                   class="form-control"
+                   [name]="'control-option__' + i"
+                   (ngModelChange)="onParticipantChange($event)"
+                   [formControl]="formParticipantsSetting.controls[i]" />
+            <i class="far fa-times-circle"
+               (click)="removeOption(i); $event.stopPropagation()"></i>
+        </div>
+    </div>
+
+    <button *ngIf="formParticipantsSetting.controls.length <= 11"
+            type="button"
+            class="participant-setting__dropdown__add"
+            [disabled]="formParticipantsSetting.invalid"
+            (click)="addOption()">
+        <i class="fas fa-plus"></i>
+        {{ 'Add' }}
+    </button>
+</ng-container>
+
+<div class="participant">
+    <form class="participant__select">
+        <span class="title-select">
+            {{ title }}
+        </span>
+        <div class="participant__select__action"
+             (click)="toggleDropDown()">
+            <span [ngClass]="{ 'participant-setting__badge-disabled' : formParticipantsSetting.invalid && !participants.length }"
+                  [class]="'participant__select__dropdown__list__item__badge ' + getParticipantClass(selectParticipant)"></span>
+            <input class="click-outside participant-setting__input"
+                   type="button"
+                   [disabled]="formParticipantsSetting.invalid && !participants.length"
+                   [value]="participantActionValue" />
+            <span class="click-outside"
+                  [ngClass]="{ 'active': showDropDown }"></span>
+            <i class="fas fa-angle-left click-outside"
+               [ngClass]="{ 'active': showDropDown, 'participant-setting__disabled': formParticipantsSetting.invalid && !participants.length }"></i>
+        </div>
+
+        <div class="participant__select__dropdown"
+             *ngIf="showDropDown"
+             dropDownClickOutside
+             (dropDownClickOutside)="toggleDropDown()">
+            <ul class="participant__select__dropdown__list select--overflow new-scrollbar">
+                <li *ngFor="let item of participants | participantsFilterDefault"
+                    (click)="selectValue(item)"
+                    [ngClass]="{ 'selected' : (selectParticipant ? item.id === selectParticipant.id : false) }"
+                    class="participant__select__dropdown__list__item">
+                    <span
+                          [class]="'participant__select__dropdown__list__item__badge ' + getParticipantClass(item)"></span>
+                    <span class="participant__select__dropdown__list__item__name">
+                        {{ item.name }}
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>

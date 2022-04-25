@@ -1,0 +1,292 @@
+<div appBsModal
+     #updateModalRef="bs-modal"
+     (onShown)="onShown()"
+     class="modal fade"
+     [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form *ngIf="active"
+                  #contactForm="ngForm"
+                  novalidate
+                  (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="!isCreate">{{ 'EditContact' | localize}}</span>
+                        <span *ngIf="isCreate">{{ 'CreateContact' | localize }}</span>
+                    </h4>
+                    <button type="button"
+                            class="close"
+                            (click)="close()"
+                            [attr.aria-label]="'Close' | localize"
+                            [disabled]="saving">
+                        <i aria-hidden="true"
+                           class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <tabset>
+                        <tab class="pt-5"
+                             heading="{{ 'General' | localize}}">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="FirstName">
+                                            {{ 'FirstName' | localize }} *
+                                        </label>
+                                        <input id="FirstName"
+                                               #firstNameInput="ngModel"
+                                               class="form-control"
+                                               type="text"
+                                               name="FirstName"
+                                               [(ngModel)]="contact.firstName"
+                                               required
+                                               maxlength="64" />
+                                        <validation-messages [formCtrl]="firstNameInput"></validation-messages>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="MiddleName">
+                                            {{ 'MiddleName' | localize }}
+                                        </label>
+                                        <input id="MiddleName"
+                                               class="form-control"
+                                               type="text"
+                                               name="MiddleName"
+                                               [(ngModel)]="contact.middleName"
+                                               maxlength="64" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="LastName">
+                                            {{ 'LastName' | localize }} *
+                                        </label>
+                                        <input id="LastName"
+                                               #lastNameName="ngModel"
+                                               class="form-control"
+                                               type="text"
+                                               name="LastName"
+                                               [(ngModel)]="contact.lastName"
+                                               required
+                                               maxlength="64" />
+                                        <validation-messages [formCtrl]="lastNameName"></validation-messages>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="Email">
+                                            {{ 'Email' | localize }}
+                                        </label>
+                                        <input id="Email"
+                                               class="form-control"
+                                               #emailName="ngModel"
+                                               type="text"
+                                               name="Email"
+                                               required
+                                               [pattern]="regexp"
+                                               [(ngModel)]="contact.email" />
+                                        <validation-messages [formCtrl]="emailName"></validation-messages>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="Type">
+                                            {{ 'Type' | localize }} *
+                                        </label>
+                                        <general-combo name="Type"
+                                                       [values]="typeValues"
+                                                       [(selectedValue)]="contact.type">
+                                        </general-combo>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="PhoneNumber">
+                                            {{ 'PhoneNumber' | localize }}
+                                        </label>
+                                        <input id="PhoneNumber"
+                                               class="form-control"
+                                               type="text"
+                                               name="Phone"
+                                               mask="(000) 000 0000"
+                                               [(ngModel)]="contact.phone" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="PreferredSignature">
+                                            {{ 'PreferredSignature' | localize }}
+                                        </label>
+                                        <input id="PreferredSignature"
+                                               class="form-control"
+                                               type="text"
+                                               name="PreferredSignature"
+                                               [(ngModel)]="contact.preferredSignature" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="PreferredInitials">
+                                            {{ 'PreferredInitials' | localize }}
+                                        </label>
+                                        <input id="PreferredInitials"
+                                               class="form-control"
+                                               type="text"
+                                               name="PreferredInitials"
+                                               [(ngModel)]="contact.preferredInitials" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group"
+                                         *ngIf="contact.type == 6">
+                                        <label for="Firm">
+                                            {{ 'Firm' | localize }}
+                                        </label>
+                                        <input id="Firm"
+                                               class="form-control"
+                                               type="text"
+                                               name="Firm"
+                                               [(ngModel)]="contact.firm" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group"
+                                         *ngIf="contact.type == 6">
+                                        <label for="Suffix">
+                                            {{ 'Suffix' | localize }}
+                                        </label>
+                                        <input id="Suffix"
+                                               class="form-control"
+                                               type="text"
+                                               name="Suffix"
+                                               [(ngModel)]="contact.suffix" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="LegalName">
+                                            {{ 'LegalName' | localize }}
+                                        </label>
+                                        <input id="LegalName"
+                                               class="form-control"
+                                               type="text"
+                                               name="LegalName"
+                                               [(ngModel)]="contact.legalName" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group"
+                                         *ngIf="contact.type == 1 || contact.type == 3 || contact.type == 4 || contact.type == 7">
+                                        <label for="Company">
+                                            {{ 'Company' | localize }}
+                                        </label>
+                                        <input id="Company"
+                                               class="form-control"
+                                               type="text"
+                                               name="Company"
+                                               [(ngModel)]="contact.company" />
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab class="pt-5"
+                             heading="{{ 'Address' | localize }}">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="StreetNumber">
+                                            {{ 'StreetNumber' | localize }}
+                                        </label>
+                                        <input id="StreetNumber"
+                                               class="form-control"
+                                               type="text"
+                                               name="StreetNumber"
+                                               [(ngModel)]="contact.address.streetNumber" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="StreetName">
+                                            {{ 'StreetName' | localize }}
+                                        </label>
+                                        <input id="StreetName"
+                                               class="form-control"
+                                               type="text"
+                                               name="StreetName"
+                                               [(ngModel)]="contact.address.streetName" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="UnitNumber">
+                                            {{ 'UnitNumber' | localize }}
+                                        </label>
+                                        <input id="UnitNumber"
+                                               class="form-control"
+                                               type="text"
+                                               name="UnitNumber"
+                                               [(ngModel)]="contact.address.unitNumber" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="City">
+                                            {{ 'City' | localize }}
+                                        </label>
+                                        <input id="City"
+                                               class="form-control"
+                                               type="text"
+                                               name="City"
+                                               [(ngModel)]="contact.address.city" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="State">
+                                            {{ 'State' | localize }}
+                                        </label>
+                                        <input id="State"
+                                               class="form-control"
+                                               type="text"
+                                               name="State"
+                                               [(ngModel)]="contact.address.state" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="ZipCode">
+                                            {{ 'ZipCode' | localize }}
+                                        </label>
+                                        <input id="ZipCode"
+                                               class="form-control"
+                                               type="text"
+                                               name="ZipCode"
+                                               [(ngModel)]="contact.address.zipCode" />
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                    </tabset>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving"
+                            type="button"
+                            class="btn btn-light-primary font-weight-bold"
+                            (click)="close()">
+                        {{ 'Cancel' | localize }}
+                    </button>
+                    <button type="submit"
+                            class="btn btn-primary font-weight-bold save-button"
+                            [disabled]="!contactForm.form.valid"
+                            [buttonBusy]="saving"
+                            [busyText]="'SavingWithThreeDot' | localize">
+                        <i class="fa fa-save"></i>
+                        <span>{{ 'Save' | localize }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

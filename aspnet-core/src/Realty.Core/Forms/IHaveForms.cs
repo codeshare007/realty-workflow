@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Abp.Domain.Entities;
+using System.Collections.Generic;
+using Realty.Storage;
 
 namespace Realty.Forms
 {
-    public interface IHaveForms
+    public interface IHaveForms: IHaveFiles
     {
         IReadOnlyCollection<Form> Forms { get; }
 

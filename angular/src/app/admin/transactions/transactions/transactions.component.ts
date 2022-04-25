@@ -1,4 +1,4 @@
-import { Component, Injector, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, HostBinding, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UiTableActionItem } from '@app/shared/layout/components/ui-table-action/models/ui-table-action.model';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
@@ -7,14 +7,16 @@ import { TransactionListDto, TransactionServiceProxy, TransactionStatus, Transac
 import { LazyLoadEvent, Paginator, Table } from 'primeng';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { DuplicateTransactionModalComponent } from '../modals/duplicate-transaction-modal/duplicate-transaction-modal.component';
 
 @Component({
     templateUrl: './transactions.component.html',
-    styleUrls: ['./transactions.component.less'],
-    encapsulation: ViewEncapsulation.None,
     animations: [accountModuleAnimation()]
 })
 export class TransactionsComponent extends AppComponentBase implements OnInit, OnDestroy {
+
+    @HostBinding('class.transactions') class = true;
+    @ViewChild('duplicateTransactionModal', { static: true }) duplicateTransactionModal: DuplicateTransactionModalComponent;
 
     @ViewChild('dataTable', { static: true }) dataTable: Table;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
@@ -25,16 +27,15 @@ export class TransactionsComponent extends AppComponentBase implements OnInit, O
     public filterTextSubject: Subject<string> = new Subject<string>();
     filter = {
         filterText: '',
-        agent: new UserSearchDto(),
+        agentId: undefined,
         customer: new UserSearchDto(),
     };
     filteredAgents: UserSearchDto[];
     filteredCustomers: UserSearchDto[];
 
     actionsList: UiTableActionItem[] = [
-        new UiTableActionItem(this.l('Edit')),
-        new UiTableActionItem(this.l('Dublicate')),
         new UiTableActionItem(this.l('Delete')),
+        new UiTableActionItem(this.l('Duplicate')),
     ];
 
     constructor(
@@ -43,6 +44,7 @@ export class TransactionsComponent extends AppComponentBase implements OnInit, O
         private _router: Router,
     ) {
         super(injector);
+        this.filter.agentId = this.appSession.user.publicId;
     }
 
     ngOnInit(): void {
@@ -65,35 +67,48 @@ export class TransactionsComponent extends AppComponentBase implements OnInit, O
 
         this._transactionServiceProxy.getAll(
             this.filter.filterText,
-            this.filter.agent?.publicId,
+            this.filter.agentId,
             this.filter.customer?.publicId,
             this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
             this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(res => {
-            this.primengTableHelper.records = res.items;
-            this.primengTableHelper.totalRecordsCount = res.totalCount;
-        });
+                this.primengTableHelper.records = res.items;
+                this.primengTableHelper.totalRecordsCount = res.totalCount;
+            });
+    }
+
+    public selectEditItem(event: TransactionListDto): void {
+        this._router.navigate(['app/admin/transactions', event.id]);
     }
 
     public actions(record: TransactionListDto): UiTableActionItem[] {
         return this.actionsList;
     }
 
-    public selectOption(element: { item: UiTableActionItem, id: string }): void {
+    public selectOption(element: { item: UiTableActionItem, id: string }, record: TransactionListDto): void {
         switch (element.item.name) {
-            case this.l('Edit'):
-                this._router.navigate(['app/admin/transactions', element.id]);
+            case this.l('Delete'):
+                this.message.confirm(
+                    this.l('DeleteWarningMessage'),
+                    this.l('AreYouSure'),
+                    (isConfirmed) => {
+                        if (isConfirmed) {
+                            this._transactionServiceProxy.delete(element.id).subscribe(transactionId => {
+                                this.getTransactions();
+                                this.notify.success(this.l('SuccessfullyDeleted'));
+                            });
+                        }
+                    }
+                );
                 break;
-            case this.l('CreateTransaction'):
-                this._transactionServiceProxy.delete(element.id).subscribe(transactionId => {
-                    this.getTransactions();
-                });
+            case this.l('Duplicate'):
+                this.duplicateTransactionModal.show(record.id, record.name);
                 break;
         }
     }
 
     getStatusDescription(status: TransactionStatus) {
-        switch(status) {
+        switch (status) {
             case TransactionStatus.Open: return 'Open';
             case TransactionStatus.Active: return 'Active';
             case TransactionStatus.Pending: return 'Pending';
@@ -106,7 +121,7 @@ export class TransactionsComponent extends AppComponentBase implements OnInit, O
     }
 
     getTypeDescription(status: TransactionType) {
-        switch(status) {
+        switch (status) {
             case TransactionType.None: return 'None';
             case TransactionType.ResidentialLease: return 'Residential Lease';
             case TransactionType.ResidentialListing: return 'Residential Listing';

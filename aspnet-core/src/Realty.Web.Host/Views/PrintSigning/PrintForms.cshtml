@@ -1,0 +1,453 @@
+﻿@using Abp.Extensions
+@using Realty.Controls.Dto;
+@model Realty.Signings.Dto.SigningFormEditDto
+@{
+    var serverRootAddress = ViewBag.ServerRootAddress;
+    var diagonalLineColor = "rgb(240, 50, 50)";
+    var diagonalLineBackground = "white";
+    var squareColor = "rgba(209, 239, 216, 0.561)";
+    var ovalColor = "rgba(250, 224, 143, 0.671)";
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>PDF</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        @@font-face {
+            font-family: "Dancing Script";
+            src: url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+        }
+
+        @@font-face {
+            font-family: "Poppins";
+            src: url('https://fonts.googleapis.com/css2?family=Poppins&display=swap')
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.5;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        @@media screen {
+            .page {
+                page-break-before: always !important;
+            }
+        }
+
+        .document-page {
+            position: relative;
+            height: 1754px;
+            width: 1240px;
+            background-size: 1240px 1754px;
+            background-repeat: no-repeat;
+            user-select: none;
+            overflow: visible;
+        }
+
+        .page-control {
+            width: max-content;
+            position: absolute;
+            z-index: 1;
+        }
+
+        .page-control-view-mode .control-diagonal-line,
+        .page-control-view-mode .control-square,
+        .page-control-view-mode .control-oval {
+            position: absolute;
+        }
+
+        .control-diagonal-line .moqup-control,
+        .control-square .moqup-control,
+        .control-oval .moqup-control {
+            background-color: transparent;
+        }
+
+        .control-diagonal-line .control-diagonal-line-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+        }
+
+        .control-square .control-square-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .control-oval .control-oval-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .page-control__view__text {
+            display: block;
+            margin: 0 0 2px;
+            padding: 6px 0;
+            color: #36383b;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            font-weight: 600;
+        }
+
+        .page-control__view-text-area {
+            width: 100%;
+            height: 100%;
+            height: 100%;
+            overflow: hidden;
+            white-space: pre; /* CSS 2.0 */
+            white-space: pre-wrap; /* CSS 2.1 */
+            white-space: pre-line; /* CSS 3.0 */
+            white-space: -pre-wrap; /* Opera 4-6 */
+            white-space: -o-pre-wrap; /* Opera 7 */
+            white-space: -moz-pre-wrap; /* Mozilla */
+            white-space: -hp-pre-wrap; /* HP Printers */
+            word-wrap: break-word; /* IE 5+ */
+            font-weight: 600;
+        }
+
+        .text-align-center {
+            text-align: center;
+        }
+
+        .text-transform-capitalize {
+            text-transform: capitalize;
+        }
+
+        .control-input {
+            display: block;
+        }
+
+        .control-signing {
+            position: relative;
+            display: block;
+            margin: 3px 0 0 1px;
+        }
+
+        .page-control__view__signing {
+            position: relative;
+            top: 0;
+            left: 0;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3px 8px;
+            border: 2px solid #36383b;
+            border-radius: 4px;
+            box-sizing: border-box;
+            z-index: -1;
+        }
+
+        .page-control__view-image {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            border: 2px solid #36383b;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .control-signing__before {
+            position: absolute;
+            top: -8.5px;
+            left: 6.5px;
+            display: flex;
+            align-items: center;
+            padding: 0 2px;
+            height: 12px;
+            background-color: #fafafa;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .signing-font {
+            font-family: 'Dancing Script', cursive;
+            font-weight: 300;
+            letter-spacing: 0px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .signature-control__public {
+            position: absolute;
+            bottom: -6px;
+            right: -4px;
+            padding: 0 2px;
+            background-color: #fff;
+            border-radius: 24px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .control-signing__permission {
+            position: absolute;
+            top: 8px;
+            right: -3px;
+            padding: 0 2px;
+            background-color: @diagonalLineBackground;
+            border-radius: 24px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .page-control__view__readonly {
+            border: none;
+            background-color: transparent;
+        }
+
+        .approved {
+            color: #17b124;
+        }
+
+        .declined {
+            color: rgb(240, 50, 50);
+        }
+
+        .page-control__view__text_inner {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+
+<body style='
+        margin: 0;
+        padding: 0;
+       '>
+    @foreach (var form in Model.Forms)
+    {
+        foreach (var page in form.Pages)
+        {
+            <div class="page">
+                <div class="document-page" style="@string.Format("background-image: url({0}SystemFile/getfile/{1})", serverRootAddress, page.FileId);
+                    background-size: @(form.Width == 0 ? "1240px 1754px" : "1240px auto")">
+                    @foreach (var control in page.Controls)
+                    {
+                        var isInitials = control.Type == Realty.Forms.ControlType.Initials || control.Type == Realty.Forms.ControlType.OptionalInitials; 
+                        var isOptional = control.Type == Realty.Forms.ControlType.OptionalInitials || control.Type == Realty.Forms.ControlType.OptionalSigning ? 36 : 30; 
+                        var controlOptionalMargin = control.Type == Realty.Forms.ControlType.OptionalInitials || control.Type == Realty.Forms.ControlType.OptionalSigning ? 12 : 3; 
+                        var defaultOptionalClass = "page-control__view__text_inner signing-font signing-block "; 
+                        var minHeight = control.Font.SizeInPx + 11 + isOptional; 
+                        var minContentText = "min-content"; 
+                        var minContent = minHeight + 18 + "px"; 
+                        var width = isInitials ? minHeight + 14 : control.Size.Width; 
+                        var minWidth = isInitials ? minContentText : minContent; 
+                        var textAlifnCenter = control.TextPosition == Realty.Controls.Constants.TextPositionType.Center; 
+                        var textAlifnLeft = control.TextPosition == Realty.Controls.Constants.TextPositionType.Left; 
+                        var textAlign = control.Type == Realty.Forms.ControlType.TextField || control.Type == Realty.Forms.ControlType.TextArea ? (textAlifnCenter ? "center" : (textAlifnLeft ? "left" : "right")) : "center"; 
+                        var fontSize = control.Type == Realty.Forms.ControlType.Initials || control.Type == Realty.Forms.ControlType.OptionalInitials ? Math.Floor((control.Size.Height / 2) - 8) : control.Font.SizeInPx; 
+
+                        <div style="@string.Format("left: {0}px; top: {1}px", control.Position.Left, control.Position.Top)"
+                             class="page-control page-control-view-mode">
+
+                            @if (control.Type == Realty.Forms.ControlType.TextField ||
+                             control.Type == Realty.Forms.ControlType.TextArea ||
+                             control.Type == Realty.Forms.ControlType.Dropdown ||
+                             control.Type == Realty.Forms.ControlType.DateTime ||
+                             control.Type == Realty.Forms.ControlType.SigningDate)
+                            {
+                                <span class="control-input"
+                                      style="@string.Format("width: {0}px; height: {1}px; font-size: {2}px; text-align: {3}", control.Size.Width, control.Size.Height, fontSize, textAlign)">
+
+                                    @if (control.IsProtected)
+                                    {
+                                        <input type="password"
+                                               readonly
+                                               name="protectedControl"
+                                               class="form-control page-control__view__readonly"
+                                               value="@(control.Value?.Value)" />
+                                    }
+
+                                    else
+                                    {
+                                        @if (control.Type == Realty.Forms.ControlType.TextArea)
+                                        {
+                                            <pre class="page-control__view__text page-control__view-text-area">
+                                            @Html.Raw(control.Value?.Value.Replace("\n", "<br/>").Replace(" ", "&nbsp;"))
+                                        </pre>
+                                        }
+                                        else if (control.Type == Realty.Forms.ControlType.SigningDate)
+                                        {
+                                            <span class="page-control__view__text">
+                                                @Html.Raw((control.Value?.Value ?? string.Empty).Replace("\n", "<br/>").Replace(" ", "&nbsp;"))
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="page-control__view__text">
+                                                @Html.Raw((control.Value?.Value ?? string.Empty).Replace("\n", "<br/>").Replace(" ", "&nbsp;"))
+                                            </span>
+                                        }
+                                    }
+                                </span>
+                            }
+
+                            @if (control.Type == Realty.Forms.ControlType.Oval)
+                            {
+                                <span class="control-oval"
+                                      style="@string.Format("width: {0}px; height: {1}px;", control.Size.Width, control.Size.Height)">
+                                    <span class="control-oval-background "
+                                          style="background-color: @(control.Value?.Value ?? ovalColor)">
+                                    </span>
+                                </span>
+                            }
+
+                            @if (control.Type == Realty.Forms.ControlType.DiagonalLine)
+                            {
+                                <span class="control-diagonal-line"
+                                      style="@string.Format("width: {0}px; height: {1}px;", control.Size.Width, control.Size.Height)">
+                                    <span class="control-diagonal-line-background">
+                                        <svg style="width: 100%; height: 100%;">
+                                            <line x1="0" y1="0"
+                                                  x2="@(control.Size.Width != 0 ? control.Size.Width - 4 : control.Size.Width)"
+                                                  y2="@(control.Size.Height != 0 ? control.Size.Height - 4 : control.Size.Height)"
+                                                  style="stroke:@diagonalLineColor;stroke-width:2" />
+                                        </svg>
+                                    </span>
+                                </span>
+                            }
+
+                            @if (control.Type == Realty.Forms.ControlType.HorizontalLine)
+                            {
+                                <span class="control-diagonal-line"
+                                      style="@string.Format("width: {0}px; height: {1}px;", control.Size.Width, control.Size.Height)">
+                                    <span class="control-diagonal-line-background">
+                                        <svg style="width: 100%; height: 100%;">
+                                            <line x1="0"
+                                                  x2="100%"
+                                                  y1="50%"
+                                                  y2="50%"
+                                                  style="stroke:@diagonalLineColor;stroke-width:2" />
+                                        </svg>
+                                    </span>
+                                </span>
+                            }
+
+                            @if (control.Type == Realty.Forms.ControlType.VerticalLine)
+                            {
+                                <span class="control-diagonal-line"
+                                      style="@string.Format("width: {0}px; height: {1}px;", control.Size.Width, control.Size.Height)">
+                                    <span class="control-diagonal-line-background">
+                                        <svg style="width: 100%; height: 100%;">
+                                            <line x1="50%"
+                                                  x2="50%"
+                                                  y1="0"
+                                                  y2="100%"
+                                                  style="stroke:@diagonalLineColor;stroke-width:2" />
+                                        </svg>
+                                    </span>
+                                </span>
+                            }
+
+                            @if (control.Type == Realty.Forms.ControlType.Square)
+                            {
+                                <span class="control-square"
+                                      style="@string.Format("width: {0}px; height:{1}px;", control.Size.Width, control.Size.Height)">
+                                    <span style="background-color: @(control.Value?.Value ?? squareColor)"
+                                          class="control-square-background">
+                                    </span>
+                                </span>
+
+                            }
+
+                            @if (control.Type == Realty.Forms.ControlType.Signature || control.Type == Realty.Forms.ControlType.Initials
+                             || control.Type == Realty.Forms.ControlType.OptionalInitials || control.Type == Realty.Forms.ControlType.OptionalSigning)
+                            {
+
+                                <span class="control-signing page-control__view__signing"
+                                      style="@string.Format("width: {0}px; height: {1}px;", control.Size.Width, control.Size.Height)">
+
+                                    <span class="control-signing__before text-transform-capitalize">
+                                        @if (control.Type == Realty.Forms.ControlType.Signature)
+                                        {
+                                            <span>signature</span>
+                                        }
+                                        else if (control.Type == Realty.Forms.ControlType.OptionalSigning)
+                                        {
+                                            <span>Optional Signature</span>
+                                        }
+                                        else
+                                        {
+                                            <span>initial</span>
+                                        }
+                                    </span>
+
+                                    @{
+                                        var signatureJsonValue = !(control.Value?.Value ?? string.Empty).IsNullOrEmpty()
+                                                                ? Newtonsoft.Json.JsonConvert.DeserializeObject<Realty.Web.Models.SignatureJsonValue>(control.Value?.Value) : null;
+                                    }
+
+
+                                    @if (signatureJsonValue != null)
+                                    {
+                                        @if (signatureJsonValue.Accept)
+                                        {
+                                            <span class="control-signing__permission">
+                                                <span class="approved">Approved</span>
+                                            </span>
+                                        }
+
+                                        @if (signatureJsonValue.Decline)
+                                        {
+                                            <span class="control-signing__permission">
+                                                <span class="declined">Declined</span>
+                                            </span>
+                                        }
+
+                                        @if (signatureJsonValue.Data.Contains("data:image/png;base64"))
+                                        {
+                                            <img src="@signatureJsonValue.Data"
+                                                 class="page-control__view-image"
+                                                 style="@string.Format("width: {0}px; height:{1}px;", control.Size.Width, control.Size.Height)"
+                                                 alt="signature" />
+                                        }
+                                        else
+                                        {
+                                            <span class="page-control__view__text text-align-center text-transform-capitalize"
+                                                  style="@string.Format("margin-top: {0}px; ", controlOptionalMargin)">
+                                                <span class="@string.Format("{0}", defaultOptionalClass)"
+                                                      style="@string.Format("width: {0}px; height: {1}px; font-size: {2}px;", width, minHeight, fontSize)">
+                                                    @Html.Raw(signatureJsonValue.Data.Replace(" ", "&nbsp;"))
+                                                </span>
+                                            </span>
+                                        }
+
+                                        <span class="signature-control__public">
+                                            @control.Value.UpdateValueDate.ToString("MM/dd/yyyy")
+                                        </span>
+                                    }
+
+                                </span>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+
+</body>
+</html>

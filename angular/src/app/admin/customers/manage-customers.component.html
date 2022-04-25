@@ -7,9 +7,9 @@
                 <div class="card-body">
                     <tabset>
                         <tab heading="{{'Transactions' | localize}}">
-
+ 
                         </tab>
-                        <tab heading="{{'Leads' | localize}}">
+                        <!-- <tab heading="{{'Leads' | localize}}">
                             <div [hidden]="selectedListing">
                                 <div class="row mt-3">
                                     <div class="col-6">
@@ -158,7 +158,7 @@
 
                                         </div>
                                     </div>
-                                    <!-- 
+                                    < ! -- 
                                 <div class="checkbox-inline">
                                     <label for="EditUser_SetRandomPassword" class="checkbox">
                                         <input id="EditUser_SetRandomPassword" type="checkbox" name="SetRandomPassword"
@@ -166,15 +166,15 @@
                                         <span></span>
                                         {{"SetRandomPassword" | localize}}
                                     </label>
-                                </div> -->
+                                </div> -- >
 
 
 
                                 </div>
                                 <div>
-                                    <!-- <ngx-tags-input name="tags" [(ngModel)]="citiefFilters" [displayField]="'label'"
+                                    < !-- <ngx-tags-input name="tags" [(ngModel)]="citiefFilters" [displayField]="'label'"
                                     (onTagsChanged)="getListings()">
-                                </ngx-tags-input> -->
+                                </ngx-tags-input> -- >
                                 </div>
                                 <div class="row">
                                     <div class="col-xl-2 mb-4" style="padding-top: 8px;">
@@ -203,7 +203,7 @@
                                                     <p-sortIcon field="city"></p-sortIcon>
                                                 </th>
                                                 <th pSortableColumn="address">
-                                                    {{'Adress' | localize}}<p-sortIcon field="address"></p-sortIcon>
+                                                    {{'Address' | localize}}<p-sortIcon field="address"></p-sortIcon>
                                                 </th>
                                                 <th>
                                                     {{'Unit' | localize}}
@@ -239,7 +239,7 @@
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    <span class="ui-column-title"> {{'Adress' | localize}}</span>
+                                                    <span class="ui-column-title"> {{'Address' | localize}}</span>
                                                     <span>
                                                         {{record.streetName}} {{record.streetNumber}}
                                                     </span>
@@ -306,7 +306,7 @@
                             <div>
                                 <listing-page *ngIf="!!selectedListing" [selectedListing]="selectedListing"> </listing-page>
                             </div>
-                        </tab>
+                        </tab> -->
                         <tab heading="{{'Communications' | localize}}">
                             <comms-inbox-view class="flex-row-fluid d-block"
                                     [contact]="user.emailAddress"></comms-inbox-view>
@@ -458,7 +458,7 @@
                                     <div class="modal-footer">
                                         <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
                                             (click)="close()">{{"Cancel" | localize}}</button>
-                                        <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!userForm.form.valid"
+                                        <button type="submit" class="btn btn-primary font-weight-bold save-button" [disabled]="!userForm.form.valid"
                                             [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
                                             <span>{{"Save" | localize}}</span></button>
                                     </div>

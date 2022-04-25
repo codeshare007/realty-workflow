@@ -1,0 +1,13 @@
+<div class="page-control-actions__font-position"
+     *ngIf="showTextPosition"
+     dropDownClickOutside
+     (dropDownClickOutside)="toggleTextPosition()">
+    <ul class="page-control-actions__font-position__list">
+        <li *ngFor="let item of fontPositionList"
+            [ngClass]="{ 'active': control.font.sizeInPx === item.value }"
+            (click)="selectPosition(item)"
+            class="page-control-actions__font-position__list__item">
+            <span>{{ item.name }}</span>
+        </li>
+    </ul>
+</div>

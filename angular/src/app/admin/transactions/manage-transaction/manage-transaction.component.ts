@@ -4,6 +4,7 @@ import { BreadcrumbItem } from '@app/shared/common/sub-header/sub-header.compone
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TransactionEditDto, TransactionServiceProxy, TransactionStatus, TransactionType } from '@shared/service-proxies/service-proxies';
+import { AbpSessionService } from 'abp-ng2-module';
 import { filter } from 'rxjs/internal/operators/filter';
 import { map } from 'rxjs/internal/operators/map';
 import { takeUntil } from 'rxjs/operators';
@@ -22,7 +23,8 @@ export class ManageTransactionComponent extends AppComponentBase implements OnIn
         contacts: 'contacts',
         forms: 'forms',
         signings: 'signings',
-        documents: 'documents'
+        documents: 'documents',
+        paymentTracker: 'paymenttracker'
     };
     breadcrumbs: BreadcrumbItem[];
 
@@ -73,11 +75,11 @@ export class ManageTransactionComponent extends AppComponentBase implements OnIn
                     type: TransactionType.None,
                     notes: '',
                     customer: '',
-                    agent: '',
+                    agent: this.appSession.user.name + ' ' + this.appSession.user.surname,
                     listingCode: '',
                     leadCode: '',
                     customerId: '',
-                    agentId: '',
+                    agentId: this.appSession.user.publicId,
                     leadId: '',
                     listingId: '',
                     id: undefined,

@@ -2,77 +2,97 @@
     <div class="card-header">
         <div class="w-100 d-flex align-items-center">
             <div class="w-100 d-flex justify-content-between">
-                <h4 class="card-label mb-0 d-flex align-items-center">General Info</h4>
+                <h4 class="card-label mb-0 d-flex align-items-center">Signing Info</h4>
                 <div>
-                    <a class="card-header-button" 
-                        [routerLink]="['/app/admin/transactions/' + signing.transactionId + '/signings']"
-                        *ngIf="isEditMode" 
-                        title="Back to Transaction"
-                        >
-                        <i class="fa fa-arrow-left edit-control mr-2"></i> {{ 'BacktoTransaction' | localize }}
-                    </a>
-                    <a class="card-header-button" 
-                        *ngIf="!isEditMode && signing.documentsCount > 0" 
-                        title="Design"
-                        [routerLink]="['/app/admin/signings/' + signing.id + '/design']"
-                        >
-                        <i class="far fa-object-group"></i>
-                    </a>
-                    <a class="card-header-button" (click)="saveSigning()" *ngIf="isEditMode" title="Save">
+                    <button class="btn btn-secondary mr-3"
+                            *ngIf="signing && signing.status == 0 && this.signing.transactionId"
+                            [routerLink]="['/app/admin/transactions/' + signing.transactionId + '/signings']"
+                            title="Back to Transaction">
+                        <i class="fa fa-arrow-left edit-control mr-2"></i>
+                        {{ 'BacktoTransaction' | localize }}
+                    </button>
+
+                    <button class="btn btn-primary mr-3 save-button"
+                            (click)="saveSigning()"
+                            *ngIf="isEditMode && signing && signing.status == 0"
+                            title="Save"
+                            [buttonBusy]="saving"
+                            [busyText]="'SavingWithThreeDot'">
                         <i class="la la-save edit-control"></i> {{ 'Save' | localize }}
-                    </a>
-                    <a class="card-header-button" (click)="isEditMode = true" *ngIf="!isEditMode" title="Edit">
-                        <i class="la la-pencil edit-control"></i>
-                    </a>
-                    <a class="card-header-button chevron" (click)="isOpened = !isOpened" title="Toggle">
-                        <i class="pi pi-fw pi-chevron-up" 
-                            [ngClass]="{'closed': !isOpened }"></i>
+                    </button>
+
+                    <button class="btn btn-primary mr-3"
+                            (click)="isEditMode = true"
+                            *ngIf="!isEditMode && signing && signing.status == 0"
+                            title="Edit">
+                        <i class="la la-pencil edit-control"></i> {{ 'Edit' | localize }}
+                    </button>
+
+                    <a class="card-header-button chevron"
+                       (click)="isOpened = !isOpened"
+                       title="Toggle">
+                        <i class="pi pi-fw pi-chevron-up"
+                           [ngClass]="{'closed': !isOpened }"></i>
                     </a>
                 </div>
             </div>
         </div>
     </div>
-    <div class="card-body py-0" *ngIf="isOpened && signing">
+    <div class="card-body py-0"
+         *ngIf="isOpened && signing">
         <div class="row py-3 mx-1 border-bottom-1">
-            <div class="col-lg-8 d-flex flex-column py-1 pl-0">
+            <div class="col-lg-6 d-flex flex-column py-1 pl-0">
                 <span class="font-weight-bold mr-2">Name*:</span>
-                <span *ngIf="!isEditMode" class="text-muted text-hover-primary">{{ signing.name }}</span>
+                <span *ngIf="!isEditMode"
+                      class="text-muted text-hover-primary">{{ signing.name }}</span>
                 <div *ngIf="isEditMode">
-                    <input id="SigningName" #signingNameInput="ngModel" type="text"
-                            name="SigningName" class="form-control" [(ngModel)]="signing.name"
-                            required maxlength="1024">
+                    <input id="SigningName"
+                           #signingNameInput="ngModel"
+                           type="text"
+                           name="SigningName"
+                           class="form-control"
+                           [(ngModel)]="signing.name"
+                           required
+                           maxlength="1024">
                     <validation-messages [formCtrl]="signingNameInput"></validation-messages>
                 </div>
             </div>
-            <div class="col-lg-4 d-flex flex-column py-1 px-0"
-                *ngIf="'Pages.Users.Agents' | permission"
-                >
-                
+            <div class="col-lg-3 d-flex flex-column py-1 px-0">
+                <span class="font-weight-bold mr-2">Status:</span>
+                <span class="text-muted text-hover-primary">{{ signing.status | signingStatus }}</span>
+            </div>
+            <div class="col-lg-3 d-flex flex-column py-1 px-0"
+                 *ngIf="'Pages.Users.Agents' | permission">
+
                 <span class="font-weight-bold mr-2">Agent:</span>
-                <autocomplete-user-input
-                    [isEditMode]="isEditMode"
-                    [(user)]="agent"
-                    (userChange)="signing.agentId = $event.publicId"
-                    [userRole]="'Agent'"
-                    >
+                <autocomplete-user-input [isEditMode]="isEditMode"
+                                         [(user)]="agent"
+                                         (userChange)="signing.agentId = $event.publicId"
+                                         [userRole]="'Agent'">
                 </autocomplete-user-input>
             </div>
         </div>
-        <div class="row py-3 mx-1" *ngIf="(signing.notes && signing.notes.length > 0) || isEditMode">
+        <div class="row py-3 mx-1 border-bottom-1">
+            <div class="col-sm-12">
+                <signing-settings [(settings)]="signing.settings"
+                                  [disabled]="!isEditMode">
+                </signing-settings>
+            </div>
+        </div>
+        <div class="row py-3 mx-1"
+             *ngIf="(signing.notes && signing.notes.length > 0) || isEditMode">
             <div class="col-lg-12 d-flex flex-column py-1 px-0">
                 <span class="font-weight-bold mr-2">Notes:</span>
-                <span *ngIf="!isEditMode" class="text-muted text-hover-primary">{{ signing.notes }}</span>
+                <span *ngIf="!isEditMode"
+                      class="text-muted text-hover-primary">{{ signing.notes }}</span>
                 <div *ngIf="isEditMode">
-                    <textarea 
-                        class="w-100"
-                        [(ngModel)]="signing.notes" 
-                        name="SigningNotes" 
-                        [style]="{'height':'300px'}"
-                        >
+                    <textarea class="w-100"
+                              [(ngModel)]="signing.notes"
+                              name="SigningNotes"
+                              [style]="{'height':'300px'}">
                     </textarea>
                 </div>
             </div>
         </div>
     </div>
 </div>
-

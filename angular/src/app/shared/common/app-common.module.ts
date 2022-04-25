@@ -38,18 +38,24 @@ import { WidgetSalesSummaryComponent } from './customizable-dashboard/widgets/wi
 import { WidgetSubscriptionExpiringTenantsComponent } from './customizable-dashboard/widgets/widget-subscription-expiring-tenants/widget-subscription-expiring-tenants.component';
 import { WidgetTopStatsComponent } from './customizable-dashboard/widgets/widget-top-stats/widget-top-stats.component';
 import { ClickOutsideDirective } from './directives/dropdown.directive';
+import { UiToolTipDirective } from './directives/tool-tip.directive';
 import { UiDragDropDirective } from './directives/ui-drag-drop.directive';
+import { UiToolTipComponent } from './directives/ui-tool-tip/ui-tool-tip.component';
 import { EntityChangeDetailModalComponent } from './entityHistory/entity-change-detail-modal.component';
 import { EntityTypeHistoryModalComponent } from './entityHistory/entity-type-history-modal.component';
+import { AutocompleteTransactionInputComponent } from './input-types/autocomplete-transaction-input.component/autocomplete-transaction-input.component';
 import { AutocompleteUserInputComponent } from './input-types/autocomplete-user-input.component/autocomplete-user-input.component';
 import { CheckboxInputTypeComponent } from './input-types/checkbox-input-type/checkbox-input-type.component';
 import { ComboboxInputTypeComponent } from './input-types/combobox-input-type/combobox-input-type.component';
 import { MultipleSelectComboboxInputTypeComponent } from './input-types/multiple-select-combobox-input-type/multiple-select-combobox-input-type.component';
 import { SingleLineStringInputTypeComponent } from './input-types/single-line-string-input-type/single-line-string-input-type.component';
+import { UserComboComponent } from './input-types/user-combo.component';
 import { KeyValueListManagerComponent } from './key-value-list-manager/key-value-list-manager.component';
 import { CommonLookupModalComponent } from './lookup/common-lookup-modal.component';
 import { PasswordInputWithShowButtonComponent } from './password-input-with-show-button/password-input-with-show-button.component';
 import { FormControlClassPipe } from './pipes/form-control-class.pipe';
+import { FormControlIconClassPipe } from './pipes/form-control-icon-class.pipe';
+import { FormControlParticipantNamePipe } from './pipes/form-control-participant-name.pipe';
 import { FormControlTypePipe } from './pipes/form-control-type.pipe';
 import { DatePickerInitialValueSetterDirective } from './timing/date-picker-initial-value.directive';
 import { DateRangePickerInitialValueSetterDirective } from './timing/date-range-picker-initial-value.directive';
@@ -105,13 +111,19 @@ import { TimeZoneComboComponent } from './timing/timezone-combo.component';
         PasswordInputWithShowButtonComponent,
         KeyValueListManagerComponent,
         SubHeaderComponent,
+        UiToolTipComponent,
+        AutocompleteUserInputComponent,
+        AutocompleteTransactionInputComponent,
+        UserComboComponent,
 
         ClickOutsideDirective,
         UiDragDropDirective,
+        UiToolTipDirective,
 
         FormControlTypePipe,
         FormControlClassPipe,
-        AutocompleteUserInputComponent,
+        FormControlIconClassPipe,
+        FormControlParticipantNamePipe,
     ],
     exports: [
         TimeZoneComboComponent,
@@ -125,13 +137,18 @@ import { TimeZoneComboComponent } from './timing/timezone-combo.component';
         PasswordInputWithShowButtonComponent,
         KeyValueListManagerComponent,
         SubHeaderComponent,
+        AutocompleteUserInputComponent,
+        AutocompleteTransactionInputComponent,
+        UserComboComponent,
 
         ClickOutsideDirective,
         UiDragDropDirective,
+        UiToolTipDirective,
 
         FormControlTypePipe,
         FormControlClassPipe,
-        AutocompleteUserInputComponent,
+        FormControlIconClassPipe,
+        FormControlParticipantNamePipe,
     ],
     providers: [
         DateTimeService,
@@ -159,7 +176,8 @@ import { TimeZoneComboComponent } from './timing/timezone-combo.component';
         SingleLineStringInputTypeComponent,
         ComboboxInputTypeComponent,
         CheckboxInputTypeComponent,
-        MultipleSelectComboboxInputTypeComponent
+        MultipleSelectComboboxInputTypeComponent,
+        UiToolTipComponent,
     ]
 })
 export class AppCommonModule {

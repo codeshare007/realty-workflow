@@ -1,10 +1,10 @@
 import { Injectable, Injector } from '@angular/core';
+import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { EntityDtoOfGuid, NotificationServiceProxy } from '@shared/service-proxies/service-proxies';
 import * as moment from 'moment';
 import * as Push from 'push.js'; // if using ES6
 import { NotificationSettingsModalComponent } from './notification-settings-modal.component';
-import { AppConsts } from '@shared/AppConsts';
 
 export interface IFormattedUserNotification {
     userNotificationId: string;
@@ -39,9 +39,9 @@ export class UserNotificationHelper extends AppComponentBase {
             case 'App.NewTenantRegistered':
                 return '/app/admin/tenants?filterText=' + userNotification.notification.data.properties.tenancyName;
             case 'App.GdprDataPrepared':
-                return AppConsts.remoteServiceBaseUrl + '/File/DownloadBinaryFile?id=' + userNotification.notification.data.properties.binaryObjectId + '&contentType=application/zip&fileName=collectedData.zip';
+                return AppConsts.remoteServiceBaseUrl + '/SystemFile/DownloadBinaryFile?id=' + userNotification.notification.data.properties.binaryObjectId + '&contentType=application/zip&fileName=collectedData.zip';
             case 'App.DownloadInvalidImportUsers':
-                return AppConsts.remoteServiceBaseUrl + '/File/DownloadTempFile?fileToken=' + userNotification.notification.data.properties.fileToken + '&fileType=' + userNotification.notification.data.properties.fileType + '&fileName=' + userNotification.notification.data.properties.fileName;
+                return AppConsts.remoteServiceBaseUrl + '/SystemFile/DownloadTempFile?fileToken=' + userNotification.notification.data.properties.fileToken + '&fileType=' + userNotification.notification.data.properties.fileType + '&fileName=' + userNotification.notification.data.properties.fileName;
             //Add your custom notification names to navigate to a URL when user clicks to a notification.
         }
 

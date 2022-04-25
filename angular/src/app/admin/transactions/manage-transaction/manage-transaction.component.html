@@ -28,7 +28,7 @@
                         <div id="kt_wizard_v2" data-wizard-state="first" class="wizard wizard-2">
                             <div class="wizard-body pr-10">
                                 <div *ngIf="transactionSections.contacts === currentSection">
-                                    <transaction-contacts [transactionId]="transaction.id"></transaction-contacts>
+                                    <transaction-participants [transactionId]="transaction.id"></transaction-participants>
                                 </div>
                                 <div *ngIf="transactionSections.forms === currentSection">
                                     <transaction-forms-table 
@@ -36,10 +36,14 @@
                                 </div>
                                 <div *ngIf="transactionSections.signings === currentSection">
                                     <signings-table 
-                                        [transactionId]="transaction.id"></signings-table>
+                                        [transactionId]="transaction.id"
+                                        [transactionName]="transaction.name"></signings-table>
                                 </div>
                                 <div *ngIf="transactionSections.documents === currentSection">
-                                    It will be a table with transaction documents
+                                    <attachments [transactionId]="transaction.id"></attachments>
+                                </div>
+                                <div *ngIf="transactionSections.paymentTracker === currentSection">
+                                    <transaction-payment-tracker [transactionId]="transaction.id"></transaction-payment-tracker>
                                 </div>
                             </div>
                             <div class="wizard-nav border-left pl-10">
@@ -77,6 +81,15 @@
                                         <div class="wizard-wrapper">
                                             <div class="wizard-label">
                                                 <div class="wizard-title">Documents</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a (click)="switchSection(transactionSections.paymentTracker)" 
+                                        [ngClass]="{'wizard-step-current': transactionSections.paymentTracker === currentSection }"
+                                        href="javascript:;" data-wizard-type="step" class="wizard-step" data-wizard-state="pending">
+                                        <div class="wizard-wrapper">
+                                            <div class="wizard-label">
+                                                <div class="wizard-title">Payment Tracker</div>
                                             </div>
                                         </div>
                                     </a>

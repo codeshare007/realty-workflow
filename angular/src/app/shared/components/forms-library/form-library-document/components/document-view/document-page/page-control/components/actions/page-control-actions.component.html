@@ -1,0 +1,169 @@
+<div class="page-control-actions"
+     *ngIf="isAllowedSetting || participants && participants.length || control.participantId"
+     [ngClass]="{ 'show-action': isShowAction() }">
+
+    <i class="fas fa-cog"
+       [ngClass]="{ 'opened-icon': showSettings }"
+       (click)="onControlSetting()"></i>
+
+    <div class="page-control-actions__wrapper">
+        <span *ngIf="control.participantId"
+              [ngClass]="{ 'participant__hide': showSettings }"
+              class="participant__name">
+            {{ control.type | formControlParticipantName:participants:control.participantId }}
+        </span>
+        <span class="page-control-actions__wrapper__hide"
+              *ngIf="showSettings"
+              [@state]="state"
+              (@state.done)="animationDone($event)">
+            <i class="fas fa-text-height click-outside"
+               *ngIf="isAllowedSetting && !isMoqups
+                    && control.type !== controlType.Initials
+                    && control.type !== controlType.OptionalInitials"
+               (click)="onActions(typeControlAction.TextSize)">
+            </i>
+            <i class="fas fa-text-width click-outside"
+               *ngIf="isAllowedSetting && !isMoqups
+               && (control.type === controlType.TextField
+               || control.type === controlType.TextArea)"
+               (click)="onActions(typeControlAction.TextPosition)">
+            </i>
+            <i class="fas fa-user-plus click-outside"
+               *ngIf="participants && participants.length && !isMoqups"
+               (click)="onActions(typeControlAction.Assign)">
+            </i>
+            <!-- TODO: Need add check to arrey from updateParticipantItems method -->
+            <i class="fas fa-user-plus click-outside"
+               *ngIf="mainLayer !== controlLayer.Signing && !isMoqups"
+               (click)="onActions(typeControlAction.ParticipantSetting)">
+            </i>
+
+            <i class="fas fa-object-ungroup click-outside"
+               *ngIf="isAllowedSetting"
+               (click)="onActions(typeControlAction.Copy)">
+            </i>
+            <i class="fas fa-trash-alt"
+               *ngIf="isAllowedSetting"
+               (click)="onActions(typeControlAction.Delete)">
+            </i>
+
+            <ng-container *ngIf="controlType.Dropdown === control.type">
+                <ng-container *ngIf="isControlTemp(); else dropdownRef">
+                    <span [uiTooltip]="'To add the setting to the control, you need to save the data'">
+                        <i class="far fa-save"
+                           (click)="onActions(typeControlAction.TempControl)"></i>
+                    </span>
+                </ng-container>
+                <ng-template #dropdownRef>
+                    <i class="far fa-list-alt click-outside"
+                       (click)="onActions(typeControlAction.DropdownControl)">
+                    </i>
+                </ng-template>
+            </ng-container>
+
+            <ng-container *ngIf="isMoqups && !isMoqupLine">
+                <ng-container *ngIf="isControlTemp(); else colorPickerRef">
+                    <span [uiTooltip]="'To change the color of the item, you need to save the data'">
+                        <i class="far fa-save"
+                           (click)="onActions(typeControlAction.TempControl)"></i>
+                    </span>
+                </ng-container>
+                <ng-template #colorPickerRef>
+                    <i class="fas fa-palette click-outside"
+                       (click)="onActions(typeControlAction.ColorPicker)"></i>
+                </ng-template>
+            </ng-container>
+        </span>
+    </div>
+
+    <div [hidden]="!showDropDown">
+        <dropdown-action [(showDropDown)]="showDropDown"
+                         [pageId]="pageId"
+                         [control]="control"
+                         [documentId]="documentId"
+                         (showDropDownChange)="isDisabledDraggingChange.emit(showDropDown)">
+        </dropdown-action>
+    </div>
+
+    <div [hidden]="!showParticipantSetting">
+        <participant-setting-action [(showParticipantSetting)]="showParticipantSetting"
+                                    (onChangeClass)="onChangeClass.emit()"
+                                    [control]="control"
+                                    [participantMappingItems]="participantMappingItems"
+                                    (showParticipantSetting)="isDisabledDraggingChange.emit(showParticipantSetting)">
+        </participant-setting-action>
+    </div>
+
+    <div class="page-control-actions__color-picker"
+         *ngIf="showColoPicker"
+         dropDownClickOutside
+         (dropDownClickOutside)="toggleColorPicker(); cancelColor(true)">
+        <color-sketch [color]="colorState ? colorState : 'RGBA'"
+                      (onChangeComplete)="colorPickerChange($event)">
+        </color-sketch>
+        <div class="page-control-actions__color-picker__button">
+            <button type="button"
+                    class="btn btn-light-primary font-weight-bold"
+                    (click)="cancelColor()">
+                {{ 'Cancel' | localize }}
+            </button>
+
+            <button type="button"
+                    class="btn btn-primary font-weight-bold"
+                    (click)="saveColorPicker()">
+                <i class="fa fa-save"></i>
+                <span>{{ 'Save' | localize }}</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="page-control-actions__copy"
+         *ngIf="showCopyDropDown"
+         dropDownClickOutside
+         (dropDownClickOutside)="toggleCopyDropDown()">
+        <ul class="page-control-actions__copy__list new-scrollbar">
+            <li *ngFor="let item of copyList"
+                (click)="selectCopy(item)"
+                class="page-control-actions__copy__list__item">
+                <span>{{ item.name }}</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="page-control-actions__font-size"
+         *ngIf="showTextSize"
+         dropDownClickOutside
+         (dropDownClickOutside)="toggleTextSize()">
+        <ul class="page-control-actions__font-size__list new-scrollbar">
+            <li *ngFor="let item of fontSizeList"
+                [ngClass]="{ 'active': control.font.sizeInPx === item.value }"
+                (click)="selectSize(item)"
+                class="page-control-actions__font-size__list__item">
+                <span>{{ item.name }}</span>
+            </li>
+        </ul>
+    </div>
+
+    <text-position [control]="control"
+                   [mainLayer]="mainLayer"
+                   [controlIndex]="controlIndex"
+                   [(showTextPosition)]="showTextPosition"
+                   (onControlActions)="onControlActions.emit($event)">
+    </text-position>
+
+    <div *ngIf="showDropDownAssign"
+         class="page-control-actions__participant"
+         dropDownClickOutside
+         (dropDownClickOutside)="toggleDropDownAssign()">
+        <div class="form-library-controls__wrapper">
+            <div class="form-library-controls__wrapper__participant">
+                <participant [participants]="participants"
+                             [participantId]="control.participantId"
+                             [title]="'Participant'"
+                             (selectedParticipant)="onParticipantSelect($event)">
+                </participant>
+            </div>
+        </div>
+    </div>
+
+</div>

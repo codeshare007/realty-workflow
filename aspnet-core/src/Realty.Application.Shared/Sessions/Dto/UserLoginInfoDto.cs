@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using System;
 
 namespace Realty.Sessions.Dto
 {
@@ -13,5 +14,7 @@ namespace Realty.Sessions.Dto
         public string EmailAddress { get; set; }
 
         public string ProfilePictureId { get; set; }
+        
+        public Guid PublicId { get; set; }
     }
 }

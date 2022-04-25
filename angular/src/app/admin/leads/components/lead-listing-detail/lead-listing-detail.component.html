@@ -1,0 +1,252 @@
+<ng-container *ngIf="listing">
+    <div class="lead-listing-detail__actions">
+        <i (click)="goBack()" class="fa fa-arrow-left"></i>
+        <h1 class="lead-listing-detail__title">
+            {{ listing | leadListingTitle }}
+        </h1>
+    </div>
+
+    <div class="row lead-listing-detail__wrapper">
+        <div class="col-8">
+            
+            <div class="row lead-listing-detail__main-wrapper" *ngIf="recommendedListing && (recommendedListing.leadQuestion || recommendedListing.requestedTourDate)">
+                <div class="col-12 card card-custom lead-listing-detail__main">
+                    <div class="row lead-listing-detail__list">
+                        <lead-listing-item [class]="!recommendedListing.leadQuestion ? 'col-6' : 'col-3'"
+                            *ngIf="recommendedListing.requestedTourDate"
+                            [title]="'Requested Date'"
+                            [description]="recommendedListing.requestedTourDate | momentFormat:'L'">
+                        </lead-listing-item>
+
+                        <lead-listing-item [class]="!recommendedListing.leadQuestion ? 'col-6' : 'col-3'"
+                            *ngIf="recommendedListing.requestedTourTime"
+                            [title]="'Requested Time'"
+                            [description]="recommendedListing.requestedTourTime | leadRequestTourTime">
+                        </lead-listing-item>
+
+                        <lead-listing-item [class]="!recommendedListing.requestedTourDate && !recommendedListing.requestedTourTime ? 'col-12' : 'col-6'"
+                            *ngIf="recommendedListing.leadQuestion"
+                            [title]="'Question from lead'"
+                            [description]="recommendedListing.leadQuestion">
+                        </lead-listing-item>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row lead-listing-detail__main-wrapper">
+                <!-- Main Start -->
+                <div class="col-12 card card-custom lead-listing-detail__main">
+                    <div class="row lead-listing-detail__list">
+                        <lead-listing-item class="col-3"
+                                           [title]="'ID'"
+                                           [description]="listing.yglID ? listing.yglID : '-'">
+                        </lead-listing-item>
+
+                        <lead-listing-item class="col-3"
+                                           [title]="'Source'"
+                                           [description]="listing.source">
+                                           
+                        </lead-listing-item>
+                        <!-- | leadListingSource -->
+                        <lead-listing-item class="col-3"
+                                           [title]="'Updated'"
+                                           [description]="listing.updateDate | leadListingDate:'L'">
+                        </lead-listing-item>
+
+                        <lead-listing-item class="col-3"></lead-listing-item>
+                    </div>
+
+                    <div class="row lead-listing-detail__list">
+                        <lead-listing-item class="col-3"
+                                           [title]="'Rent'"
+                                           [description]="listing.price ? (listing.price | currency) : '-'">
+                        </lead-listing-item>
+
+                        <lead-listing-item class="col-3"
+                                           [title]="'Avail Date'"
+                                           [description]="listing.availableDate | leadListingDate:'L'">
+                        </lead-listing-item>
+
+                        <lead-listing-item class="col-3"
+                                           [title]="'Beds'"
+                                           [description]="listing.beds | leadListingBads">
+                        </lead-listing-item>
+
+                        <lead-listing-item class="col-3"
+                                           [title]="'Baths'"
+                                           [description]="listing.baths | leadListingBads">
+                        </lead-listing-item>
+                    </div>
+
+                    <div class="row lead-listing-detail__list">
+
+                        <lead-listing-item class="col-3"
+                                           [title]="'Fee Paid By Owner'"
+                                           [description]="listing.fee | leadListingFee">
+                        </lead-listing-item>
+
+                        <lead-listing-item class="col-3"
+                                           [title]="'Rent Includes'"
+                                           [description]="listing | leadListingRentIncludes">
+                        </lead-listing-item>
+
+                        <lead-listing-item class="col-3"
+                                           [title]="'Square Footage'"
+                                           [description]="listing.squareFootage ? listing.squareFootage: '-'">
+                        </lead-listing-item>
+
+                        <lead-listing-item class="col-3"
+                                           [title]="'Laundry'"
+                                           [description]="listing.laundry ? listing.laundry : '-'">
+                        </lead-listing-item>
+                    </div>
+
+                    <div class="row lead-listing-detail__list">
+                        <!-- <BuildingType /> -- (Apartment Complex, Condominium, Multi-Family, Single-Family, Townhouse, Brownstone) -->
+                        <lead-listing-item class="col-3"
+                                           [title]="'Building Type'"
+                                           [description]="listing.buildingType ? listing.buildingType : '-'">
+                        </lead-listing-item>
+
+                        <lead-listing-item class="col-3"
+                                           [title]="'Heat Source'"
+                                           [description]="listing.heatSource ? listing.heatSource : '-'">
+                        </lead-listing-item>
+
+                        <lead-listing-item class="col-3"
+                                           [title]="'Unit Level'"
+                                           [description]="listing.unitLevel ? listing.unitLevel : '-'">
+                        </lead-listing-item>
+
+                        <lead-listing-item class="col-3"
+                                           [title]="'Student'"
+                                           [description]="listing.studentPolicy ? listing.studentPolicy : '-'">
+                        </lead-listing-item>
+                    </div>
+
+                    <div class="row lead-listing-detail__list">
+                        <lead-listing-item class="col-6"
+                                           [title]="'Pet'"
+                                           [description]="listing.pet ? listing.pet : '-'">
+                        </lead-listing-item>
+
+                        <lead-listing-item class="col-6"
+                                           [title]="'Parking'"
+                                           [description]="listing.parking | leadListingParking">
+                        </lead-listing-item>
+                    </div>
+
+                    <div class="row lead-listing-detail__list features__list"
+                         *ngIf="listing.feature && listing.feature.length">
+                        <lead-listing-item class="col-12"
+                                           [title]="'Features'"
+                                           [tags]="listing.feature">
+                        </lead-listing-item>
+                    </div>
+
+                    <!-- <div class="lead-listing-detail__info not-have-data ">
+                        <h3>TEST SHOWING INFO</h3>
+                        <p>Showing & Tenant Info</p>
+                        <p>Call Ann - Landlord <span>617-875-6649</span></p>
+                    </div> -->
+
+                </div>
+                <!-- Main End -->
+
+                <ng-container *ngIf="listing.unitDescription">
+                    <!-- Notes Start -->
+                    <h2 class="lead-listing-detail__title">
+                        Notes / Descriptions
+                    </h2>
+                    <div class="col-12 card card-custom lead-listing-detail__notes">
+                        <div class="row lead-listing-detail__list">
+                            <div class="col-12 lead-listing-detail__list__item">
+                                <span class="lead-listing-detail__list__item-title">Internal Notes</span>
+                                <span class="lead-listing-detail__list__item-description">
+                                    <!-- <h4>[UNIT]</h4> -->
+                                    <span>{{ listing.unitDescription }}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Notes End -->
+                </ng-container>
+
+                
+                <!-- Cost Start -->
+                <h2 class="lead-listing-detail__title">
+                    Move In Cost
+                </h2>
+                <div class="col-12 card card-custom lead-listing-detail__cost not-have-data">
+                    <div class="row lead-listing-detail__list">
+                        <lead-listing-item class="col-3"
+                                        [title]="'First Month'"
+                                        [description]="'$' + listing.price">
+                        </lead-listing-item>
+
+                        <lead-listing-item class="col-3"
+                                        [title]="'Last Month'"
+                                        [description]="'$0'">
+                        </lead-listing-item>
+                        <lead-listing-item class="col-3"
+                                        [title]="'Security'"
+                                        [description]="'$' + listing.price">
+                        </lead-listing-item>
+
+                        <lead-listing-item class="col-3"
+                                        [title]="'Application Fee'"
+                                        [description]="'-'">
+                        </lead-listing-item>
+                    </div>
+
+                    <div class="row lead-listing-detail__list">
+                        <lead-listing-item class="col-3"
+                                        [title]="'Move In Fee'"
+                                        [description]="'-'">
+                        </lead-listing-item>
+
+                        <lead-listing-item class="col-3"
+                                        [title]="'Pet Deposit'"
+                                        [description]="'-'">
+                        </lead-listing-item>
+                        <lead-listing-item class="col-3"
+                                        [title]="'Key Deposit'"
+                                        [description]="'-'">
+                        </lead-listing-item>
+
+                        <lead-listing-item class="col-3"></lead-listing-item>
+                    </div>
+                </div>
+                    <!-- Cost Start -->
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card card-custom lead-listing-detail__side">
+                <lead-listing-video [items]="videos"
+                                    *ngIf="listing.virtualTour && listing.virtualTour.length">
+                </lead-listing-video>
+
+                <div class="lead-listing-detail__side__slider">
+                    <div class="lead-listing-detail__side__slider__image"
+                         *ngIf="listing.photo && listing.photo.length"
+                         (click)="openImagesModal()">
+                        <div [ngStyle]="{ 'background-image' : 'url(\''+ getFirstImage() + '\')'}">
+                        </div>
+                    </div>
+
+                    <div class="lead-listing-detail__side__slider__dots" 
+                        *ngIf="listing.photo && listing.photo.length">
+                        <ng-container *ngFor="let item of listing.photo; let i = index">
+                            <span class="ui-carousel-dot-icon"
+                                *ngIf="i < 5"
+                                (click)="openImagesModal()"></span>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<lead-images-modal #leadImagesModalRef></lead-images-modal>

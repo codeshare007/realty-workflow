@@ -1,0 +1,68 @@
+<div class="signing__progress-wrapper"
+     *ngIf="showActions()">
+    <div class="signing__block"
+         *ngIf="showProgress()">
+        <span>
+            Progress: {{ progress }}%
+        </span>
+
+        <span> ({{ complitedControls }} of {{ requiredControls }}) mandatory fields/signatures</span>
+    </div>
+
+    <div class="signing__actions">
+        <button [disabled]="!isPrevious"
+                type="button"
+                class="btn btn-light-primary font-weight-bold"
+                (click)="onPrevious()">
+            {{ 'Previous' }}
+        </button>
+
+        <button type="button"
+                [disabled]="!isNext"
+                class="btn btn-primary font-weight-bold"
+                (click)="onNext()">
+            <span>{{ 'Next' }}</span>
+        </button>
+        
+        <!-- [disabled]="!isComplete" -->
+        <button type="button"
+                class="btn btn-primary font-weight-bold"
+                (click)="onComplete()">
+            <span>{{ 'Complete' }}</span>
+        </button>
+
+        <button type="button"
+                class="btn btn-primary font-weight-bold"
+                (click)="onShowReject()">
+            <span>{{ 'Reject' }}</span>
+        </button>
+    </div>
+</div>
+<div *ngIf="isActive && signing && signing.id"
+     class="new-scrollbar">
+    <div class="signing__details-wrapper">
+        <div class="signing__wrapper"
+             [ngClass]="{ 'progress-on': showActions() }"
+             keyDownTabEnter>
+            <div *ngFor="let form of signing.forms"
+                 class="signing__wrapper__document">
+                <document-view *ngIf="form"
+                               [publicMode]="true"
+                               [participants]="signing.participants"
+                               [participantId]="signing.participantId"
+                               [document]="form"
+                               [accessTypeItem]="accessTypeItem">
+                </document-view>
+            </div>
+            <div class="signing__triangle-arrow"
+                 *ngIf="isArrowActive()"
+                 [style.top]="getTopPosition()">
+            </div>
+        </div>
+        <details-control-signing *ngIf="isControlSelected"></details-control-signing>
+    </div>
+</div>
+
+<reject-modal #rejectModalRef
+              (modalSave)="onReject($event)">
+</reject-modal>

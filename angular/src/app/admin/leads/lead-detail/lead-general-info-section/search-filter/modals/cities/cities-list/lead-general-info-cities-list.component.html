@@ -1,0 +1,23 @@
+<h4 class="lead-general-info-cities-list__title">
+    {{ leadCities.letter }}
+</h4>
+<ul class="lead-general-info-cities-list__list" [ngStyle]="{ 'height': ((leadCities.cities.length / 4) + 1) * 27 + 'px'  }">
+    <li *ngFor="let city of leadCities.cities"
+        class="lead-general-info-cities-list__list__item">
+        <div class="form-group">
+            <div class="checkbox-inline">
+                <label class="checkbox">
+                    <input type="checkbox"
+                           [name]="'city_' + city.id"
+                           [(ngModel)]="city.checked"
+                           (ngModelChange)="selectCity(city.name, $event)">
+                    <span></span>
+                    {{ city.name }}
+                </label>
+            </div>
+        </div>
+    </li>
+
+    <li *ngIf="leadCities.cities.length == 3 || leadCities.cities.length == 6"
+        class="lead-general-info-cities-list__list__item w-100"></li>
+</ul>

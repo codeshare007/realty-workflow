@@ -10,7 +10,7 @@ namespace Realty.Authorization.Users
     {
         Task<PagedResultDto<UserListDto>> GetUsers(GetUsersInput input);
 
-        Task<FileDto> GetUsersToExcel(GetUsersToExcelInput input);
+        //Task<FileDto> GetUsersToExcel(GetUsersToExcelInput input);
 
         Task<GetUserForEditOutput> GetUserForEdit(UserIdentifierInput input);
 

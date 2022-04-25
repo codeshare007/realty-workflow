@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Realty.Authorization.Users;
-using Realty.Contacts;
 using Realty.Leads;
 using Realty.MultiTenancy;
 
@@ -29,15 +28,15 @@ namespace Realty.EntityConfigurations.Leads
                 .HasForeignKey(e => e.CustomerId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne<Contact>(e => e.Contact)
-                .WithMany()
-                .HasForeignKey(e => e.ContactId)
+            builder.HasMany(e => e.LeadContacts)
+                .WithOne(l=> l.Lead)
+                .HasForeignKey(l=> l.LeadId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasMany(e => e.RecommendedListings)
                 .WithOne(e => e.Lead)
                 .HasForeignKey(e => e.LeadId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

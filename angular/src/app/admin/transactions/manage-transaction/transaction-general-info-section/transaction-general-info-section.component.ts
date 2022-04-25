@@ -35,7 +35,8 @@ export class TransactionGeneralSectionComponent extends AppComponentBase impleme
         new SelectListItem(TransactionType.None, 'None'),
         new SelectListItem(TransactionType.ResidentialLease, 'Residential Lease'),
         new SelectListItem(TransactionType.ResidentialListing, 'Residential Listing'),
-        new SelectListItem(TransactionType.ResidentialSale, 'Residential Sale')
+        new SelectListItem(TransactionType.ResidentialSale, 'Residential Sale'),
+        new SelectListItem(TransactionType.Renewal, 'Renewal')
     ];
 
     constructor(

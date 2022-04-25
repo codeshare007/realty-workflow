@@ -184,6 +184,17 @@ namespace Realty.MultiTenancy
                 await uow.CompleteAsync();
             }
 
+            using (var uow = _unitOfWorkManager.Begin(TransactionScopeOption.RequiresNew))
+            {
+                using (AbpSession.Use(newTenantId, null))
+                using (_unitOfWorkManager.Current.SetTenantId(newTenantId))
+                {
+                    await _roleManager.UpdateStaticRolePermissions(newTenantId);
+                    await _unitOfWorkManager.Current.SaveChangesAsync(); //To get static role ids
+                }
+                await uow.CompleteAsync();
+            }
+
             //Used a second UOW since UOW above sets some permissions and _notificationSubscriptionManager.SubscribeToAllAvailableNotificationsAsync needs these permissions to be saved.
             using (var uow = _unitOfWorkManager.Begin(TransactionScopeOption.RequiresNew))
             {
@@ -316,6 +327,18 @@ namespace Realty.MultiTenancy
             }
 
             return base.UpdateAsync(tenant);
+        }
+
+        public async Task UpdateTenantRolesAsync(Tenant tenant)
+        {
+            using var uow = _unitOfWorkManager.Begin(TransactionScopeOption.RequiresNew);
+            using (AbpSession.Use(tenant.Id, null))
+            using (_unitOfWorkManager.Current.SetTenantId(tenant.Id))
+            {
+                await _roleManager.UpdateStaticRolePermissions(tenant.Id);
+                await _unitOfWorkManager.Current.SaveChangesAsync(); //To get static role ids
+            }
+            await uow.CompleteAsync();
         }
     }
 }

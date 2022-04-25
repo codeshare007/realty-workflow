@@ -1,0 +1,137 @@
+import { Component, Injector, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { UiTableActionItem } from '@app/shared/layout/components/ui-table-action/models/ui-table-action.model';
+import { accountModuleAnimation } from '@shared/animations/routerTransition';
+import { AppComponentBase } from '@shared/common/app-component-base';
+import { DownloadTransactionAttachmentInput, EntityDtoOfGuid, TransactionAttachmentListDto, TransactionServiceProxy } from '@shared/service-proxies/service-proxies';
+import { FileDownloadService } from '@shared/utils/file-download.service';
+import { isUndefined } from 'lodash';
+import { LazyLoadEvent, Paginator, Table } from 'primeng';
+import { Subject } from 'rxjs';
+import { debounceTime, finalize } from 'rxjs/operators';
+
+@Component({
+    selector: 'transaction-attachments-table',
+    templateUrl: './transaction-attachments-table.component.html',
+    animations: [accountModuleAnimation()]
+})
+export class TransactionAttachmentsTableComponent extends AppComponentBase implements OnInit, OnDestroy {
+
+    @ViewChild('dataTable', { static: true }) dataTable: Table;
+    @ViewChild('paginator', { static: true }) paginator: Paginator;
+
+    @Input() transactionId: string;
+
+    active = false;
+    loading = false;
+
+    public filterTextSubject: Subject<string> = new Subject<string>();
+
+    filter = {
+        filterText: '',
+    };
+
+    actionsList: UiTableActionItem[] = [
+        new UiTableActionItem(this.l('Download')),
+        new UiTableActionItem(this.l('Delete')),
+    ];
+
+    constructor(
+        injector: Injector,
+        private _transactionService: TransactionServiceProxy,
+        private _fileDownloadService: FileDownloadService,
+    ) {
+        super(injector);
+    }
+
+    ngOnInit(): void {
+        this.filterTextSubject
+            .pipe(debounceTime(500))
+            .subscribe(filterText => {
+                this.filter.filterText = filterText;
+                this.getAttachments();
+            });
+    }
+
+    ngOnDestroy(): void {
+        this.filterTextSubject.complete();
+    }
+
+    getAttachments(event?: LazyLoadEvent) {
+        if (this.primengTableHelper.shouldResetPaging(event)) {
+            this.paginator.changePage(0);
+
+            return;
+        }
+
+        this.loading = true;
+        this._transactionService
+            .getAttachments(
+                this.transactionId,
+                this.filter.filterText,
+                this.primengTableHelper.getSorting(this.dataTable),
+                this.primengTableHelper.getMaxResultCount(this.paginator, event),
+                this.primengTableHelper.getSkipCount(this.paginator, event))
+            .pipe(finalize(() => this.loading = false))
+            .subscribe(res => {
+                this.primengTableHelper.records = res.items;
+                this.primengTableHelper.totalRecordsCount = res.totalCount;
+            });
+    }
+
+    public actions(record: TransactionAttachmentListDto): UiTableActionItem[] {
+        return this.actionsList;
+    }
+
+    public selectOption(element: { item: UiTableActionItem, id: string }): void {
+        switch (element.item.name) {
+            case this.l('Download'):
+                this._downloadAttachment(element.id);
+                break;
+            case this.l('Delete'):
+                this._deleteAttachment(element.id);
+                break;
+        }
+    }
+
+    private _downloadAttachment(attachmentId: string): void {
+        let attachment = this.primengTableHelper.records
+            .filter(i => i.attachment.id === attachmentId)
+            .map(i => i.attachment)[0];
+
+        if (isUndefined(attachment)) { return; }
+
+        const input = new DownloadTransactionAttachmentInput();
+        input.id = this.transactionId;
+        input.attachment = new EntityDtoOfGuid();
+        input.attachment.id = attachmentId;
+
+        this.loading = true;
+        this._transactionService.downloadAttachment(input)
+            .pipe(finalize(() => this.loading = false))
+            .subscribe(result => {
+                this._fileDownloadService.downloadTempFile(result);
+            });
+    }
+
+    private _deleteAttachment(attachmentId: string): void {
+        let attachment = this.primengTableHelper.records
+            .filter(i => i.attachment.id === attachmentId)
+            .map(i => i.attachment)[0];
+
+        if (isUndefined(attachment)) { return; }
+
+        this.message.confirm(
+            this.l('AttachmentDeleteWarningMessage', attachment.name),
+            this.l('AreYouSure'),
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    this._transactionService.deleteAttachment(attachment.id, this.transactionId)
+                        .subscribe(() => {
+                            this.getAttachments();
+                            this.notify.success(this.l('SuccessfullyDeleted'));
+                        });
+                }
+            }
+        );
+    }
+}

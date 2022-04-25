@@ -1,14 +1,89 @@
 .signature-control-modal {
 
+    .divider-line {
+        content: '';
+        position: absolute;
+        bottom: 44px;
+        left: 5%;
+        width: 90%;
+        height: 1px;
+        background-color: @disabled-color;
+    }
+
+    &__block {
+        width: 650px;
+    }
+
     &__wrapper {
         position: relative;
     }
 
+    &__type {
+        position: relative;
+        width: 600px;
+        height: 160px;
+        background-color: @main-white-third;
+        border: 1px solid @main-border;
+
+        @media (max-width: 809px) {
+            width: 400px;
+        }
+
+        @media (max-width: @screen-xs-to) {
+            width: 270px;
+        }
+
+        &:after {
+            .divider-line();
+        }
+
+        input {
+            position: absolute;
+            bottom: 44px;
+            left: 5%;
+            padding: 8px 16px;
+            width: 90%;
+            height: 80px;
+            border: none;
+            background-color: transparent;
+            text-align: center;
+            font-size: 56px;
+            font-weight: 600;
+            font-family: @fontDancingScript;
+            text-transform: capitalize;
+            outline: none;
+        }
+
+        .capitalize {
+            text-transform: capitalize;
+        }
+    }
+
     &__canvas {
+        position: relative;
+        width: auto;
 
         canvas {
             background-color: @main-white-third;
             border: 1px solid @main-border;
+            height: 200px;
+        }
+
+        &:after {
+            .divider-line();
+        }
+    }
+
+    &__actions {
+        cursor: pointer;
+        position: absolute;
+        top: 8px;
+        left: 16px;
+        color: @disabled-color;
+        font-size: 15px;
+
+        &:hover {
+            color: @main-color-grey;
         }
     }
 }

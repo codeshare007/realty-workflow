@@ -2,7 +2,8 @@
 {
     public enum ControlLayer
     {
-        Form = 0,
-        Signing = 1
+        Library = 0,
+        Transaction = 1,
+        Signing = 2,
     }
 }

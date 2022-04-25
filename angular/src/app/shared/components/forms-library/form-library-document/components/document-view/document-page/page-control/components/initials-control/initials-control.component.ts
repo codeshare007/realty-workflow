@@ -30,6 +30,5 @@ export class InitialsControlComponent extends AppComponentBase implements OnInit
     }
 
     public onInitialsChange(event): void {
-        console.log('onInitialsChange: ', event);
     }
 }

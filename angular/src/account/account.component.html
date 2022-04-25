@@ -1,9 +1,9 @@
 <div class="d-flex flex-column flex-root">
     <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white" id="kt_login">
-        <div class="login-aside d-flex flex-column flex-row-auto" style="background-color: #F2C98A;" *ngIf="!useFullWidthLayout()">
+        <div class="login-aside d-flex flex-column flex-row-auto" style="background-color: #f9f9f9;" *ngIf="!useFullWidthLayout()">
             <div class="d-flex flex-column-auto flex-column pt-lg-40 pt-15">
                 <a (click)="goToHome()" href="" class="text-center mb-10">
-                    <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" [src]="appRootUrl() + 'assets/common/images/app-logo-on-dark.jpg'" alt="logo" class="h-300px" />
+                    <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" [src]="appRootUrl() + 'assets/common/images/app-logo-on-dark.png'" alt="logo" class="h-300px" />
                     <img *ngIf="appSession.tenant && appSession.tenant.logoId" [src]="remoteServiceBaseUrl + '/TenantCustomization/GetTenantLogo?skin=light&tenantId=' + appSession.tenant.id + '&id=' + appSession.tenant.logoId" alt="logo" class="max-h-70px" />
                 </a>
                 <h3 class="font-weight-bolder text-center font-size-h4 font-size-h1-lg" style="color: #1a1a1a;">
@@ -17,7 +17,7 @@
                 <div class="login-form login-signin">
                     <div class="pb-13 pt-lg-0 pt-5">
                         <a (click)="goToHome()" href="" class="text-center mb-10" *ngIf="useFullWidthLayout()">
-                            <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" [src]="appRootUrl() + 'assets/common/images/app-logo-on-light.jpg'" alt="logo" class="max-h-70px" />
+                            <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" [src]="appRootUrl() + 'assets/common/images/app-logo-on-light.png'" alt="logo" class="max-h-70px" />
                             <img *ngIf="appSession.tenant && appSession.tenant.logoId" [src]="remoteServiceBaseUrl + '/TenantCustomization/GetTenantLogo?skin=light&tenantId=' + appSession.tenant.id + '&id=' + appSession.tenant.logoId" alt="logo" class="max-h-70px" />
                         </a>
                         <div *ngIf="showTenantChange()" class="login__signup-label tenant-change-box">

@@ -1,0 +1,59 @@
+.ui-checkbox {
+    label {
+        cursor: pointer;
+        position: relative;
+        display: block;
+        margin-bottom: 0;
+        padding-left: 28px;
+        font-size: 16px;
+        transition: all 0.2s ease-in;
+
+        input {
+            &[type="checkbox"] {
+                cursor: pointer;
+                position: absolute;
+                height: 0;
+                width: 0;
+                opacity: 0;
+            }
+
+            &:checked~.checkmark {
+                background-color: @main-color;
+
+                &:after {
+                    display: block;
+                }
+            }
+        }
+
+        &:hover input~.checkmark {
+            opacity: 0.85;
+        }
+
+        .checkmark:after {
+            left: 8px;
+            top: 4px;
+            width: 5px;
+            height: 10px;
+            border: solid @main-white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+    }
+
+    .checkmark {
+        position: absolute;
+        top: 2px;
+        left: 0;
+        height: 20px;
+        width: 20px;
+        background-color: @disabled-color-second;
+        border-radius: 4px;
+
+        &:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+    }
+}

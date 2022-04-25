@@ -22,12 +22,25 @@ namespace Realty.Storage
             _fileRepository = fileRepository;
         }
 
-        public async Task<File> UploadFile(int tenantId, string fileName, string contentType, byte[] bytes)
+        public async Task<File> UploadFileFor(IHaveFiles entity, string fileName, 
+            string contentType, byte[] bytes)
+        {
+            var response = await Upload(entity, fileName, contentType, bytes);
+            var file = new File(response);
+            
+            await _fileRepository.InsertAsync(file);
+            await UnitOfWorkManager.Current.SaveChangesAsync();
+
+            return file;
+        }
+
+        public async Task<UploadFileResult> Upload(IHaveFiles entity, string fileName,
+            string contentType, byte[] bytes)
         {
             Check.NotNull(bytes, nameof(bytes));
             Check.NotNullOrEmpty(fileName, nameof(fileName));
 
-            var path = await _storagePathResolver.GetPath(tenantId);
+            var path = await _storagePathResolver.GetPathFor(entity);
 
             UploadFileResult response;
             await using (var memoryStream = new MemoryStream(bytes))
@@ -44,12 +57,7 @@ namespace Realty.Storage
                 memoryStream.Close();
             }
 
-            var file = new File(response);
-            
-            await _fileRepository.InsertAsync(file);
-            await UnitOfWorkManager.Current.SaveChangesAsync();
-
-            return file;
+            return response;
         }
 
         public async Task DeleteFile(Guid fileId)

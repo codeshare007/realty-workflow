@@ -1,0 +1,244 @@
+.signing {
+    .document-view__wrapper {
+        padding: 0;
+        height: 100%;
+        background-color: transparent;
+        overflow: inherit;
+    }
+
+    &__name-action {
+        display: flex;
+        flex-direction: column;
+
+        &-btn {
+            text-decoration: underline;
+            transition: text-decoration 150ms ease-in;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+    .progress__bar::-webkit-progress-value {
+        background-image:
+            -webkit-linear-gradient(135deg,
+                transparent,
+                transparent 33%,
+                rgba(0, 0, 0, .1) 33%,
+                rgba(0, 0, 0, .1) 66%,
+                transparent 66%),
+            -webkit-linear-gradient(top,
+                rgba(255, 255, 255, .25),
+                rgba(0, 0, 0, .2)),
+            -webkit-linear-gradient(left, @main-color, @main-color-second);
+    }
+
+    progress[value] {
+        appearance: none;
+        position: relative;
+        margin: 20px;
+        width: 98%;
+        height: 10px;
+        background-color: transparent;
+        border: none;
+        border-radius: 3px;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, .1) inset;
+        transition: all 0.2s ease-in;
+    }
+
+    progress[value]::-webkit-progress-bar {
+        background-color: transparent;
+        border-radius: 3px;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, .1) inset;
+    }
+
+    progress[value]::-webkit-progress-value {
+        position: relative;
+        background-size: 35px 20px, 100% 100%, 100% 100%;
+        border-radius: 3px;
+        animation: animate-stripes 5s linear infinite;
+        transition: all 0.2s ease-in;
+    }
+
+    @keyframes animate-stripes {
+        100% {
+            background-position: -100px 0;
+        }
+    }
+
+    progress[value]::-webkit-progress-value:after {
+        content: '';
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        width: 5px;
+        height: 5px;
+        background-color: transparent;
+        border-radius: 100%;
+    }
+
+    progress[value]::-moz-progress-bar {
+        background-image:
+            -moz-linear-gradient(135deg,
+                transparent,
+                transparent 33%,
+                rgba(0, 0, 0, .1) 33%,
+                rgba(0, 0, 0, .1) 66%,
+                transparent 66%),
+            -moz-linear-gradient(top,
+                rgba(255, 255, 255, .25),
+                rgba(0, 0, 0, .2)),
+            -moz-linear-gradient(left, @main-color, @main-color-second);
+        background-size: 35px 20px, 100% 100%, 100% 100%;
+        border-radius: 3px;
+    }
+
+    &__progress-wrapper {
+        position: fixed;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 60px;
+        background-color: @main-background;
+        border: 1px solid @main-border;
+        z-index: 100;
+    }
+
+    &__block {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: @main-color;
+        font-size: 16px;
+        font-weight: 500;
+        text-transform: capitalize;
+    }
+
+    &__actions {
+        position: absolute;
+        right: 0;
+        display: flex;
+        align-items: center;
+        margin: 10px;
+
+        button {
+            &.btn {
+                &:disabled {
+                    cursor: not-allowed;
+                    color: @disabled-color;
+                    background-color: @disabled-color-second;
+                    border-color: @disabled-color;
+                }
+            }
+        }
+    }
+
+    @media (max-width: @screen-m-to) {
+        &__progress-wrapper {
+            flex-direction: column;
+            gap: 6px;
+            padding: 4px 0px 6px;
+            height: min-content;
+        }
+
+        &__block {
+            flex-direction: column;
+            gap: 0;
+            line-height: 20px;
+        }
+
+        &__actions {
+            position: initial;
+            justify-content: center;
+            margin: 0;
+
+            .btn {
+                height: 24px;
+                line-height: 1;
+                padding: 0 10px;
+            }
+        }
+    }
+
+    &__details-wrapper {
+        display: flex;
+        justify-content: center;
+        margin: 24px auto;
+
+        @media (max-width: @screen-xl-to) {
+            zoom: 80%;
+        }
+
+        @media (max-width: @screen-l-to) {
+            zoom: 70%;
+        }
+
+        @media (max-width: @screen-m-to) {
+            zoom: 60%;
+        }
+
+        @media (max-width: @screen-ms-to) {
+            zoom: 55%;
+        }
+
+        @media (max-width: @screen-sm-to) {
+            zoom: 50%;
+        }
+
+        @media (max-width: @screen-sms-to) {
+            zoom: 40%;
+        }
+
+        @media (max-width: @screen-xs-to) {
+            zoom: 35%;
+        }
+
+        @media (max-width: @screen-xsm-to) {
+            zoom: 30%;
+        }
+
+        @media (max-width: @screen-xss-to) {
+            zoom: 25%;
+        }
+    }
+
+    &__wrapper {
+        position: relative;
+        width: @widthPageDragDrop;
+
+        // &.progress-on {
+        //     margin-top: 60px;
+        // }
+
+        &__document {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    &__triangle-arrow {
+        position: absolute;
+        top: 0;
+        left: -24px;
+        width: 0;
+        height: 0;
+        border-top: 20px solid transparent;
+        border-bottom: 20px solid transparent;
+        border-left: 20px solid @main-color;
+        transform: translate(0, -50%);
+
+        &:after {
+            content: '';
+            position: absolute;
+            left: -16px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 10px solid @main-white;
+            transform: translate(0, -50%);
+        }
+    }
+}

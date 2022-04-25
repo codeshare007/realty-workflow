@@ -37,12 +37,16 @@ namespace Realty.EntityConfigurations.Transactions
                 .HasForeignKey(e => e.ListingId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasMany(e => e.TransactionContacts)
-                .WithOne(e => e.Transaction)
-                .HasForeignKey(e => e.TransactionId)
+            builder.HasMany(e => e.TransactionParticipants)
+                .WithOne(a=> a.Transaction)
+                .HasForeignKey(a=> a.TransactionId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(e => e.Forms)
+                .WithOne()
+                .OnDelete(DeleteBehavior.ClientCascade);
+
+            builder.HasMany(e => e.Attachments)
                 .WithOne()
                 .OnDelete(DeleteBehavior.ClientCascade);
         }

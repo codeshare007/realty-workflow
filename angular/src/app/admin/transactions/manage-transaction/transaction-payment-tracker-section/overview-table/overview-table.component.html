@@ -1,0 +1,83 @@
+<h6>Overview</h6>
+
+<div class="row">
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Due</th>
+                <th>Received</th>
+                <th>Balance Due</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>From Tenant</th>
+                <td>{{ dueFromTenant | currency }}</td>
+                <td>{{ transactionPaymentTracker.receivedFromTenant | currency }}</td>
+                <td>{{ (dueFromTenant - transactionPaymentTracker.receivedFromTenant) | currency }}</td>
+            </tr>
+            <tr>
+                <th>From Landlord</th>
+                <td>{{ dueFromLandlord | currency }}</td>
+                <td>{{ transactionPaymentTracker.receivedFromLandlord | currency }}</td>
+                <td>{{ (dueFromLandlord - transactionPaymentTracker.receivedFromLandlord) | currency }}</td>
+            </tr>
+            <tr>
+                <th colspan="3">Total Balance Due</th>
+                <td>
+                    {{ ((dueFromTenant - transactionPaymentTracker.receivedFromTenant)
+                    + (dueFromLandlord - transactionPaymentTracker.receivedFromLandlord)) | currency }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <table>
+        <thead>
+            <tr>
+                <th>Due Landlord</th>
+                <th>Due</th>
+                <th>Sent</th>
+                <th>Balance Due Landlord</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td>{{ dueLandlord | currency }}</td>
+                <td>{{ transactionPaymentTracker.receivedToLandlord | currency }}</td>
+                <td>{{ (dueLandlord - transactionPaymentTracker.receivedToLandlord) | currency }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <table class="mb-0 table-s">
+        <thead>
+            <tr>
+                <th>Fee</th>
+                <th>Uncollected $</th>
+                <th>Total office fee earned</th>
+                <th>Commission Earned by Agent</th>
+                <th>Total Commissions Owed to Agent:</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ (transactionPaymentTracker.feePayment) | currency}}</td>
+                <td>{{ ((dueFromTenant - transactionPaymentTracker.receivedFromTenant)
+                + (dueFromLandlord - transactionPaymentTracker.receivedFromLandlord)) | currency }}
+                </td>
+                <td>{{ totalOfficeFeeEarned | currency }}</td>
+                <td>{{ (totalOfficeFeeEarned * transactionPaymentTracker.agentFeePercentage / 100) | currency }}</td>
+                <td>{{ ((totalOfficeFeeEarned * transactionPaymentTracker.agentFeePercentage / 100)
+                - transactionPaymentTracker.receivedToAgent) | currency }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

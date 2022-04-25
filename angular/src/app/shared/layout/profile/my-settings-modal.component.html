@@ -50,6 +50,12 @@
                                     </div>
                                 </div>
                             </div>
+                            <div *ngIf="!smsEnabled">
+                                <div class="form-group">
+                                    <label for="PhoneNumber">{{"PhoneNumber" | localize}}</label>
+                                    <input type="text" name="PhoneNumber" class="form-control" [(ngModel)]="user.phoneNumber" maxlength="32">
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <label for="UserName">{{"UserName" | localize}} *</label>

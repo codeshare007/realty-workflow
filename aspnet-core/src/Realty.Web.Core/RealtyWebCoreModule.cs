@@ -132,16 +132,16 @@ namespace Realty.Web
                     .LifestyleTransient()
             );
 
-            if (DebugHelper.IsProduction)
-            {
-                IocManager.IocContainer.Register(
-                    Component.For<IExternalStorageHandler>()
-                        .ImplementedBy<AmazonS3StorageHandler>()
-                        .Named("AmazonS3StorageHandler")
-                        .IsDefault()
-                        .LifestyleTransient()
-                );
-            }
+            //if (DebugHelper.IsProduction)
+            //{
+            //    IocManager.IocContainer.Register(
+            //        Component.For<IExternalStorageHandler>()
+            //            .ImplementedBy<AmazonS3StorageHandler>()
+            //            .Named("AmazonS3StorageHandler")
+            //            .IsDefault()
+            //            .LifestyleTransient()
+            //    );
+            //}
 
             IocManager.Resolve<ApplicationPartManager>()
                 .AddApplicationPartsIfNotAddedBefore(typeof(RealtyWebCoreModule).Assembly);

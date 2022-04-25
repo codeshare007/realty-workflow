@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
-import { SelectListItem } from '@app/admin/shared/general-combo.component';
+import { SelectListItem } from '@app/admin/shared/general-combo-string.component';
 import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { CreateFormInput, CreateLibraryFormInput, LibraryFormServiceProxy, LibraryServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -14,12 +14,13 @@ import { finalize } from 'rxjs/operators';
 export class UploadDocumentModalComponent extends AppComponentBase {
 
     @ViewChild('uploadDocumentModal', { static: true }) modal: ModalDirective;
+
     @Output() modalSave: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     libraryId: string;
 
     name: string;
-    uploadUrl: string = AppConsts.remoteServiceBaseUrl + '/File/UploadFile';
+    uploadUrl: string = AppConsts.remoteServiceBaseUrl + '/LibraryFile/UploadFile';
     uploadedFileId: string;
     uploadedFileName: string;
 
@@ -49,7 +50,19 @@ export class UploadDocumentModalComponent extends AppComponentBase {
         this.uploadedFileId = result.id;
         if (event && event.files.length) {
             this.uploadedFileName = event.files[0].name;
+
+            if (!this.name || this.name.length === 0) {
+                this.name = this.uploadedFileName;
+            }
         }
+    }
+
+    public onBeforeUpload(event) {
+        if (isUndefined(event) || isUndefined(event.formData)) {
+            return;
+        }
+
+        event.formData.set('EntityId', this.libraryId);
     }
 
     public show(): void {
@@ -60,7 +73,7 @@ export class UploadDocumentModalComponent extends AppComponentBase {
         this.uploadedFileId = undefined;
         this.name = undefined;
 
-        this._getLibraries()
+        this._getLibraries();
     }
 
     public close(): void {

@@ -1,0 +1,13 @@
+<div class="listing-features"
+     *ngIf="features.length">
+    <h2 class="listing-features__title">
+        Features:
+    </h2>
+
+    <div class="listing-features__list">
+        <div class="listing-features__list__item"
+             *ngFor="let fuature of features">
+            {{ fuature | titlecase }}
+        </div>
+    </div>
+</div>

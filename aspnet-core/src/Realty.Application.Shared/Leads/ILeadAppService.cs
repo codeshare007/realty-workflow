@@ -11,9 +11,8 @@ namespace Realty.Leads
     public interface ILeadAppService: ITransientDependency
     {
         Task<PagedResultDto<LeadListDto>> GetLeadsAsync(GetLeadsInput input);
-
         Task<Guid> CreateLeadAsync(CreateLeadInput input);
-
+        Task<Guid> UpdateLeadAsync(UpdateLeadInput input);
         Task<LeadEditDto> GetForEditAsync(Guid input);
     }
 }

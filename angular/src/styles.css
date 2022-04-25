@@ -196,3 +196,26 @@ span.tag {
 .card-header-button i.pi-chevron-up.closed {
     transform: rotateX(180deg);
 }
+
+
+.table-no-header .ui-table .ui-table-thead>tr>th {
+    background-color: #fff;
+    height:1px;
+    line-height: 1px;
+    padding: 0 !important;
+}
+
+.new-table .ui-table .ui-table-tbody >tr:nth-child(even),
+.table-no-header .ui-table .ui-table-tbody >tr:nth-child(even) {
+        background-color: #f9fcff;
+}
+
+.new-table .ui-table .ui-table-tbody>tr td a.btn.btn-light:hover:not(.btn-text):not(:disabled):not(.disabled) i,
+.table-no-header .ui-table .ui-table-tbody>tr td a.btn.btn-light:hover:not(.btn-text):not(:disabled):not(.disabled) i {
+    color: #3699ff;
+}
+
+.new-table .ui-table .ui-table-tbody>tr td a i,
+.table-no-header .ui-table .ui-table-tbody>tr td a i {
+    color: #3699ff;
+}

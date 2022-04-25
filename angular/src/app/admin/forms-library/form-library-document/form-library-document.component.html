@@ -3,6 +3,12 @@
         <sub-header [title]="'Edit_Document_Form' | localize">
             <div role="actions">
                 <button type="button"
+                        (click)="generateReport()"
+                        class="btn btn-primary mr-3">
+                    {{ 'Print' | localize }}
+                </button>
+
+                <button type="button"
                         (click)="saveForm()"
                         class="btn btn-primary">
                     {{ 'Save' | localize }}
@@ -14,16 +20,31 @@
             <div class="card card-custom"
                  [busyIf]="loading">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-9">
+                    <div class="row"
+                         keyDownCmd
+                         keyDownC
+                         keyDownV
+                         keyDownDel>
+                        <div class="col-9"
+                             keyDownCtrl
+                             [mainLayer]="controlLayer.Library">
                             <document-view *ngIf="libraryForm"
                                            [document]="libraryForm.form"
-                                           [formLibrarySettings]="formLibraryDocumentSetting.settings">
+                                           [participantMappingItems]="libraryForm.form.participantMappingItems"
+                                           [switchSetting]="switchSetting"
+                                           [mainLayer]="controlLayer.Library"
+                                           [accessTypeItem]="accessTypeItem">
                             </document-view>
                         </div>
                         <div class="col-3">
-                            <form-library-controls (onDropped)="onFormDropped($event)"
-                                                   [formLibrarySettings]="formLibraryDocumentSetting.settings">
+                            <form-library-controls [accessSetting]="accessLayers"
+                                                   [switchSetting]="switchSetting"
+                                                   [mainLayer]="controlLayer.Library"
+                                                   [formId]="libraryForm && libraryForm.form ? libraryForm.form.id : undefined"
+                                                   [participantMappingItems]="
+                                                   libraryForm && libraryForm.form.participantMappingItems
+                                                   ? libraryForm.form.participantMappingItems : []"
+                                                   [mainId]="libraryForm ? libraryForm.id : undefined">
                             </form-library-controls>
                         </div>
                         <div [ngClass]="{ 'form-library-document__dnd-wrapper': isHover }">

@@ -1,0 +1,53 @@
+.control-upload-attachment {
+    .resizable-draggable__title {
+        i {
+            color: @main-color;
+            font-size: 22px;
+        }
+    }
+}
+
+.signature-control {
+    .upload-attachment-public {
+        height: 100%;
+        width: 100%;
+        background-color: @box-shadow-icon;
+        border: 1px solid @main-color;
+
+        i {
+            padding: 0;
+            color: @main-color;
+            font-size: 22px !important;
+        }
+    }
+
+    &__attached__icon {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+
+        .fa-download {
+            color: @main-color;
+            font-size: 22px;
+        }
+
+        i {
+            cursor: pointer;
+        }
+
+        &--delete {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            padding: 2px;
+            color: @main-status-error;
+            background-color: @main-white;
+            border: 1px solid @main-status-error;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 1;
+        }
+    }
+}

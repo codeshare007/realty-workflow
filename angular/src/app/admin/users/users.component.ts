@@ -105,7 +105,7 @@ export class UsersComponent extends AppComponentBase implements OnInit, AfterVie
         this._userServiceProxy.getUsers(
             this.filterText,
             this.permissionFilterTreeModal.getSelectedPermissions(),
-            this.role !== '' ? parseInt(this.role) : undefined,
+            this.role !== '' ? [parseInt(this.role)] : undefined,
             this.userRole,
             this.onlyLockedUsers,
             this.primengTableHelper.getSorting(this.dataTable),
@@ -147,25 +147,25 @@ export class UsersComponent extends AppComponentBase implements OnInit, AfterVie
         this.paginator.changePage(this.paginator.getPage());
     }
 
-    exportToExcel(): void {
-        this._userServiceProxy.getUsersToExcel(
-            this.filterText,
-            this.permissionFilterTreeModal.getSelectedPermissions(),
-            this.role !== '' ? parseInt(this.role) : undefined,
-            this.userRole,
-            this.onlyLockedUsers,
-            this.primengTableHelper.getSorting(this.dataTable))
-            .subscribe(result => {
-                this._fileDownloadService.downloadTempFile(result);
-            });
-    }
+    // exportToExcel(): void {
+    //     this._userServiceProxy.getUsersToExcel(
+    //         this.filterText,
+    //         this.permissionFilterTreeModal.getSelectedPermissions(),
+    //         this.role !== '' ? parseInt(this.role) : undefined,
+    //         this.userRole,
+    //         this.onlyLockedUsers,
+    //         this.primengTableHelper.getSorting(this.dataTable))
+    //         .subscribe(result => {
+    //             this._fileDownloadService.downloadTempFile(result);
+    //         });
+    // }
 
     createUser(): void {
         this.createOrEditUserModal.show(this.userRole, this.userRoleNamePlural);
     }
 
-    editUser(recordId: number) {
-        this.createOrEditUserModal.show(this.userRole, this.userRoleNamePlural, recordId);
+    editUser(recordId: number, publicId: string) {
+        this.createOrEditUserModal.show(this.userRole, this.userRoleNamePlural, recordId, publicId);
     }
 
     uploadExcel(data: { files: File }): void {

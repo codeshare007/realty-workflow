@@ -11,7 +11,7 @@ namespace Realty.Forms.Input
         {
             if (string.IsNullOrEmpty(Sorting))
             {
-                Sorting = "CreationTime DESC";
+                Sorting = "DisplayOrder ASC";
             }
 
             Filter = Filter?.Trim();

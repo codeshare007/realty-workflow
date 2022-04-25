@@ -1,5 +1,107 @@
-<label (click)="onModalShow()">
-    <input [value]="'Signature' | localize"
-           class="click-outside btn"
-           type="button" />
+<label (click)="onModalShow()"
+       [title]="control.description ? control.description : ''"
+       [tabindex]="tabIndex"
+       #signature
+       [ngClass]="{ 'filled-value': publicMode && (isPublicSigning || isAtachedControlClass()),
+                    'uppercase' : isInitialFilled }">
+    <ng-container *ngIf="publicMode && isPublicSigning">
+        <span class="filled-value__title"
+              *ngIf="control.type === controlType.Signature
+              || control.type === controlType.Initials">
+            {{ control.type === controlType.Signature
+                ? 'Signature'
+                : 'Initial' }}
+        </span>
+        <span class="filled-value__title"
+              *ngIf="control.type === controlType.OptionalSigning
+              || control.type === controlType.OptionalInitials">
+            {{ control.type === controlType.OptionalSigning
+                ? 'Optional Signature'
+                : 'Initial' }}
+        </span>
+    </ng-container>
+
+    <ng-container *ngIf="control.type === controlType.OptionalInitials
+        || control.type === controlType.OptionalSigning">
+        <div class="optional__permissions-action">
+            <button type="button"
+                    class="btn"
+                    [disabled]="!jsonObject.data"
+                    [ngClass]="{ 'optional__permissions-action--selected' : jsonObject.decline }"
+                    (click)="cancelPermissions(); $event.stopPropagation()">
+                <ng-container *ngIf="control.type === controlType.OptionalInitials; else signingRef">
+                    <i class="fas fa-times"></i>
+                </ng-container>
+                <ng-template #signingRef>
+                    <span>{{ 'Declined' }}</span>
+                </ng-template>
+            </button>
+
+            <button type="button"
+                    class="btn"
+                    [disabled]="!jsonObject.data"
+                    [ngClass]="{ 'optional__permissions-action--selected' : jsonObject.accept }"
+                    (click)="apruvePermissions(); $event.stopPropagation()">
+                <ng-container *ngIf="control.type === controlType.OptionalInitials; else initialRef">
+                    <i class="fas fa-check"></i>
+                </ng-container>
+                <ng-template #initialRef>
+                    <span>{{ 'Approved' }}</span>
+                </ng-template>
+            </button>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="isControl(); else inputBox">
+        <ng-container *ngIf="isBase64(); else refButton">
+            <img [ngStyle]="styleControl"
+                 [src]="jsonObject.data"
+                 alt="signature" />
+        </ng-container>
+        <ng-template #refButton>
+            <ng-container *ngIf="control.type === controlType.UploadAttachment; else defaultbuttonRef">
+                <div class="signature-control__attached__icon">
+                    <i class="fas fa-download"
+                       (click)="dounloadAttached(); $event.stopPropagation()"></i>
+                    <i class="signature-control__attached__icon--delete fas fa-times"
+                       (click)="deleteAttachment(); $event.stopPropagation()"></i>
+                </div>
+            </ng-container>
+
+            <ng-template #defaultbuttonRef>
+                <!-- <input [value]="jsonObject.data"
+                       class="click-outside btn signing-font"
+                       type="button" /> -->
+                <span class="click-outside btn signing-font"
+                      type="button">
+                    <span [ngStyle]="{ 'font-size': control.font.sizeInPx + 'px' }"
+                          [innerHTML]="jsonObject.data"></span>
+                </span>
+            </ng-template>
+        </ng-template>
+
+    </ng-container>
+
+    <ng-template #inputBox>
+        <ng-container *ngIf="control.type === controlType.UploadAttachment; else defaultRef">
+            <button class="click-outside btn upload-attachment-public"
+                    type="button">
+                <i class="fa-paperclip fas"></i>
+            </button>
+        </ng-container>
+        <ng-template #defaultRef>
+            <!-- <input [value]="control.type | formControlType:false:participants:control.participantId:publicMode"
+                   class="click-outside btn"
+                   type="button" /> -->
+            <span class="click-outside btn input"
+                  type="button">
+                <span [ngStyle]="{ 'font-size': control.font.sizeInPx + 'px' }"
+                      [innerHTML]="control.type | formControlType:false:participants:control.participantId:publicMode"></span>
+            </span>
+        </ng-template>
+    </ng-template>
+    <span class="signature-control__public"
+          *ngIf="control.value && control.value.value">
+        {{ control.value.updateValueDate | momentFormat:'L' }}
+    </span>
 </label>

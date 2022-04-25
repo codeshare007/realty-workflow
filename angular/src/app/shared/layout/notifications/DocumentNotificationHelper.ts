@@ -5,6 +5,7 @@ import { Moment } from 'moment';
 import * as Push from 'push.js'; // if using ES6
 
 export class DocumentNotification {
+    parentId: string;
     tenantId: number;
     userId: number;
     name: string;
@@ -36,6 +37,13 @@ export class DocumentNotificationHelper extends AppComponentBase {
         switch (documentNotification.name) {
             case 'Documents.Notifications.LibraryForms.ProcessingCompleted':
                 return `/app/admin/forms-library/${documentNotification.documentId}/edit-document`;
+            case 'Documents.Notifications.TransactionForms.ProcessingCompleted':
+                return `/app/admin/transactions/${documentNotification.parentId}/form-design/${documentNotification.documentId}`;
+
+            // Signing has design page for all documents /app/admin/signings/:signingId/design
+            // DO not need to redirect to design form after docuemnt added
+            // case 'Documents.Notifications.SigningForms.ProcessingCompleted':
+            //     return `/app/admin/signings/${documentNotification.parentId}/signings`;
             //Add your custom notification names to navigate to a URL when user clicks to a notification.
         }
 

@@ -1,0 +1,81 @@
+<div appBsModal
+     #uploadDocumentModal="bs-modal"
+     class="modal fade">
+    <div [class]="'modal-dialog'">
+        <div class="modal-content">
+            <div *ngIf="active">
+                <form #uploadDocumentForm="ngForm"
+                      novalidate
+                      class="form form-label-right">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <span>
+                                {{ controlerInput.control.type | formControlType }}
+                                {{ 'ControlModal' | localize }}
+                            </span>
+                        </h5>
+                        <button type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-hidden="true"
+                                (click)="close()">
+                            <i aria-hidden="true"
+                               class="ki ki-close"></i>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>{{ 'Name' | localize }}</label>
+                            <input id="FormName"
+                                   #formName="ngModel"
+                                   class="form-control"
+                                   type="text"
+                                   name="FormName"
+                                   [(ngModel)]="name"
+                                   required
+                                   maxlength="64">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="DefaultFileUploadFileInput">{{ 'File' | localize }}</label>
+                            <p-fileUpload id="DefaultFileUploadFileInput"
+                                          name="DefaultFileUploadFileInput"
+                                          [url]="uploadUrl"
+                                          [auto]="true"
+                                          mode="basic"
+                                          maxFileSize="50000000"
+                                          styleClass="file-choose-control"
+                                          [chooseLabel]="getChooseLabel"
+                                          [chooseIcon]="getChooseIcon"
+                                          (onUpload)="onUpload($event)"
+                                          (onBeforeUpload)="onBeforeUpload($event)">
+                            </p-fileUpload>
+
+                            <!-- accept="image/*, application/pdf" -->
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button [disabled]="saving"
+                                type="button"
+                                class="btn btn-light-primary font-weight-bold"
+                                (click)="close()">
+                            {{ 'Cancel' | localize }}
+                        </button>
+
+                        <button type="button"
+                                class="btn btn-primary font-weight-bold save-button"
+                                (click)="save()"
+                                [disabled]="!uploadDocumentForm.valid || !uploadedFileId"
+                                [buttonBusy]="saving"
+                                [busyText]="'ProcessingWithThreeDot' | localize">
+                            <i class="fa fa-arrow-circle-right"></i>
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

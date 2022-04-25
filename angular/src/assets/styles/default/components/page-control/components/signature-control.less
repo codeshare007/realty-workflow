@@ -1,19 +1,233 @@
 .signature-control {
+    display: flex;
     width: 100%;
     height: 100%;
 
-    label {
-        margin: 0;
+    &__public {
+        position: absolute;
+        bottom: -6px;
+        right: -4px;
+        padding: 0 2px;
+        background-color: @main-white;
+        color: @main-border;
+        border-radius: 24px;
+        font-size: 10px;
+        font-weight: 500;
+        z-index: -1;
+    }
+
+    .signing-with-span {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
         width: 100%;
         height: 100%;
-        border: 1px solid @main-border;
+
+        span {
+            padding: 2px 4px 0;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+
+    .signing-font {
+        font-family: @fontDancingScript;
+        text-transform: capitalize;
+
+        .signing-with-span();
+    }
+
+    label {
+        margin: 2px 0 0 2px;
+        width: 100%;
+        height: 100%;
+
+        img {
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        input,
+        .input {
+            cursor: pointer;
+            color: @main-color;
+            background-color: @box-shadow-icon;
+            border: 1px solid @main-color;
+            border-radius: 4px;
+            vertical-align: baseline;
+            text-transform: capitalize;
+            font-family: @fontDancingScript;
+
+            .signing-with-span();
+        }
+
+        .input {
+            display: flex;
+        }
+
+        &.filled-value {
+            position: relative;
+
+            .filled-value__title {
+                position: absolute;
+                top: 0px;
+                left: 2px;
+                color: @main-border;
+                font-size: 10px;
+                font-weight: 500;
+            }
+
+            input {
+                cursor: auto;
+                color: @main-black-second;
+                background-color: transparent;
+                border: none;
+                font-family: @fontDancingScript;
+                text-transform: capitalize;
+            }
+
+            &:before {
+                content: '';
+                position: absolute;
+                top: 0 !important;
+                left: -2px !important;
+                width: 20px;
+                height: 100%;
+                color: transparent !important;
+                border: 2px solid @main-border;
+                border-right-color: transparent;
+                border-bottom-color: transparent;
+                border-top-color: @main-color-second;
+                border-radius: 4px;
+                border-bottom-right-radius: 0;
+                border-top-right-radius: 0;
+            }
+        }
+    }
+
+    .uppercase {
+        input {
+            text-transform: uppercase;
+        }
+    }
+}
+
+.populate-mode.control-initials,
+.populate-mode.control-signature,
+.control-optional-initials,
+.control-optional-signing {
+    .signature-control {
+        label:before {
+            position: absolute;
+            top: 4px;
+            padding: 0 9px;
+            color: @main-color;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
 
         input {
-            display: inline-flex;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            vertical-align: baseline;
+            padding: 10px 4px 0;
+            overflow: unset;
         }
+    }
+}
+
+.populate-mode.control-signature,
+.control-optional-signing {
+    .signature-control {
+        label:before {
+            content: 'signature';
+            padding: 0 5px;
+        }
+
+        label:focus {
+            outline: -webkit-focus-ring-color auto 0px;
+        }
+    }
+}
+
+.control-signature,
+.control-optional-signing {
+    &.populate-mode {
+        &:before {
+            content: none;
+        }
+    }
+
+    &.resizable-draggable {
+        padding: 0 4px;
+    }
+
+    .resizable-draggable__title {
+        padding-top: 6px;
+        font-family: @fontDancingScript;
+        text-transform: capitalize;
+
+        &:before {
+            content: 'signature';
+            position: absolute;
+            top: 0;
+            right: -3px;
+            width: 100%;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: capitalize;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            font-family: @fontPoppins;
+        }
+    }
+
+    .page-control__view__text {
+        font-family: @fontDancingScript;
+        text-transform: capitalize;
+        font-weight: 600;
+        font-size: 16px;
+
+        &_inner {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+}
+
+.control-signer-name {
+    &.page-control__view__text {
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.signer-name-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+
+    label {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 0;
+        width: 100%;
+        height: 100%;
+
+        span {
+            color: @main-black-second;
+        }
+    }
+}
+
+.signing-date-control {
+    label {
+        color: @main-black-second;
     }
 }

@@ -1,0 +1,79 @@
+<h1 mat-dialog-title>
+    <span *ngIf="active">
+        {{ controlerInput.control.type | formControlType:true }} Control Modal
+    </span>
+    <button type="button"
+            class="close"
+            (click)="close()"
+            [attr.aria-label]="'Close' | localize"
+            [disabled]="saving">
+        <i aria-hidden="true"
+           class="ki ki-close"></i>
+    </button>
+</h1>
+<div mat-dialog-content>
+
+    <tabset class="new-tabs">
+        <tab heading="Draw"
+             [active]="tabHeader === 'Draw'"
+             (selectTab)="onActive($event)">
+            <div class="signature-control-modal__wrapper">
+                <div [class]="'signature-control-modal__canvas' + getCanvasClass()">
+                    <canvas #signaturePadRef
+                            [width]="widthCanvas"
+                            height="200"
+                            (mousedown)="drawStart($event)"
+                            (mouseup)="drawComplete($event)"
+                            (mousemove)="drawProces($event)"
+                            (touchstart)="drawStart($event)"
+                            (touchend)="drawComplete($event)"
+                            (touchmove)="drawProces($event)">
+                    </canvas>
+                </div>
+
+                <div class="signature-control-modal__actions">
+                    <span (click)="drawClear()">
+                        Clear
+                    </span>
+                </div>
+            </div>
+        </tab>
+        <tab heading="Type"
+             [active]="tabHeader === 'Type'"
+             (selectTab)="onActive($event)">
+            <div class="signature-control-modal__wrapper">
+                <div class="signature-control-modal__type">
+                    <input type="text"
+                           class="capitalize"
+                           name="initials"
+                           [(ngModel)]="initials"
+                           [value]="initials | maskInitials:isTwoSymbol()"
+                           (keypress)="onKeyPress($event)" />
+                </div>
+
+                <div class="signature-control-modal__actions">
+                    <span (click)="drawClear()">
+                        Clear
+                    </span>
+                </div>
+            </div>
+        </tab>
+    </tabset>
+
+</div>
+<div mat-dialog-actions
+     align="end">
+    <button [disabled]="saving"
+            type="button"
+            class="btn btn-light-primary font-weight-bold"
+            (click)="close()">
+        {{ 'Cancel' | localize }}
+    </button>
+
+    <button type="button"
+            class="btn btn-primary font-weight-bold"
+            (click)="save()">
+        <i class="fa fa-save"></i>
+        <span>{{ 'Save' | localize }}</span>
+    </button>
+</div>

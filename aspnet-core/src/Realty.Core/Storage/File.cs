@@ -34,6 +34,14 @@ namespace Realty.Storage
 
         public int TenantId { get; set; }
 
+        public void Update(UploadFileResult input) 
+        {
+            Name = input.Name;
+            Path = input.Path;
+            ExternalId = input.Id;
+            ContentType = input.ContentType;
+        }
+
         public virtual IReadOnlyCollection<Form> Forms => _forms.AsReadOnly();
 
         public virtual IReadOnlyCollection<Page> Pages => _pages.AsReadOnly();

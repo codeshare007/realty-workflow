@@ -18,17 +18,17 @@ export class AppNavigationService {
     getMenu(): AppMenu {
         return new AppMenu('MainMenu', 'MainMenu', [
             new AppMenuItem('Leads', 'Pages.Leads', 'flaticon-users', '/app/admin/leads'),
-            new AppMenuItem('Transactions', 'Pages.Transactions', 'flaticon-users', '/app/admin/transactions'),
-            new AppMenuItem('Signings', 'Pages.Signings', 'flaticon-users', '/app/admin/signings'),
+            new AppMenuItem('Transactions', 'Pages.Transactions', 'far fa-folder-open', '/app/admin/transactions'),
+            new AppMenuItem('Signings', 'Pages.Signings', 'fas fa-pencil-alt', '/app/admin/signings'),
             new AppMenuItem('Communications', 'Pages.Communications', 'fas fa-inbox', '/app/admin/communications'),
-            new AppMenuItem('Invoices', 'Pages.Invoices', 'flaticon-users', '/app/admin/invoices'),
-            // TODO: jaerbi => permission 'Pages.FormsLibrary'
-            new AppMenuItem('FormsLibrary', 'Pages.FormsLibrary', 'flaticon-users', '/app/admin/forms-library'),
+            //new AppMenuItem('Invoices', 'Pages.Invoices', 'flaticon-users', '/app/admin/invoices'),
+            new AppMenuItem('FormsLibrary', 'Pages.FormsLibrary', 'fas fa-tasks', '/app/admin/forms-library'),
             new AppMenuItem('Admins', 'Pages.Users.Admins', 'flaticon-users', '/app/admin/admins'),
             new AppMenuItem('Agents', 'Pages.Users.Agents', 'flaticon-users', '/app/admin/agents'),
-            new AppMenuItem('Landlords', 'Pages.Users.Landlords', 'flaticon-users', '/app/admin/landlords'),
-            new AppMenuItem('Customers', 'Pages.Users.Customers', 'flaticon-users', '/app/admin/customers'),
+            //new AppMenuItem('Landlords', 'Pages.Users.Landlords', 'flaticon-users', '/app/admin/landlords'),
+            //new AppMenuItem('Customers', 'Pages.Users.Customers', 'flaticon-users', '/app/admin/customers'),
             new AppMenuItem('Listings', 'Pages.Listings', 'flaticon-users', '/app/admin/listings'),
+            new AppMenuItem('Contacts', '', 'flaticon-users', '/app/admin/contacts'),
 
             new AppMenuItem('Dashboard', 'Pages.Administration.Host.Dashboard', 'flaticon-line-graph', '/app/admin/hostDashboard'),
             new AppMenuItem('Dashboard', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),

@@ -1,0 +1,80 @@
+<div class="row">
+    <div class="col-md-3">
+        <div class="row">
+            <div class="d-flex flex-column py-1 pl-0 signing-settings__expiration-date">
+                <!-- <div class="form-group"> -->
+                <span class="font-weight-bold mr-2">Expiration Date:</span>
+                <ng-container *ngIf="disabled; else activeExpirationDateInput">
+                    <span class="text-muted text-hover-primary">
+                        <ng-container
+                                      *ngIf="settings && settings.expirationSettings && settings.expirationSettings.expirationDate; else dateNotSet">
+                            {{ settings.expirationSettings.expirationDate | momentFormat: 'L' }}
+                        </ng-container>
+                        <ng-template #dateNotSet>
+                            Not Applied
+                        </ng-template>
+                    </span>
+                </ng-container>
+                <ng-template #activeExpirationDateInput>
+                    <div class="signing-settings__expiration-date__group">
+                        <input type="text"
+                               bsDatepicker
+                               class="form-control"
+                               name="ExpirationDate"
+                               [placeholder]="'Enter signing expiration date'"
+                               datePickerMomentModifier
+                               [(date)]="expirationDate"
+                               (dateChange)="expirationDateSet($event)"
+                               [bsConfig]="{ adaptivePosition: true }" />
+                        <i class="fas fa-times signing-settings__expiration-date__group_close"
+                           (click)="deleteDate(); $event.stopPropagation()"></i>
+                    </div>
+                </ng-template>
+                <!-- </div> -->
+            </div>
+            <!-- <div class="col-md-8 d-flex flex-column py-1 pl-0">
+                <span class="font-weight-bold mr-2" *ngIf="!disabled">&nbsp;</span>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua.
+                </p>
+            </div> -->
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="row">
+            <div class="d-flex flex-column py-1 pl-0">
+                <!-- <div class="form-group"> -->
+                <span class="font-weight-bold mr-2">Reminder Frequency:</span>
+                <ng-container *ngIf="settings && settings.reminderSettings">
+                    <ng-container *ngIf="disabled; else activeReminderFrequencySelect">
+                        <span class="text-muted text-hover-primary">
+                            {{ settings.reminderSettings.dispatchingFrequency | reminderFrequency }}
+                        </span>
+                    </ng-container>
+                    <ng-template #activeReminderFrequencySelect>
+
+                        <select class="form-control"
+                                [(ngModel)]="settings.reminderSettings.dispatchingFrequency"
+                                placeholder="Select reminder frequency"
+                                (ngModelChange)="dispatchingFrequencySelected($event)"
+                                required>
+                            <option *ngFor="let item of reminderFrequencies"
+                                    [value]="item.value">
+                                {{ item.displayText }}
+                            </option>
+                        </select>
+                    </ng-template>
+                </ng-container>
+                <!-- </div> -->
+            </div>
+            <!-- <div class="col-md-8 d-flex flex-column py-1 pl-0">
+                <span class="font-weight-bold mr-2" *ngIf="!disabled">&nbsp;</span>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua.
+                </p>
+            </div> -->
+        </div>
+    </div>
+</div>

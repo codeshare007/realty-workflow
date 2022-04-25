@@ -5,7 +5,6 @@ namespace Realty.Web.Url
 {
     public class AngularAppUrlService : AppUrlServiceBase
     {
-        public override string PublicSigningRoute => "signing";
         public override string EmailActivationRoute => "account/confirm-email";
 
         public override string PasswordResetRoute => "account/reset-password";

@@ -16,6 +16,7 @@
     <text name="UserNameOrEmail">User name or email</text>
     <text name="Password">Password</text>
     <text name="RememberMe">Remember me</text>
+    <text name="ViewDetails">View Details</text>
     <text name="LogIn">Log in</text>
     <text name="ForgotPassword">Forgot password?</text>
     <text name="DontYouHaveAnAccount">Don't you have an account?</text>
@@ -49,6 +50,7 @@
     <text name="SuccessfullyDeleted">Successfully deleted.</text>
     <text name="RoleDeleteWarningMessage">Role {0} will be deleted and unassigned from all assigned users.</text>
     <text name="UserDeleteWarningMessage">User {0} will be deleted.</text>
+    <text name="DeleteWarningMessage">Item will be deleted.</text>
     <text name="Active">Active</text>
     <text name="EmailConfirm">Email confirm</text>
     <text name="Yes">Yes</text>
@@ -101,12 +103,12 @@
     <text name="Send">Send</text>
     <text name="PasswordReset">Password reset</text>
     <text name="InvalidUserNameOrEmailAddress">Invalid user name or email address</text>
-    <text name="PasswordResetEmail_Subject">Realty password reset</text>
-    <text name="PasswordResetEmail_Title">Realty password reset.</text>
+    <text name="PasswordResetEmail_Subject">Harvard Ave Realty password reset</text>
+    <text name="PasswordResetEmail_Title">Harvard Ave Realty password reset.</text>
     <text name="PasswordResetEmail_SubTitle">This email is sent you to reset and re-create your password.</text>
     <text name="PasswordResetEmail_ClickTheLinkBelowToResetYourPassword">Please click the link below to reset your password:</text>
-    <text name="EmailActivation_Subject">Realty account email activation</text>
-    <text name="EmailActivation_Title">Welcome to Realty.</text>
+    <text name="EmailActivation_Subject">Harvard Ave Realty account email activation</text>
+    <text name="EmailActivation_Title">Welcome to Harvard Ave Realty.</text>
     <text name="EmailActivation_SubTitle">This email is sent you to verify your email.</text>
     <text name="EmailActivation_ClickTheLinkBelowToVerifyYourEmail">Please click the link below to verify your email address:</text>
     <text name="InvalidEmailAddress">Invalid email address</text>
@@ -327,7 +329,7 @@
     <text name="SuccessfullyUnlinked">Successfully unlinked</text>
     <text name="LinkedUserDeleteWarningMessage">Link to user {0} will be deleted.</text>
     <text name="SwitchToLinkedAccountTokenErrorMessage">Impersonation token is invalid or expired!</text>
-    <text name="WelcomeToTheApplicationNotificationMessage">Welcome to Realty! Notification system is used to inform you for intended events. You can select which type of notifications you want to receive from the notification settings.</text>
+    <text name="WelcomeToTheApplicationNotificationMessage">Welcome to Harvard Ave Realty! Notification system is used to inform you for intended events. You can select which type of notifications you want to receive from the notification settings.</text>
     <text name="NewUserRegisteredNotificationDefinition">On a new user registered to the application.</text>
     <text name="NewUserRegisteredNotificationMessage">A new user registered to the application. User name: {userName}, Email address: {emailAddress}.</text>
     <text name="SeeAllNotifications">See all notifications</text>
@@ -353,7 +355,7 @@
     <text name="CachesHeaderInfo">You can clear caches in application on this page.</text>
     <text name="TestEmailSettingsHeader">Test Email Settings</text>
     <text name="SendTestEmail">Send Test Email</text>
-    <text name="TestEmail_Subject">Realty test email</text>
+    <text name="TestEmail_Subject">Harvard Ave Realty test email</text>
     <text name="TestEmail_Body">This is a test email.</text>
     <text name="TestEmailSentSuccessfully">Test e-mail sent successfully.</text>
     <text name="WebSiteLogs">Website Logs</text>
@@ -591,8 +593,8 @@
     <text name="IsInTrialPeriod">Is in trial period?</text>
     <text name="FailedSubscriptionTerminations_Email_Subject">Failed Subscription Terminations</text>
     <text name="FailedSubscriptionTerminations_Email_Body">Subscription termination is failed for following tenants {0} at {1}. You can find detailed error messages in system logs.</text>
-    <text name="SubscriptionExpire_Email_Subject">Your Realty subscription is expired</text>
-    <text name="SubscriptionExpire_Email_Body">Your Realty subscription is expired at {0}.</text>
+    <text name="SubscriptionExpire_Email_Subject">Your Harvard Ave Realty subscription is expired</text>
+    <text name="SubscriptionExpire_Email_Body">Your Harvard Ave Realty subscription is expired at {0}.</text>
     <text name="UnlimitedTimeSubscription">Unlimited time subscription</text>
     <text name="SubscriptionEndDateUtc">Subscription end date (Utc)</text>
     <text name="ExpiringEditionMustBeAFreeEdition">Expiring edition must be a free edition</text>
@@ -619,14 +621,14 @@
     <text name="Profile">Profile</text>
     <text name="Enable">Enable</text>
     <text name="GoogleAuthenticatorIsNotEnabled">Google Authenticator is not enabled for your account. You must first enable it in your settings.</text>
-    <text name="SubscriptionExpiringSoon_Email_Subject">Your Realty subscription expiration notice</text>
-    <text name="SubscriptionExpiringSoon_Email_Body">Your Realty subscription will expire at {0}.</text>
-    <text name="SubscriptionExpire_Title">Realty subscription expire</text>
+    <text name="SubscriptionExpiringSoon_Email_Subject">Your Harvard Ave Realty subscription expiration notice</text>
+    <text name="SubscriptionExpiringSoon_Email_Body">Your Harvard Ave Realty subscription will expire at {0}.</text>
+    <text name="SubscriptionExpire_Title">Harvard Ave Realty subscription expire</text>
     <text name="SubscriptionExpire_SubTitle">This email is sent you to notify about your subscription expiration</text>
-    <text name="SubscriptionAssignedToAnother_Email_Body">Your Realty subscription is expired at {1}. Your current edition assigned to {0}.</text>
+    <text name="SubscriptionAssignedToAnother_Email_Body">Your Harvard Ave Realty subscription is expired at {1}. Your current edition assigned to {0}.</text>
     <text name="FailedSubscriptionTerminations_Title">Failed subscription terminations</text>
     <text name="FailedSubscriptionTerminations_SubTitle">Subscription termination is failed for some tenants</text>
-    <text name="SubscriptionExpiringSoon_Title">Realty subscription expiration notice</text>
+    <text name="SubscriptionExpiringSoon_Title">Harvard Ave Realty subscription expiration notice</text>
     <text name="SubscriptionExpiringSoon_SubTitle">This email is sent you to notify about your subscription expiration.</text>
     <text name="AdminRoleCannotRemoveFromAdminUser">Admin role can not be removed from admin user</text>
     <text name="YouCannotRemoveUserRolePermissionsFromAdminRole">You can not remove User/Role permission editing from the admin role</text>
@@ -858,6 +860,8 @@
     <text name="Theme_Theme10">Theme 10</text>
     <text name="Theme_Theme11">Theme 11</text>
     <text name="Theme_Theme12">Theme 12</text>
+    <text name="SuccessfullySend">Email Successfully Sent</text>
+    <text name="EditEmail">Edit Email</text>
     <text name="SelectATheme">Select a Theme</text>
     <text name="QuickThemeSelection">Quick theme selection</text>
     <text name="IsQuickThemeSelectEnabled">Is quick theme select enabled</text>
@@ -1177,14 +1181,105 @@
     <text name="DocumentHubIsNotConnectedWarning">Document Hub is not connected</text>
     <text name="Notification_LibraryForm_ProcessingStarted">Library Form {0} processing started.</text>
     <text name="Notification_LibraryForm_ProcessingCompleted">Library Form {0} processing successfully completed.</text>
+    <text name="Notification_TransactionForm_ProcessingStarted">Transaction Form {0} processing started.</text>
+    <text name="Notification_TransactionForm_ProcessingCompleted">Transaction Form {0} processing successfully completed.</text>
+    <text name="Notification_SigningForm_ProcessingStarted">Signing Form {0} processing started.</text>
+    <text name="Notification_SigningForm_ProcessingCompleted">Signing Form {0} processing successfully completed.</text>
     <text name="Form_Design">Form Design</text>
     <text name="Signing_Design">Signing Design</text>
     <text name="Create_New_Form">Create new Form</text>
+    <text name="Add_Form_From_Library">Add form Library</text>
+    <text name="Add_Form_From_Transaction">Add form Transaction</text>
+    <text name="Add_Form_From_Another_Transaction">Add form another Transaction</text>
     <text name="FormStatus_New" value="New" />
     <text name="FormStatus_Processing" value="Processing" />
     <text name="FormStatus_Ready" value="Ready" />
+    <text name="TransactionName" value="Transaction Name" />
     <text name="FormDeleteWarningMessage">Form {0} will be deleted.</text>
     <text name="CreateNewSigning">Create new Signing</text>
     <text name="BacktoTransaction">Back to Transaction</text>
+    <text name="AttachmentDeleteWarningMessage">Document {0} will be deleted.</text>
+    <text name="CreateNewDocument">Create new Document</text>
+    <text name="Add_Form">Add Form</text>
+    <text name="DesignPage">Design Page</text>
+    <text name="EmailSigningRequestCreated_Subject">Your signature is requested in {0}</text>
+    <text name="EmailSigningRequestReminder_Subject">Your signature is requested in {0} (reminder)</text>
+    <text name="EmailSigningRequestCreated_Title"></text>
+    <text name="EmailSigningRejectNotification_SubTitle">Signing Rejected</text>
+    <text name="EmailSigningRejectNotification_Title"></text>
+    <text name="EmailSigningRequestCreated_SubTitle">Signing Invitation</text>
+    <text name="EmailSigningRequest_StartSigningBtn">Start Signing</text>
+    <text name="EmailSigningCompleted_Subject">Signing {0} complete</text>
+    <text name="EmailSigningCompleted_Title"></text>
+    <text name="EmailSigningCompleted_SubTitle">Signing Complete</text>
+    <text name="EmailRecommendedListings_Subject">Recommended Listings</text>
+    <text name="EmailRecommendedListings_Title"></text>
+    <text name="EmailRecommendedListings_SubTitle">Recommended Listings</text>
+    <text name="EmailRecommendedListingInterest_ViewBtn">View Lead</text>
+	  <text name="EmailRecommendedListingInterest_Subject">Lead interested in the Recommended Listing</text>
+	  <text name="EmailRecommendedListingInterest_Title"></text>
+	  <text name="EmailRecommendedListingInterest_SubTitle">Lead interested in the Recommended Listing</text>
+    <text name="EmailSigningCompleted_ViewSigningBtn">View Signing</text>
+    <text name="FinalizeSigning">Finalize Signing</text>
+    <text name="SendInvitations">Send Invitations</text>
+    <text name="SigningAccessRequestExpiredException" value="Signing access token has expired. Please contact your Agent to get a new link." />
+    <text name="SigningRequestCompletedException" value="Signing by this token is already completed." />
+    <text name="SigningCompletedException" value="Signing access token has expired." />
+	<text name="CreateNewPayment">Create new Payment</text>
+	<text name="CheckNumber">Check Number</text>
+	<text name="PaymentDate">Payment Date</text>
+	<text name="CreatePayment">Create Payment</text>
+	<text name="UpdatePayment">Update Payment</text>
+	<text name="AddListing">Add Listing</text>
+	<text name="LastViewDate">Last View</text>
+	<text name="DownloadOriginal">Download Original</text>
+    <text name="DownloadSigned">Download Signed</text>
+    <text name="DownloadFinalDocument">Download Final Document</text>
+    <text name="LastViewed">Last Viewed</text>
+    <text name="DuplicateForNextSigning">Duplicate for Next Signing</text>
+    <text name="Duplicate">Duplicate</text>
+    <text name="SigningName">Signing Name</text>
+	<text name="EmailSuccessfullySent">Email Successfully Sent</text>
+	<text name="SuccessfullyRejected">Successfully Rejected</text>
+	<text name="EmailSubject">Email Subject</text>
+    <text name="EmailBody">Email Body</text>
+    <text name="SendRecommendedListings">Send Recommended Listings</text>
+    <text name="RejectWarningMessage">Signing will be reset</text>
+    <text name="Updated">Updated</text>
+    <text name="CreateLead">Create Lead</text>
+    <text name="TypeOfPayment">Type of Payment</text>
+    <text name="UploadedBy">Uploaded By</text>
+    <text name="ConfigureParticipantAssignment">Configure Participants</text>
+	<text name="ClientPaymentsIn">Client Payments In</text>
+	<text name="OwnerPaymentsOut">Owner Payments Out</text>
+	<text name="OwnerPaymentsIn">Owner Payments In</text>
+	<text name="AgentCommision">Agent Commision</text>
+	<text name="DealOverview">Deal Overview</text>
+	<text name="OptionalInitials">Optional Initials</text>
+	<text name="OptionalSigning">Optional Signing</text>
+	<text name="AllUsers">All Users</text>
+	<text name="FormNotCompleted">Form is not Completed</text>
+	<text name="IsRequired">Is Required</text>
+	<text name="IsProtected">Is Protected</text>
+	<text name="DropdownInfoNote">Switch to edit mode to set it up options</text>
+	<text name="DropdownInfoDetail">You need to create a list of options</text>
+	<text name="ControlModal">Control Modal</text>
+	  <text name="Documents">Documents</text>
+	  <text name="SelectMultiple">Select Multiple</text>
+	  <text name="SelectForm">Select Form</text>
+	  <text name="SelectTransactionForm">Select Transaction Form</text>
+	  <text name="Participants">Participants</text>
+	  <text name="Note">Note</text>
+	  <text name="AddYourself">Add yourself</text>
+	  <text name="AddFromTransaction">Add from Transaction</text>
+	  <text name="CreateNewParticipant">Create new Participant</text>
+	  <text name="AddParticipant">Add Participant</text>
+	  <text name="AddDocument">Add Document</text>
+	  <text name="Observers">Observers</text>
+	  <text name="SaveAndReturn">Save and return</text>
+	  <text name="FinalizeSigningPlease">Please add participants to the signing</text>
+	  <text name="FinalizeSigningNote">To change the Email address of a signing participant or to customize the Invitation Email subject or message before the invitations are sent expand participant's detail below otherwise select the "Send Invitation" button.</text>
+	  <text name="FinalizeSigningTitle">You have successfully completed the creation of this signing.</text>
+
   </texts>
 </localizationDictionary>

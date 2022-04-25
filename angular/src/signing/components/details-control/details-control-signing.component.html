@@ -1,0 +1,13 @@
+<ng-container *ngIf="showDetail()">
+    <div class="details-control-signing"
+         [ngClass]="{ 'reset-animate': resetDetailWindow }">
+        <div class="details-control-signing__item"
+             *ngIf="controlDetails.title">
+            <span>{{ controlDetails.title }}</span>
+        </div>
+        <div class="details-control-signing__item"
+             *ngIf="controlDetails.description">
+            <span>{{ controlDetails.description }}</span>
+        </div>
+    </div>
+</ng-container>

@@ -1,0 +1,12 @@
+<div *ngIf="isActive && signing && signing.id"
+     class="new-scrollbar">
+
+    <div class="signing-view__wrapper">
+        <div *ngFor="let form of signing.forms; trackBy: trackByIndex">
+            <document-view *ngIf="form"
+                           [publicMode]="true"
+                           [document]="form">
+            </document-view>
+        </div>
+    </div>
+</div>

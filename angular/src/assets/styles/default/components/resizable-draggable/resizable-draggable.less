@@ -4,12 +4,9 @@
     justify-content: center;
     align-items: center;
     padding: 2px 8px;
-    background-color: @box-shadow-icon;
-    border: 1px dashed @main-color;
+    border: 2px dashed;
     border-radius: 4px;
     font-weight: 500;
-    user-select: none;
-    opacity: 0.9;
 
     &.control-area {
         justify-content: flex-start;
@@ -19,6 +16,11 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+        text-shadow: 0 0 10px @box-shadow;
+
+        &.capitalize {
+            text-transform: capitalize;
+        }
     }
 
     &.active {
@@ -35,13 +37,70 @@
         left: 100%;
         top: 100%;
         border-style: solid;
-        border-width: 8px;
-        border-color: transparent transparent transparent @main-color-second;
-        transform: translate3d(-50%, -50%, 0) rotateZ(45deg);
+        border-width: 5px;
+        border-color: transparent transparent transparent @main-border;
+        transform: translate3d(-38%, -38%, 0) rotateZ(45deg);
 
         &:hover,
         &:active {
             cursor: nwse-resize;
+        }
+    }
+}
+
+// .control-initials 
+.control-upload-attachment {
+    .resizable-draggable__action {
+        display: none;
+    }
+}
+
+.control-diagonal-line,
+.control-horizontal-line,
+.control-vertical-line {
+    .after__action-dot {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 3px;
+        background-color: @main-white;
+        border: 2px solid @main-border;
+        border-radius: 50%;
+    }
+
+    .resizable-draggable__action {
+
+        position: absolute;
+        bottom: 4px;
+        right: -4px;
+        top: unset;
+        left: unset;
+        border: none;
+
+        &:after {
+            .after__action-dot();
+        }
+
+        &:hover,
+        &:active {
+            cursor: nwse-resize;
+        }
+
+        &__top-left {
+            position: absolute;
+            top: -9px;
+            left: -9px;
+            z-index: 1;
+
+            &:after {
+                .after__action-dot();
+            }
+
+            &:hover,
+            &:active {
+                cursor: nwse-resize;
+            }
         }
     }
 }

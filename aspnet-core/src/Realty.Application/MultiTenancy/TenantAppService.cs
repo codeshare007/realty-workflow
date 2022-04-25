@@ -101,6 +101,7 @@ namespace Realty.MultiTenancy
             tenant.SubscriptionEndDateUtc = tenant.SubscriptionEndDateUtc?.ToUniversalTime();
 
             await TenantManager.UpdateAsync(tenant);
+            await TenantManager.UpdateTenantRolesAsync(tenant);
         }
 
         [AbpAuthorize(AppPermissions.Pages_Tenants_Delete)]

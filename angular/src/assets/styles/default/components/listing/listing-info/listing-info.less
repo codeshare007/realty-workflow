@@ -1,0 +1,26 @@
+.listing-info {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+    font-size: 16px;
+
+    &__item {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid @disabled-color;
+
+        span {
+            width: 50%;
+        }
+
+        &:last-child {
+            border: none;
+        }
+
+        &__value {
+            font-weight: 500;
+        }
+    }
+}

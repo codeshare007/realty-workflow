@@ -1,0 +1,162 @@
+<div appBsModal
+     (onShown)="onShown()"
+     #initialPageModal="bs-modal"
+     class="modal fade">
+    <div class="modal-dialog modal-lg signature-control-modal__block">
+        <div class="modal-content">
+            <div *ngIf="active">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>
+                            <ng-container *ngIf="settings.controltype === controlType.Initials; else signatureTitle">
+                                Initial Page
+                            </ng-container>
+
+                            <ng-template #signatureTitle>
+                                Signature Page
+                            </ng-template>
+                        </span>
+                    </h4>
+                    <button type="button"
+                            class="close"
+                            (click)="close()"
+                            [attr.aria-label]="'Close' | localize"
+                            [disabled]="saving">
+                        <i aria-hidden="true"
+                           class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="initial-page-modal__actions initial-page-modal__radio">
+                        <span class="initial-page-modal__actions__title">Placement: </span>
+                        <span class="initial-page-modal__actions__block"
+                              *ngFor="let placement of settings.placements">
+                            <div class="initial-page-modal__actions__block__radio">
+                                <label>
+                                    <input [ngModel]="placement.isSelected"
+                                           (ngModelChange)="onSelectionActions(placement, settings.placements)"
+                                           [ngClass]="{ 'checked': placement.isSelected }"
+                                           [checked]="placement.isSelected ? true : false"
+                                           type="checkbox"
+                                           [name]="'isChecked' + placement.title" />
+                                    <span></span>
+                                    {{ placement.title }}
+                                </label>
+                            </div>
+                        </span>
+                    </div>
+
+                    <div class="initial-page-modal__actions initial-page-modal__radio">
+                        <span class="initial-page-modal__actions__title">Aligment: </span>
+                        <span class="initial-page-modal__actions__block"
+                              *ngFor="let aligment of settings.aligments">
+                            <div class="initial-page-modal__actions__block__radio">
+                                <label>
+                                    <input [ngModel]="aligment.isSelected"
+                                           (ngModelChange)="onSelectionActions(aligment, settings.aligments)"
+                                           [ngClass]="{ 'checked': aligment.isSelected }"
+                                           [checked]="aligment.isSelected ? true : false"
+                                           type="checkbox"
+                                           [name]="'isChecked' + aligment.title" />
+                                    <span></span>
+                                    {{ aligment.title }}
+                                </label>
+                            </div>
+                        </span>
+                    </div>
+
+                    <div class="divider__line"></div>
+
+                    <div class="initial-page-modal__wrapper">
+                        <div class="initial-page-modal__wrapper__item">
+                            <span class="initial-page-modal__actions__block"
+                                  *ngFor="let participant of participantsActions">
+                                <div class="initial-page-modal__actions__block__checkbox"
+                                     [ngClass]="{ 'all-participant': participant.id.includes('Temp_All_Participant') }">
+                                    <label>
+                                        {{ participant.title }}
+                                        <input type="checkbox"
+                                               [ngModel]="participant.isSelected"
+                                               (ngModelChange)="onSelectionParticipant(participant)"
+                                               [ngClass]="{ 'checked': participant.isSelected }"
+                                               [checked]="participant.isSelected ? true : false"
+                                               [name]="'isChecked' + participant.title">
+                                        <span [class]="'checkmark ' + getParticipantClass(participant)"></span>
+                                    </label>
+                                </div>
+                            </span>
+                        </div>
+
+                        <form #documentForm="ngForm"
+                              class="initial-page-modal__wrapper__form">
+                            <div class="initial-page-modal__wrapper__item">
+
+                                <span class="initial-page-modal__wrapper__item__title">
+                                    Documents
+                                </span>
+
+                                <div *ngFor="let document of settings.documents; let documentIndex = index">
+                                    <span class="initial-page-modal__wrapper__item__label">
+                                        {{ document.name }}:
+                                    </span>
+
+                                    <span class="initial-page-modal__actions__block document-actions"
+                                          *ngFor="let page of document.pages; let i = index">
+                                        <div class="initial-page-modal__actions__block__checkbox">
+                                            <label class="initial-page-modal__actions__block__checkbox__document">
+                                                {{ page.title }}
+                                                <input [ngModel]="page.isSelected"
+                                                       (ngModelChange)="onSelectDocument(page, document.pages)"
+                                                       [ngClass]="{ 'checked': page.isSelected }"
+                                                       [checked]="page.isSelected ? true : false"
+                                                       type="checkbox"
+                                                       [name]="'isChecked' + 'index_' + i + '_' + documentIndex" />
+
+                                                <span class="checkmark"></span>
+
+                                                <i class="fas fa-info-circle"
+                                                   *ngIf="page.title.includes('Range')"
+                                                   [uiTooltip]="instruction"></i>
+                                                <div *ngIf="page.title.includes('Range')"
+                                                     class="form-group">
+                                                    <input class="click-outside form-control"
+                                                           *ngIf="page.isSelected"
+                                                           type="text"
+                                                           [name]="'page-range' + '_' + 'index_' + i + '_' + documentIndex"
+                                                           #pageRange="ngModel"
+                                                           [(ngModel)]="page.value"
+                                                           [pattern]="numberRegex" />
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </span>
+
+                                    <div class="divider__line"></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="modal-footer p-3">
+                    <button [disabled]="saving"
+                            type="button"
+                            class="btn btn-light-primary font-weight-bold"
+                            (click)="close()">
+                        {{ 'Cancel' | localize }}
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-primary font-weight-bold initial-page-modal__continue"
+                            (click)="save()"
+                            [disabled]="!isSelectedPages()">
+                        Continue
+                        <i class="fas fa-info-circle"
+                           *ngIf="!isSelectedPages()"
+                           [uiTooltip]="infoToContinue"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -18,7 +18,6 @@ namespace Realty.Pages
             AddControls(input, page);
         }
 
-
         private void DeleteControls(PageInput input, Page page)
         {
             bool IsNotEmptyGuid(ControlInput c) => c.Id != Guid.Empty;
@@ -39,11 +38,32 @@ namespace Realty.Pages
 
             foreach (var input in expectedNew)
             {
-                var control = new Control(input.Type, ControlLayer.Form, string.Empty);
+                var control = new Control(input.Type, input.Layer);
+                control.SetDetail(input.Placeholder, input.IsProtected, input.IsRequired, input.Title, input.Description, input.AdditionalSettings);
                 control.SetPosition(input.Position.Top, input.Position.Left);
+                control.SetTextPosition(input.TextPosition);
                 control.SetSize(input.Size.Width, input.Size.Height);
                 control.SetFont(input.Font.SizeInPx);
                 control.SetParticipant(input.ParticipantId);
+                control.SetParticipantMappingItemId(input.ParticipantMappingItemId);
+                page.AddControl(control);
+            }
+        }
+
+        private void AddControls(Page pageInput, Page page)
+        {
+            var expectedNew = pageInput.Controls;
+
+            foreach (var input in expectedNew)
+            {
+                var control = new Control(input.Type, input.Layer);
+                control.SetDetail(input.Placeholder, input.IsProtected, input.IsRequired, input.Title, input.Description, input.AdditionalSettings);
+                control.SetPosition(input.Position.Top, input.Position.Left);
+                control.SetTextPosition(input.TextPosition);
+                control.SetSize(input.Size.Width, input.Size.Height);
+                control.SetFont(input.Font.SizeInPx);
+                control.SetParticipant(input.ParticipantId);
+                control.SetParticipantMappingItemId(input.ParticipantMappingItemId);
                 page.AddControl(control);
             }
         }
@@ -61,10 +81,13 @@ namespace Realty.Pages
                 var input = pageInput.Controls.First(c => c.Id == control.Id);
 
                 control.SetType(input.Type);
+                control.SetDetail(input.Placeholder, input.IsProtected, input.IsRequired, input.Title, input.Description, input.AdditionalSettings);
                 control.SetPosition(input.Position.Top, input.Position.Left);
+                control.SetTextPosition(input.TextPosition);
                 control.SetSize(input.Size.Width, input.Size.Height);
                 control.SetFont(input.Font.SizeInPx);
                 control.SetParticipant(input.ParticipantId);
+                control.SetParticipantMappingItemId(input.ParticipantMappingItemId);
             }
         }
     }

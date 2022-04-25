@@ -134,7 +134,7 @@
                 </div>
                 <div class="modal-footer">
                     <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold" (click)="close()">{{"Cancel" | localize}}</button>
-                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!userForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                    <button type="submit" class="btn btn-primary font-weight-bold save-button" [disabled]="!userForm.form.valid" [buttonBusy]="saving" [busyText]="'SavingWithThreeDot' | localize"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
                 </div>
             </form>
         </div>

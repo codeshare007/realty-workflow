@@ -1,0 +1,119 @@
+.participant-setting {
+    &__input {
+        &:disabled {
+            cursor: not-allowed;
+            color: @disabled-color;
+            border-color: @disabled-color;
+            background-color: @disabled-color-second;
+        }
+    }
+
+    &__dropdown {
+        width: 200px;
+        left: 0;
+        z-index: 2;
+
+        &__wrapper {
+            display: flex;
+            flex-direction: column;
+            padding: 4px;
+        }
+
+        &__form {
+            margin-right: -4px;
+            padding-right: 2px;
+
+            &__item {
+                position: relative;
+                margin-bottom: 8px;
+
+                &.form-group {
+                    margin-bottom: 10px;
+                }
+
+                .form-control {
+                    padding-right: 22px;
+                }
+
+                i {
+                    cursor: pointer;
+                    position: absolute;
+                    top: 50%;
+                    right: 6px;
+                    transform: translate(0, -50%);
+
+                    &:hover {
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+
+        &__add {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            width: 100%;
+            padding: 10px 0;
+            color: @main-color;
+            background-color: transparent;
+            border: 1px solid @main-color;
+            outline: 1px solid @main-color  !important;
+            outline-offset: -2px;
+            border-radius: 4px;
+            transition: all 200ms ease-in;
+
+            i {
+                margin-right: 4px;
+                color: @main-color;
+            }
+
+            &:hover {
+                color: @main-border-second;
+                border-color: @main-border-second;
+                outline-color: @main-border-second;
+                outline-offset: -5px;
+
+                i {
+                    color: @main-border-second;
+                }
+            }
+
+            &:disabled {
+                cursor: not-allowed;
+                color: @disabled-color;
+                border-color: @disabled-color;
+                outline-width: 0 !important;
+
+                i {
+                    color: @disabled-color;
+                }
+            }
+        }
+
+        &__select {
+            width: 100%;
+        }
+
+        &__action {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            padding: 0px 0 6px;
+            width: 100%;
+            background-color: @main-white;
+        }
+    }
+}
+
+.participant {
+    .participant-setting__badge-disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .participant-setting__disabled {
+        color: @disabled-color;
+    }
+}

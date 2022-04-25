@@ -1,9 +1,9 @@
 <div id="kt_brand" class="brand flex-column-auto" kt-hidden-height="65">
     <a routerLink="/" target="_blank" class="brand-logo">
-        <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" [src]="defaultLogo" alt="logo" height="38" />
+        <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" [src]="defaultLogo" alt="logo" height="65" />
         <img *ngIf="appSession.tenant && appSession.tenant.logoId"
             [src]="remoteServiceBaseUrl + '/TenantCustomization/GetTenantLogo?skin=' + currentTheme.baseSettings.menu.asideSkin + '&tenantId=' + appSession.tenant.id + '&id=' + appSession.tenant.logoId"
-            alt="logo" height="38" />
+            alt="logo" height="65" />
     </a>
     <button class="brand-toggle btn btn-sm px-0" id="kt_aside_toggle" id="kt_aside_toggler"
         *ngIf="currentTheme.baseSettings.menu.allowAsideMinimizing" (click)="toggleLeftAside()">

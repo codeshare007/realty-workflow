@@ -14,6 +14,30 @@
   <ItemGroup>
     <Compile Remove="Migrations\20201228153814_Add_Tenant_Configuration_to_Signing.cs" />
     <Compile Remove="Migrations\20201228153814_Add_Tenant_Configuration_to_Signing.Designer.cs" />
+    <Compile Remove="Migrations\20201229074204_Update_Type_of_ParticipantId_in_Control.cs" />
+    <Compile Remove="Migrations\20201229074204_Update_Type_of_ParticipantId_in_Control.Designer.cs" />
+    <Compile Remove="Migrations\20210119111233_Add_TransactionPaymentTracker.cs" />
+    <Compile Remove="Migrations\20210119111233_Add_TransactionPaymentTracker.Designer.cs" />
+    <Compile Remove="Migrations\20210119111804_Add_TransactionPaymentTracker.cs" />
+    <Compile Remove="Migrations\20210119111804_Add_TransactionPaymentTracker.Designer.cs" />
+    <Compile Remove="Migrations\20210119112723_Add_TransactionPaymentTracker.cs" />
+    <Compile Remove="Migrations\20210119112723_Add_TransactionPaymentTracker.Designer.cs" />
+    <Compile Remove="Migrations\20210126162551_Add_details_to_FormControl.cs" />
+    <Compile Remove="Migrations\20210126162551_Add_details_to_FormControl.Designer.cs" />
+    <Compile Remove="Migrations\20210301124657_Add_SignedFile_to_Form.cs" />
+    <Compile Remove="Migrations\20210301124657_Add_SignedFile_to_Form.Designer.cs" />
+    <Compile Remove="Migrations\20210320090608_update_lead_recommendedListing.cs" />
+    <Compile Remove="Migrations\20210320090608_update_lead_recommendedListing.Designer.cs" />
+    <Compile Remove="Migrations\20210329115602_Add_Lead_Contacts.cs" />
+    <Compile Remove="Migrations\20210329115602_Add_Lead_Contacts.Designer.cs" />
+    <Compile Remove="Migrations\20210618134717_lead-contact-key.cs" />
+    <Compile Remove="Migrations\20210618134717_lead-contact-key.Designer.cs" />
+    <Compile Remove="Migrations\20210618134957_lead-contact-key.cs" />
+    <Compile Remove="Migrations\20210618134957_lead-contact-key.Designer.cs" />
+    <Compile Remove="Migrations\20210618140651_test.cs" />
+    <Compile Remove="Migrations\20210618140651_test.Designer.cs" />
+    <Compile Remove="Migrations\20210618141711_contacts-relations.cs" />
+    <Compile Remove="Migrations\20210618141711_contacts-relations.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.5" />

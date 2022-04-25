@@ -1,0 +1,125 @@
+.ui-multi-select {
+    position: relative;
+
+    &__action {
+        position: relative;
+
+        &.form-control {
+            padding-right: 34px;
+
+            &:disabled {
+                cursor: not-allowed;
+            }
+        }
+
+        &--placeholder {
+            display: flex;
+            color: @disabled-color;
+        }
+
+        &__arrow {
+            position: absolute;
+            top: 50%;
+            right: 16px;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid @main-black-second;
+            transition: transform 0.1s ease-in-out;
+            transform: rotate(0deg) translate(0, -30%);
+
+            &.active {
+                transform: rotate(180deg) translate(0, 50%);
+            }
+        }
+
+        &__list {
+            display: flex;
+            margin: 0;
+            padding: 0px;
+            overflow: hidden;
+
+            &__item {
+                margin-right: 10px;
+                text-transform: capitalize;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+
+                &--elem {
+                    display: flex;
+                    align-items: center;
+                    padding: 0 8px;
+                    border: 1px solid @disabled-color;
+                    border-radius: 24px;
+                    box-shadow: 0 0 2px 0 @disabled-color-second;
+                    white-space: nowrap;
+
+                    i {
+                        margin-left: 3px;
+                        color: @disabled-color;
+                        font-size: 12px;
+                        transition: color 0.1s ease-in;
+
+                        &:hover {
+                            color: @main-black-second;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    &__dropdown {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        background-color: @main-white;
+        border-radius: 5px;
+        box-shadow: 0 0 10px 4px @box-shadow-icon;
+        z-index: 2;
+
+        &__list {
+            padding: 0;
+            max-height: 136px;
+
+            &.select {
+                &--overflow {
+                    margin: 6px 0;
+                    overflow-y: auto;
+                }
+            }
+
+            &__item {
+                cursor: pointer;
+                display: flex;
+                padding: 4px 16px;
+                color: @main-black-second;
+                line-height: 1.2;
+                text-transform: capitalize;
+
+                &:hover {
+                    background-color: @disabled-color-third;
+                }
+
+                &.selected {
+                    background-color: @disabled-color-second;
+                }
+            }
+        }
+    }
+
+    .form-control {
+        &:disabled {
+            cursor: not-allowed;
+        }
+    }
+
+    ol {
+        list-style: none;
+    }
+}

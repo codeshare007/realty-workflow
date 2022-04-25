@@ -1,0 +1,36 @@
+<div appBsModal
+     #uploadDocumentModal="bs-modal"
+     class="modal fade"
+     [config]="{backdrop: 'static'}">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div [hidden]="!active">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span>{{ 'SelectTransactionForm' | localize }}</span>
+                    </h5>
+                    <button type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-hidden="true"
+                            (click)="close()">
+                        <i aria-hidden="true"
+                           class="ki ki-close"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body row-action-click">
+                    <forms-table #formTable
+                                 [options]="options"
+                                 [items]="items"
+                                 [totalCount]="totalCount"
+                                 (onGetAll)="getAll($event)"
+                                 (onSelectMany)="selectForms($event)"
+                                 (onSelect)="selectForm($event)">
+                    </forms-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

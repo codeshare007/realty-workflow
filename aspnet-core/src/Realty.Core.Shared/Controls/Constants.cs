@@ -4,7 +4,8 @@ namespace Realty.Controls
 {
     public static class Constants
     {
-        public const int LabelMaxLength = 256;
+        public const int TitleMaxLength = 256;
+        public const int PlaceholderMaxLength = 256;
         public const int ValueMaxLength = 2048;
 
         public static class Position
@@ -29,6 +30,13 @@ namespace Realty.Controls
         {
             public const int SizeMinValue = 1;
             public const int SizeMaxValue = 124;
+        }
+
+        public enum TextPositionType 
+        {
+            Center = 0,
+            Left = 1,
+            Right = 2
         }
     }
 }

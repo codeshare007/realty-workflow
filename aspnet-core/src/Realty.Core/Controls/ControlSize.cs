@@ -10,17 +10,17 @@ namespace Realty.Controls
         {
         }
 
-        public ControlSize(int width, int height)
+        public ControlSize(float width, float height)
         {
             Width = width;
             Height = height;
         }
 
         [Range(Constants.Size.WidthMinValue, Constants.Size.WidthMaxValue)]
-        public int Width { get; private set; }
+        public float Width { get; private set; }
 
         [Range(Constants.Size.HeightMinValue, Constants.Size.HeightMaxValue)]
-        public int Height { get; private set; }
+        public float Height { get; private set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

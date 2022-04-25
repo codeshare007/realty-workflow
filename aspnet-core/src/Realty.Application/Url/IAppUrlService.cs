@@ -8,8 +8,6 @@
 
         string CreateEmailActivationUrlFormat(string tenancyName);
 
-        string CreatePublicSigingUrlFormat(string tenancyName, long? participantId);
-
         string CreatePasswordResetUrlFormat(string tenancyName);
     }
 }

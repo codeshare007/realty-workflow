@@ -1,0 +1,61 @@
+<ng-container *ngIf="!disabled; else disabledTemp">
+    <form class="ui-multi-select">
+
+        <div class="ui-multi-select__title ">
+            {{ title }}
+        </div>
+
+        <button class="ui-multi-select__action click-outside form-control"
+                type="button"
+                (click)="toggleDropDown()">
+            <span class="click-outside ui-multi-select__action--placeholder"
+                  *ngIf="!selectedList.length">
+                Selected {{ title }}
+            </span>
+            <ol *ngIf="selectedList.length"
+                #actionList
+                class="click-outside ui-multi-select__action__list">
+                <li class="click-outside ui-multi-select__action__list__item"
+                    *ngFor="let item of selectedList.slice().reverse()">
+                    <div class="click-outside  ui-multi-select__action__list__item--elem">
+                        <span class="click-outside">
+                            {{ item.value }}
+                        </span>
+                        <i class="fas fa-trash-alt"
+                           (click)="selectValue(item)"></i>
+                    </div>
+                </li>
+            </ol>
+            <span class="click-outside ui-multi-select__action__arrow"
+                  [ngClass]="{ 'active': showDropDown }"></span>
+        </button>
+
+        <div class="ui-multi-select__dropdown"
+             *ngIf="showDropDown"
+             dropDownClickOutside
+             (dropDownClickOutside)="toggleDropDown()">
+            <ul class="ui-multi-select__dropdown__list select--overflow new-scrollbar">
+                <li *ngFor="let item of uiList"
+                    (click)="selectValue(item)"
+                    [ngClass]="{ 'selected' : isSelected(item) }"
+                    class="ui-multi-select__dropdown__list__item">
+                    <span class="ui-multi-select__dropdown__list__item__name">
+                        {{ item.value }}
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </form>
+</ng-container>
+<ng-template #disabledTemp>
+    <div class="ui-multi-select">
+        <span class="ui-multi-select__title">{{ title }}</span>
+        <div class="ui-multi-select__action">
+            <input type="text"
+                   class="form-control"
+                   placeholder="Select {{ title }}"
+                   disabled>
+            <span class="ui-multi-select__action__arrow"></span>
+        </div>
+    </div>
+</ng-template>

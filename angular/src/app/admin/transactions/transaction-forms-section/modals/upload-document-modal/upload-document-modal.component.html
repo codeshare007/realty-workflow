@@ -9,15 +9,13 @@
 
     <div class="modal-dialog">
         <div class="modal-content">
-
             <form *ngIf="active"
-                  #uploadDocumentModal="ngForm"
+                  #uploadDocumentForm="ngForm"
                   novalidate
                   class="form form-label-right">
-
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <span>Upload document</span>
+                        <span>Create Form</span>
                     </h5>
                     <button type="button"
                             class="close"
@@ -44,18 +42,18 @@
 
                     <div class="form-group">
                         <label for="DefaultFileUploadFileInput">File</label>
-                        <p-fileUpload id="DefaultFileUploadFileInput"
-                                      name="DefaultFileUploadFileInput"
+                        <p-fileUpload id="FormFileUpload"
+                                      name="FormFileUpload"
                                       [url]="uploadUrl"
+                                      [auto]="true"
+                                      mode="basic"
                                       accept="application/pdf"
-                                      maxFileSize="5000000"
+                                      maxFileSize="20000000"
+                                      styleClass="file-choose-control"
+                                      [chooseLabel]="getChooseLabel"
+                                      [chooseIcon]="getChooseIcon"
                                       (onUpload)="onUpload($event)"
-                                      (onSend)="onSend($event)">
-
-                            <ng-template pTemplate="content"
-                                         *ngIf="uploadedFileName">
-                                {{uploadedFileName}}
-                            </ng-template>
+                                      (onBeforeUpload)="onBeforeUpload($event)">
                         </p-fileUpload>
                     </div>
                 </div>
@@ -70,11 +68,12 @@
 
                     <button type="button"
                             class="btn btn-primary font-weight-bold save-button"
-                            [buttonBusy]="saving"
                             (click)="save()"
+                            [disabled]="!uploadDocumentForm.valid || !uploadedFileId"
+                            [buttonBusy]="saving"
                             [busyText]="'ProcessingWithThreeDot' | localize">
                         <i class="fa fa-arrow-circle-right"></i>
-                        <span>Save</span>
+                        {{ 'Save' | localize }}
                     </button>
                 </div>
 

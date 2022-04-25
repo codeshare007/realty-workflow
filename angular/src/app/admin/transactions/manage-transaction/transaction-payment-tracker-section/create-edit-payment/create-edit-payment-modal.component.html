@@ -1,0 +1,82 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form *ngIf="active" #paymentForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="payment.id">{{l("EditPayment")}}</span>
+                        <span *ngIf="!payment.id">{{l("CreatePayment")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')" [disabled]="saving">
+                         <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="Type">{{"Participant" | localize}}</label>
+                                <general-combo
+                                    name="Participant" 
+                                    [values]="participants"
+                                    [(selectedValue)]="payment.participantId"
+                                    >
+                                </general-combo>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="Type">{{"Status" | localize}}</label>
+                                <general-combo
+                                    name="Status" 
+                                    [values]="paymentStatusTypes"
+                                    [(selectedValue)]="payment.status"
+                                    >
+                                </general-combo>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="PaymentAmount">{{"Amount" | localize}}</label>
+                                <input id="PaymentAmount" class="form-control" type="number" name="Amount" [(ngModel)]="payment.amount">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="Bounced">{{"Bounced" | localize}}</label>
+                                <input id="Bounced" class="form-control" type="number" name="Bounced" [(ngModel)]="payment.bounced">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="Type">{{"TypeOfPayment" | localize}} *</label>
+                                <general-combo
+                                    name="Gateway" 
+                                    [values]="gatewayTypes"
+                                    [(selectedValue)]="payment.gateway"
+                                    >
+                                </general-combo>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" *ngIf="payment.gateway == checkGatewayType">
+                            <div class="form-group">
+                                <label for="CheckNumber">{{"CheckNumber" | localize}}</label>
+                                <input id="CheckNumber" class="form-control" type="string" name="Phone" [(ngModel)]="payment.checkNumber">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="Comment">{{"Comment" | localize}}</label>
+                                <textarea id="Comment" class="form-control" name="Comment" [(ngModel)]="payment.comment"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold" (click)="close()">{{"Cancel" | localize}}</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold save-button" [disabled]="!paymentForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

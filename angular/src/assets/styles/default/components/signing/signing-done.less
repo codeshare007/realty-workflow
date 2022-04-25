@@ -1,0 +1,26 @@
+.signing-done,
+.signing-rejected {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    h1 {
+        display: flex;
+        align-items: center;
+
+        color: @main-border;
+        font-size: 32px;
+
+        i {
+            margin-right: 16px;
+            color: @main-status-success;
+            font-size: 70px;
+            opacity: 0.7;
+        }
+
+        .comment {
+            font-size: 20px;
+        }
+    }
+}

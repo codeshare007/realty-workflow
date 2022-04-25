@@ -1,5 +1,11 @@
-<input type="text"
-       name="textField"
-       class="form-control"
-       [(ngModel)]="text"
-       (ngModelChange)="onTextFieldChange($event)" />
+<!-- <label> -->
+    <input #textField
+           [name]="'textField' + tabIndex"
+           [hideShowPass]="control.isProtected"
+           [tabindex]="tabIndex"
+           [placeholder]="control.placeholder ? control.placeholder : ''"
+           autocomplete="new-password"
+           class="form-control"
+           [(ngModel)]="text"
+           (ngModelChange)="onTextFieldChange($event)" />
+<!-- </label> -->

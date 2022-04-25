@@ -1,0 +1,35 @@
+<form class="ui-select">
+    <span class="ui-select__title"
+          *ngIf="title">
+        {{ title }}
+    </span>
+
+    <div class="ui-select__action"
+         (click)="toggleDropDown()">
+        <input class="click-outside"
+               type="button"
+               [disabled]="disabled"
+               [value]="selectLabel" />
+        <span class="click-outside"
+              [ngClass]="{ 'active': showDropDown }"></span>
+        <i class="fas fa-angle-left click-outside"
+           (click)="toggleDropDown();"
+           [ngClass]="{ 'active': showDropDown, 'disabled': disabled }"></i>
+    </div>
+
+    <div class="ui-select__dropdown"
+         *ngIf="showDropDown"
+         dropDownClickOutside
+         (dropDownClickOutside)="toggleDropDown()">
+        <ul class="ui-select__dropdown__list select--overflow new-scrollbar click-outside">
+            <li *ngFor="let item of uiList"
+                (click)="selectValue(item)"
+                [ngClass]="{ 'selected' : (selectItem ? item.id === selectItem.id : false) }"
+                class="ui-select__dropdown__list__item click-outside">
+                <span class="ui-select__dropdown__list__item__name">
+                    {{ item.value }}
+                </span>
+            </li>
+        </ul>
+    </div>
+</form>

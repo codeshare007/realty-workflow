@@ -16,7 +16,7 @@ namespace Realty.Leads.Input
         {
             if (string.IsNullOrEmpty(Sorting))
             {
-                Sorting = "Contact.FirstName,Contact.LastName";
+                Sorting = "LastModificationTime desc";
             }
 
             Filter = Filter?.Trim();

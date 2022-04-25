@@ -1,0 +1,39 @@
+.lead-general-info-section {
+    .disabled-ngx-tags-input {
+        .form-control {
+            color: @disabled-color;
+            background-color: @disabled-color-form;
+        }
+
+        ngx-tags-input {
+            height: 40px;
+        }
+    }
+
+    .form-control {
+        height: unset;
+    }
+
+    .tags-input__tag {
+        display: inline-flex !important;
+        padding: 0px 6px !important;
+        width: max-content;
+        border-radius: 24px;
+        font-size: 13px;
+    }
+
+    .label.label-primary {
+        color: @main-black-second;
+        background-color: transparent;
+        border: 1px solid @disabled-color;
+    }
+
+    .tags-input__tag-remove-btn {
+        font-size: 16px !important;
+        transition: color 0.1s ease-in;
+
+        &:hover {
+            color: @main-status-error;
+        }
+    }
+}

@@ -1,10 +1,10 @@
-import { PermissionCheckerService, RefreshTokenService } from 'abp-ng2-module';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, CanLoad, Router, RouterStateSnapshot } from '@angular/router';
 import { AppSessionService } from '@shared/common/session/app-session.service';
 import { UrlHelper } from '@shared/helpers/UrlHelper';
-import { Observable } from 'rxjs/internal/Observable';
+import { PermissionCheckerService, RefreshTokenService } from 'abp-ng2-module';
 import { of, Subject } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable()
 export class AppRouteGuard implements CanActivate, CanActivateChild, CanLoad {
@@ -90,6 +90,10 @@ export class AppRouteGuard implements CanActivate, CanActivateChild, CanLoad {
 
         if (this._permissionChecker.isGranted('Pages.Administration.Users')) {
             return '/app/admin/users';
+        }
+
+        if (this._permissionChecker.isGranted('Pages.Transactions')) {
+            return 'app/admin/transactions';
         }
 
         return '/app/notifications';

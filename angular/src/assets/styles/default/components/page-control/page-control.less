@@ -3,8 +3,147 @@
     position: absolute;
     z-index: 1;
 
+    .test-page-control-info {
+        position: absolute;
+        top: -24px;
+        left: 50%;
+        padding: 2px 4px;
+        color: crimson;
+        background-color: white;
+        box-shadow: 0 0 4px grey;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1;
+        white-space: nowrap;
+        transform: translate(-50%, 0);
+        opacity: 0;
+    }
+
+    &__focused {
+        label {
+            box-shadow: 0 0 14px 4px @box-shadow-icon;
+
+            &:focus {
+                outline: -webkit-focus-ring-color auto 0px;
+            }
+        }
+    }
+
     &.top-control {
-        z-index: 100;
+        z-index: 2;
+    }
+
+    &.no-actions {
+        .resizable-draggable {
+            cursor: pointer;
+        }
+    }
+
+    &.signature-design {
+        .control-signature {
+            &:before {
+                content: 'signing here';
+                position: absolute;
+                top: -60px;
+                padding: 2px 6px 0;
+                width: 85px;
+                color: @main-color;
+                background-color: @box-shadow-text;
+                border-radius: 4px;
+                text-shadow: 0px 0px 2px @main-white;
+                text-transform: uppercase;
+                text-align: center;
+                font-size: 18px;
+                line-height: 0.9;
+            }
+
+            &:after {
+                content: '';
+                position: absolute;
+                top: -24px;
+                left: 50%;
+                width: 0;
+                height: 0;
+                border-right: 20px solid transparent;
+                border-top: 20px solid @main-color;
+                border-left: 20px solid transparent;
+                transform: translate(-50%, 0);
+            }
+        }
+    }
+
+    &.multi-select {
+        .resizable-draggable {
+            border: 2px solid;
+            box-shadow: 0 0 4px 0 @box-shadow;
+        }
+    }
+
+    &.hide-dragging {
+        .resizable-draggable {
+            opacity: 0;
+
+            &.control-diagonal-line,
+            &.control-horizontal-line,
+            &.control-vertical-line,
+            &.control-square,
+            &.control-oval {
+                opacity: 1;
+            }
+        }
+    }
+
+    .control-initials,
+    .control-signature,
+    .control-optional-signing,
+    .control-optional-initials {
+        &.page-control__view__text {
+            align-items: center;
+            justify-content: center;
+            border: 2px solid @main-black-second;
+            border-radius: 4px;
+
+            &:before {
+                top: 5px;
+            }
+        }
+    }
+
+    .control-signature.page-control__view__text,
+    .control-optional-signing {
+        &.page-control__view__text {
+            &:before {
+                content: 'signature';
+                position: absolute;
+                top: -2.5px;
+                left: 6px;
+                display: flex;
+                align-items: center;
+                padding: 0 2px;
+                height: 12px;
+                background-color: @main-white-second;
+                border-radius: 4px;
+                font-size: 12px;
+                font-weight: 500;
+                text-transform: capitalize;
+            }
+        }
+    }
+
+    .control-initials.page-control__view__text,
+    .control-optional-initials {
+        &.page-control__view__text {
+            &:before {
+                top: -2.5px;
+                display: flex;
+                align-items: center;
+                padding: 0 2px;
+                height: 12px;
+                background-color: @main-white-second;
+                border-radius: 4px;
+            }
+        }
     }
 
     &.moving-stop {
@@ -17,102 +156,31 @@
         overflow: hidden;
     }
 
-    &__actions {
-        position: absolute;
-        display: none;
-        margin: 10px;
-        padding: 6px;
-        background-color: @main-white-third;
-        border-radius: 4px;
-        opacity: 0;
-        transition: opacity 0.2s ease-in;
-
-        &.show-action {
-            display: flex;
-            top: -44px;
-            left: -12px;
-            opacity: 1;
-        }
-
-        >i {
-            cursor: pointer;
-            height: 22px;
-            width: 22px;
-            color: @main-black-second;
-            font-size: 22px;
-            transform: rotate3d(0, 0, 1, 0deg);
-            transition: transform 0.1s ease-in;
-
-            &:hover {
-                color: @main-black-third;
-            }
-
-            &.opened-icon {
-                transform: rotate3d(0, 0, -1, 360deg);
-            }
-        }
-
-        &__wrapper {
-            cursor: default;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-left: 2px;
-            padding: 0 4px;
-            width: 100%;
-
-            i {
-                cursor: pointer;
-                margin: 0 0 0 10px;
-                color: @main-color;
-                font-size: 16px;
-
-                &:hover {
-                    color: @main-color-second;
-                }
-            }
-        }
-
-        &__font-size {
-            position: absolute;
-            top: 30px;
-            left: 26px;
-            background-color: @main-white-second;
-
-            &__list {
-                margin-bottom: 0;
-                padding: 8px 0;
-                max-height: 120px;
-                overflow-y: auto;
-                list-style: none;
-
-                &__item {
-                    cursor: pointer;
-                    display: flex;
-                    justify-content: center;
-                    padding: 2px 8px;
-                    font-weight: 500;
-
-                    &:last-child {
-                        padding-bottom: 0;
-                    }
-
-                    &:hover {
-                        background-color: @disabled-color-third;
-                    }
-
-                    &.active {
-                        background-color: @disabled-color-second;
-                    }
-                }
-            }
-        }
-    }
-
     @import './components/date-time-control.less';
+    @import './components/page-control-actions.less';
     @import './components/page-control-view.less';
     @import './components/signature-control.less';
     @import './components/text-field-control.less';
     @import './components/initials-control.less';
     @import './components/text-area-control.less';
+    @import './components/options-sign-controls.less';
+    @import './components/dropdown-control.less';
+}
+
+@import './components/upload-attachment-control.less';
+
+.signing {
+    .page-control__focused {
+        label {
+            box-shadow: 0 0 14px 4px @main-color-second;
+        }
+    }
+
+    .page-control {
+        label {
+            &:hover {
+                box-shadow: 0 0 14px 4px @main-color-second;
+            }
+        }
+    }
 }

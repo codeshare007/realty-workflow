@@ -1,6 +1,6 @@
 ﻿using Realty.Storage.Path.FolderResolver.Strategies;
 using System.Linq;
-using Abp.Domain.Entities;
+
 
 namespace Realty.Storage.Path.FolderResolver
 {
@@ -13,7 +13,7 @@ namespace Realty.Storage.Path.FolderResolver
             _strategies = strategies;
         }
 
-        public IFolderResolverStrategy GetStrategy(IEntity<long> entity)
+        public IFolderResolverStrategy GetStrategyFor(IHaveFiles entity)
         {
             return _strategies.FirstOrDefault(r => r.IsApplied(entity));
         }

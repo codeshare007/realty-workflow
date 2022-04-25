@@ -1,0 +1,48 @@
+.details-control-signing {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    margin: 0 14px 0 10px;
+    padding: 10px;
+    max-width: 300px;
+    min-width: 130px;
+    background-color: @main-status-warning-second;
+    border: 1px solid @disabled-color;
+    border-radius: 4px;
+    box-shadow: 0 0 8px 0px @main-status-warning-second;
+
+    &.reset-animate {
+        animation-name: box-shadow-animation;
+        animation-duration: 1800ms;
+        animation-iteration-count: 4;
+    }
+
+    &__item {
+        margin-bottom: 16px;
+        color: @main-black-third;
+        font-size: 14px;
+
+        span {
+            color: @main-black-second;
+            font-weight: 600;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    @keyframes box-shadow-animation {
+        0% {
+            box-shadow: 0 0 8px 0px @main-status-warning-second;
+        }
+
+        50% {
+            box-shadow: 0 0 18px 5px @main-status-warning-second;
+        }
+
+        100% {
+            box-shadow: 0 0 8px 0px @main-status-warning-second;
+        }
+    }
+}

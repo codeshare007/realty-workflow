@@ -1,0 +1,121 @@
+.participant__select,
+.initial-page-modal {
+    position: relative;
+    font-size: 14px;
+
+    .title-select {
+        display: inline-block;
+        margin-bottom: 4px;
+        font-weight: 400;
+        color: @main-black-second;
+    }
+
+    &__action {
+        position: relative;
+        font-weight: 400;
+
+        i {
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 16px;
+            color: @main-black-second;
+            transform: rotate(-90deg);
+            font-size: 20px;
+            font-weight: 600;
+            transition: transform 0.1s ease-in-out;
+
+            &.active {
+                transform: rotate(90deg);
+            }
+        }
+
+        input {
+            cursor: not-allowed;
+            display: flex;
+            width: 100%;
+            height: 40px;
+            padding: 8px 16px;
+            background-color: inherit;
+            border: 1px solid @disabled-color-second;
+            border-radius: 4px;
+            outline: none;
+
+            &.click-outside {
+                cursor: pointer;
+            }
+
+            &:focus {
+                border-color: @main-color-second;
+            }
+        }
+
+        input[value] {
+            display: block;
+            padding-right: 30px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            text-align: start;
+        }
+    }
+
+    &__dropdown {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        background-color: @main-white;
+        border-radius: 5px;
+        box-shadow: 0 0 4px 0 @box-shadow-icon;
+        z-index: 2;
+
+        &__search {
+            margin: 16px 16px 20px;
+            padding: 5px;
+            border: 1px solid @disabled-color-second;
+            border-radius: 3px;
+        }
+
+        &__list {
+            padding: 0;
+            max-height: 136px;
+
+            &.select {
+                &--overflow {
+                    margin: 6px;
+                    overflow-y: auto;
+                }
+            }
+
+            &__item {
+                cursor: pointer;
+                display: flex;
+                padding: 4px 16px;
+                color: @main-black-second;
+                line-height: 1.2;
+
+                &:hover {
+                    background-color: @disabled-color-third;
+                }
+
+                &.selected {
+                    background-color: @disabled-color-second;
+                }
+
+                &__badge {
+                    display: block;
+                    margin-right: 8px;
+                    width: 20px;
+                    height: 20px;
+                    border: 1px dashed;
+                    border-radius: 50%;
+                }
+            }
+        }
+    }
+
+    ul {
+        list-style: none;
+    }
+}

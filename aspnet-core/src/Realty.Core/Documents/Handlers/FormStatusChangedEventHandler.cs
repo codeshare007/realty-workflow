@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Abp;
 using Abp.Dependency;
+using Abp.Domain.Entities;
 using Abp.Events.Bus.Handlers;
 using Abp.Localization;
 using Abp.Localization.Sources;
@@ -59,39 +60,64 @@ namespace Realty.Documents.Handlers
         
         private async Task HandleEventAsync(Library library, Form form)
         {
-            var message = GetStatusChangeNotificationMessage(form);
+            var message = GetStatusChangeNotificationMessage(library, form);
             await DispatchNotification(library, form, message);
         }
 
-        private void HandleEventAsync(Transaction transaction, Form form)
+        private async Task HandleEventAsync(Transaction transaction, Form form)
         {
-            // Add custom functionality here
+            var message = GetStatusChangeNotificationMessage(transaction, form);
+            await DispatchNotification(transaction, form, message);
         }
 
-        private void HandleEventAsync(Signing signing, Form form)
+        private async Task HandleEventAsync(Signing signing, Form form)
         {
-            // Add custom functionality here
+            var message = GetStatusChangeNotificationMessage(signing, form);
+            await DispatchNotification(signing, form, message);
         }
 
-        private async Task DispatchNotification(Library library, Form form, string message)
+        private async Task DispatchNotification<T>(T parent, Form form, string message) where T : class, IHaveForms, IEntity<Guid>
         {
             if (!form.CreatorUserId.HasValue) return;
 
             var userIdentifier = new UserIdentifier(form.TenantId, form.CreatorUserId.Value);
             var clients = _onlineClientManager.GetAllByUserId(userIdentifier);
 
-            var notification = _notificationFactory.Create(library, form, message);
+            var notification = _notificationFactory.Create(parent, form, message);
             await _communicator.SendDocumentStatusChangedToClient(clients, notification);
         }
 
-        private string GetStatusChangeNotificationMessage(Form form)
+        private string GetStatusChangeNotificationMessage(IHaveForms parent, Form form)
         {
-            return form.Status switch
+            if (parent is Library)
             {
-                FormStatus.Processing => L("Notification_LibraryForm_ProcessingStarted", form.Name),
-                FormStatus.Ready => L("Notification_LibraryForm_ProcessingCompleted", form.Name),
-                _ => throw new ArgumentOutOfRangeException()
-            };
+                return form.Status switch
+                {
+                    FormStatus.Processing => L("Notification_LibraryForm_ProcessingStarted", form.Name),
+                    FormStatus.Ready => L("Notification_LibraryForm_ProcessingCompleted", form.Name),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+            else if (parent is Transaction)
+            {
+                return form.Status switch
+                {
+                    FormStatus.Processing => L("Notification_TransactionForm_ProcessingStarted", form.Name),
+                    FormStatus.Ready => L("Notification_TransactionForm_ProcessingCompleted", form.Name),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+            else if (parent is Signing)
+            {
+                return form.Status switch
+                {
+                    FormStatus.Processing => L("Notification_SigningForm_ProcessingStarted", form.Name),
+                    FormStatus.Ready => L("Notification_SigningForm_ProcessingCompleted", form.Name),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(parent), parent, null);
         }
 
         private string L(string name) => _localizationSource.GetString(name);

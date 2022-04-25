@@ -1,0 +1,27 @@
+:host {
+    display: block
+}
+
+div {
+    max-width: 300px;
+    padding: 0.5rem 1rem;
+    color: #2276aa;
+    background-color: #fafafae8;
+    border: 1px solid #72b3db;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 1;
+
+    &:before {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        right: 10px;
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid #72b3db;
+        z-index: 1;
+    }
+}

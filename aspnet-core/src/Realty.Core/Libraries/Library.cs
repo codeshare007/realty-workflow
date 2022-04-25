@@ -5,14 +5,16 @@ using System.Linq;
 using Abp;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using Realty.Attachments;
 using Realty.Forms;
 using Realty.Forms.Events;
 
 namespace Realty.Libraries
 {
-    public class Library: FullAuditedAggregateRoot<Guid>, IHaveForms, IMustHaveTenant
+    public class Library: FullAuditedAggregateRoot<Guid>, IHaveForms, IMustHaveTenant, IHaveAttachments
     {
         private List<Form> _forms = new List<Form>();
+        private List<Attachment> _attachments = new List<Attachment>();
 
         protected Library()
         {
@@ -30,10 +32,14 @@ namespace Realty.Libraries
 
         public virtual IReadOnlyCollection<Form> Forms => _forms.AsReadOnly();
 
+        public virtual IReadOnlyCollection<Attachment> Attachments => _attachments.AsReadOnly();
+
         public void Add(Form form)
         {
             Check.NotNull(form, nameof(form));
 
+            var displayORder = _forms.Count > 0 ? (_forms.Select(s => s.DisplayOrder).Max() + 1) : 0;
+            form.SetDisplayOrder(displayORder);
             _forms.Add(form);
 
             DomainEvents.Add(new FormCreatedEventData(this, form));

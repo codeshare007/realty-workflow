@@ -51,6 +51,7 @@ namespace Realty.Authorization.Users
         private readonly UserManager _userManager;
         private readonly IRepository<UserOrganizationUnit, long> _userOrganizationUnitRepository;
         private readonly IRepository<OrganizationUnitRole, long> _organizationUnitRoleRepository;
+        private readonly IRepository<UserLoginAttempt, long> _userLoginAttemptRepository;
 
         public UserAppService(
             RoleManager roleManager,
@@ -69,7 +70,7 @@ namespace Realty.Authorization.Users
             IRoleManagementConfig roleManagementConfig,
             UserManager userManager,
             IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository,
-            IRepository<OrganizationUnitRole, long> organizationUnitRoleRepository)
+            IRepository<OrganizationUnitRole, long> organizationUnitRoleRepository, IRepository<UserLoginAttempt, long> userLoginAttemptRepository)
         {
             _roleManager = roleManager;
             _userEmailer = userEmailer;
@@ -90,13 +91,17 @@ namespace Realty.Authorization.Users
             _roleRepository = roleRepository;
 
             AppUrlService = NullAppUrlService.Instance;
+            _userLoginAttemptRepository = userLoginAttemptRepository;
         }
 
         public async Task<PagedResultDto<UserListDto>> GetUsers(GetUsersInput input)
         {
             CheckPermission("Pages.Users.{0}s", input.RoleName);
             var role = await _roleManager.GetRoleByNameAsync(input.RoleName);
-            input.Role = role?.Id;
+            var roles = new List<int>();
+            roles.Add(role.Id);
+
+            input.Roles = roles.ToArray();
 
             var query = GetUsersFilteredQuery(input);
 
@@ -107,7 +112,24 @@ namespace Realty.Authorization.Users
                 .PageBy(input)
                 .ToListAsync();
 
+            var userIds = users.Select(u => u.Id).ToList();
+
+            var userLoginAttempts = _userLoginAttemptRepository
+                .GetAll()
+                .Where(a => a.UserId.HasValue && userIds.Contains(a.UserId.Value) && a.Result == AbpLoginResultType.Success)
+                .ToList();
+
             var userListDtos = ObjectMapper.Map<List<UserListDto>>(users);
+            
+            foreach (var user in userListDtos) 
+            {
+                user.LastLoginTime = userLoginAttempts
+                    .Where(u => u.UserId == user.Id)
+                    .OrderByDescending(u => u.CreationTime)
+                    .Select(u => u.CreationTime)
+                    .FirstOrDefault();
+            }
+
             await FillRoleNames(userListDtos);
 
             return new PagedResultDto<UserListDto>(
@@ -120,33 +142,39 @@ namespace Realty.Authorization.Users
         {
             CheckPermission("Pages.Users.{0}s", input.RoleName);
             var role = await _roleManager.GetRoleByNameAsync(input.RoleName);
+            var roles = new List<int>();
+            roles.Add(role.Id);
 
-            input.Role = role?.Id;
+            if (input.RoleName == StaticRoleNames.Tenants.Agent && PermissionChecker.IsGranted(AppPermissions.Pages_Users_Admins))
+            {
+                roles.Add(_roleManager.GetRoleByName(StaticRoleNames.Tenants.Admin).Id);
+            }
+
+            input.Roles = roles.ToArray();
 
             var users = GetUsersFilteredQuery(input)
-                .Take(10)
                 .ToList();
 
             return ObjectMapper.Map<List<UserSearchDto>>(users);
         }
 
-        public async Task<FileDto> GetUsersToExcel(GetUsersToExcelInput input)
-        {
-            CheckPermission("Pages.Users.{0}s", input.RoleName);
-            var role = await _roleManager.GetRoleByNameAsync(input.RoleName);
-            input.Role = role?.Id;
+        //public async Task<FileDto> GetUsersToExcel(GetUsersToExcelInput input)
+        //{
+        //    CheckPermission("Pages.Users.{0}s", input.RoleName);
+        //    var role = await _roleManager.GetRoleByNameAsync(input.RoleName);
+        //    input.Role = role?.Id;
             
-            var query = GetUsersFilteredQuery(input);
+        //    var query = GetUsersFilteredQuery(input);
 
-            var users = await query
-                .OrderBy(input.Sorting)
-                .ToListAsync();
+        //    var users = await query
+        //        .OrderBy(input.Sorting)
+        //        .ToListAsync();
 
-            var userListDtos = ObjectMapper.Map<List<UserListDto>>(users);
-            await FillRoleNames(userListDtos);
+        //    var userListDtos = ObjectMapper.Map<List<UserListDto>>(users);
+        //    await FillRoleNames(userListDtos);
 
-            return _userListExcelExporter.ExportToFile(userListDtos);
-        }
+        //    return _userListExcelExporter.ExportToFile(userListDtos);
+        //}
 
        // [AbpAuthorize(AppPermissions.Pages_Administration_Users_Create, AppPermissions.Pages_Administration_Users_Edit)]
         public async Task<GetUserForEditOutput> GetUserForEdit(UserIdentifierInput input)
@@ -374,7 +402,7 @@ namespace Realty.Authorization.Users
         private IQueryable<User> GetUsersFilteredQuery(IGetUsersInput input)
         {
             var query = UserManager.Users
-                .Where(u => u.Roles.Any(r => r.RoleId == input.Role.Value))
+                .Where(u => u.Roles.Any(r => input.Roles.Contains(r.RoleId)))
                 .WhereIf(input.OnlyLockedUsers, u => u.LockoutEndDateUtc.HasValue && u.LockoutEndDateUtc.Value > DateTime.UtcNow)
                 .WhereIf(
                     !input.Filter.IsNullOrWhiteSpace(),

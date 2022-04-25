@@ -97,7 +97,7 @@
             <button [disabled]="saving" routerLink="/account/login" type="button"
                 class="btn btn-light-primary font-weight-bolder font-size-h6 px-8 py-4 my-3"><i class="fa fa-arrow-left"></i>
                 {{"Back" | localize}}</button>
-            <button type="submit" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3"
+            <button type="submit" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3 save-button"
                 [disabled]="!registerForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i
                     class="fa fa-check"></i> {{"Submit" | localize}}</button>
         </div>

@@ -72,7 +72,7 @@ namespace Realty.Forms.Jobs
                 for (var pageIndex = 0; pageIndex < bitmaps.Length; ++pageIndex)
                 {
                     var image = await BitmapToBytes(bitmaps[pageIndex], ImageFormat.Png);
-                    var file = await GetFile(form.TenantId, pageIndex, image);
+                    var file = await GetFile(entity, form.Id.ToString("N"), pageIndex, image);
                     form.AddPage(new Page(pageIndex, file));
                 }
 
@@ -116,11 +116,11 @@ namespace Realty.Forms.Jobs
             }
         }
 
-        private async Task<Storage.File> GetFile(int tenantId, int pageIndex, byte[] bytes)
+        private async Task<Storage.File> GetFile(IHaveFiles parent, string formId, int pageIndex, byte[] bytes)
         {
             var fileName = $"page_{pageIndex}.png";
             var contentType = MimeTypeNames.ImagePng;
-            return await _fileStorageService.UploadFile(tenantId, fileName, contentType, bytes);
+            return await _fileStorageService.UploadFileFor(parent, fileName, contentType, bytes);
         }
 
         private async Task<byte[]> BitmapToBytes(Bitmap bitmap, ImageFormat outputFormat)

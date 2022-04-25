@@ -1,0 +1,13 @@
+<div class="participant-marge-item">
+    <div class="participant-marge-item__info">
+        <span [class]="'participant-marge-item__number ' + getParticipantClass(selectParticipant)">{{ index }}</span>
+        <span class="participant-marge-item__name">{{ getParticipantName() }}</span>
+    </div>
+    <div class="participant-marge-item__select">
+        <participant [participants]="participants"
+                     [title]="'Participant'"
+                     [participantId]="control.controls[0].parcipantId"
+                     (selectedParticipant)="onParticipantSelect($event)">
+        </participant>
+    </div>
+</div>

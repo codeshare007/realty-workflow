@@ -9,6 +9,7 @@ using Realty.Listings.Dto;
 using Microsoft.EntityFrameworkCore;
 using Abp.Extensions;
 using System.Linq;
+using Realty.RecommendedListings.Input;
 
 namespace Realty.Listings
 {
@@ -39,6 +40,16 @@ namespace Realty.Listings
             }
 
             return response;
+        }
+        
+        public async Task<ListingDto> GetYglListingAsync(GetYglListingInput input)
+        {
+            var listing = await _listingRepository.GetAll()
+                .Include(l => l.ListingDetails)
+                .Where(c => c.YglID == input.YglID)
+                .FirstOrDefaultAsync();
+
+            return ObjectMapper.Map<ListingDto>(listing);
         }
 
         public List<KeyValuePair<Guid, string>> Search(SearchInput input)

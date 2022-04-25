@@ -2,17 +2,20 @@
      (onShown)="onShown()"
      #signatureControlModal="bs-modal"
      class="modal fade">
-    <div class="modal-dialog modal-lg">
+    <div [class]="
+        (!isTwoSymbol() ? 'modal-lg ' : 'modal-sm ')
+        + 'modal-dialog signature-control-modal__block'
+    ">
         <div class="modal-content">
             <div *ngIf="active">
                 <div class="modal-header">
                     <h4 class="modal-title">
-                        <span>Signature Control Modal</span>
+                        <span>{{ controlerInput.control.type | formControlType:true }} Control Modal</span>
                     </h4>
                     <button type="button"
                             class="close"
                             (click)="close()"
-                            [attr.aria-label]="l('Close')"
+                            [attr.aria-label]="'Close' | localize"
                             [disabled]="saving">
                         <i aria-hidden="true"
                            class="ki ki-close"></i>
@@ -21,33 +24,54 @@
                 <div class="modal-body">
 
                     <tabset class="new-tabs">
-                        <tab heading="Draw">
+                        <tab heading="Draw"
+                             [active]="tabHeader === 'Draw'"
+                             (selectTab)="onActive($event)">
                             <div class="signature-control-modal__wrapper">
-                                <div class="signature-control-modal__canvas">
+                                <div [class]="'signature-control-modal__canvas' + getCanvasClass()">
                                     <canvas #signaturePadRef
-                                            width="600"
-                                            height="300"
+                                            [width]="widthCanvas"
+                                            height="200"
                                             (mousedown)="drawStart($event)"
                                             (mouseup)="drawComplete($event)"
-                                            (mousemove)="drawProces($event)"></canvas>
+                                            (mousemove)="drawProces($event)"
+                                            (touchstart)="drawStart($event)"
+                                            (touchend)="drawComplete($event)"
+                                            (touchmove)="drawProces($event)">
+                                    </canvas>
                                 </div>
 
                                 <div class="signature-control-modal__actions">
-                                    <button (click)="drawClear()">clear</button>
-                                    <button (click)="drawSave()">save</button>
-                                </div>
-
-                                <div class="signature-control-modal__preview">
-                                    <img [src]="img">
+                                    <span (click)="drawClear()">
+                                        Clear
+                                    </span>
                                 </div>
                             </div>
                         </tab>
-                        <tab heading="Type">
+                        <tab heading="Type"
+                             [active]="tabHeader === 'Type'"
+                             (selectTab)="onActive($event)">
+                            <div class="signature-control-modal__wrapper">
+                                <div class="signature-control-modal__type">
+                                    <input type="text"
+                                           class="capitalize"
+                                           name="initials"
+                                           [(ngModel)]="initials"
+                                           [value]="initials | maskInitials:isTwoSymbol()"
+                                           (keypress)="onKeyPress($event)" />
+                                </div>
+
+                                <div class="signature-control-modal__actions">
+                                    <span (click)="drawClear()">
+                                        Clear
+                                    </span>
+                                </div>
+                            </div>
                         </tab>
                     </tabset>
 
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer p-3">
                     <button [disabled]="saving"
                             type="button"
                             class="btn btn-light-primary font-weight-bold"
@@ -66,3 +90,5 @@
         </div>
     </div>
 </div>
+
+

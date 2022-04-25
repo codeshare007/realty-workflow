@@ -10,8 +10,10 @@ export class LayerLabelPipe implements PipeTransform {
         if (!isNumber(layer)) { return; }
 
         switch (layer) {
-            case ControlLayer.Form:
-                return 'Form';
+            case ControlLayer.Library:
+                return 'Library';
+            case ControlLayer.Transaction:
+                return 'Transaction';
             case ControlLayer.Signing:
                 return 'Signing';
         }

@@ -16,7 +16,7 @@ namespace Realty.Transactions.Input
         {
             if (string.IsNullOrEmpty(Sorting))
             {
-                Sorting = "Name";
+                Sorting = "LastModificationTime DESC";
             }
 
             Filter = Filter?.Trim();

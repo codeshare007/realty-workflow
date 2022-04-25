@@ -40,7 +40,7 @@ export class CreateOrEditUserModalComponent extends AppComponentBase {
         super(injector);
     }
 
-    show(userRole: string, userRoleName: string, userId?: number): void {
+    show(userRole: string, userRoleName: string, userId?: number, publicId?: string): void {
         this.userRole = userRole;
         this.userRoleName = userRoleName;
 
@@ -50,7 +50,7 @@ export class CreateOrEditUserModalComponent extends AppComponentBase {
             this.sendActivationEmail = true;
         }
 
-        this._userService.getUserForEdit(userId, undefined, this.userRole).subscribe(userResult => {
+        this._userService.getUserForEdit(userId, publicId, this.userRole).subscribe(userResult => {
             this.user = userResult.user;
             this.canChangeUserName = this.user.userName !== AppConsts.userManagement.defaultAdminUserName;
 

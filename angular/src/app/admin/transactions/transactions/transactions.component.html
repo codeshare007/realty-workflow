@@ -15,44 +15,46 @@
             <div class="card card-custom gutter-b">
                 <div class="card-body">
                     <div class="form">
-                        <form (submit)="getTransactions()" autocomplete="new-password">
+                        <form (submit)="getTransactions()"
+                              autocomplete="new-password">
                             <div class="form-body">
 
                                 <div class="row mb-8">
-                                    <div class="col-xl-4">
-                                        <label
-                                            for="FilterText">{{'Search' | localize}}</label>
+                                    <div class="col-xl-8">
+                                        <label for="FilterText">{{'Search' | localize}}</label>
                                         <div class="input-group">
                                             <input id="FilterText"
-                                                    [ngModel]="filter.filterText" 
-                                                    (ngModelChange)="filterTextSubject.next($event)"       
-                                                   name="filterText" class="form-control"
+                                                   [ngModel]="filter.filterText"
+                                                   (ngModelChange)="filterTextSubject.next($event)"
+                                                   name="filterText"
+                                                   class="form-control"
                                                    placeholder="{{'SearchWithThreeDot' | localize}}"
                                                    type="text">
                                         </div>
                                     </div>
-                                    <div class="col-xl-4" *ngIf="'Pages.Users.Agents' | permission">
-                                        <label for="agentDilter">{{'Agent' | localize}}</label>
+                                    <div class="col-xl-4"
+                                         *ngIf="'Pages.Users.Agents' | permission">
+                                        <label for="agentFilter">{{ 'Agent' | localize }}</label>
 
-                                        <autocomplete-user-input
-                                            [isEditMode]="true"
-                                            [(user)]="filter.agent"
-                                            (userChange)="getTransactions()"
+                                        
+                                        <user-combo
                                             [userRole]="'Agent'"
-                                            >
-                                        </autocomplete-user-input>
-                                    </div>
-                                    <div class="col-xl-4" *ngIf="'Pages.Users.Customers' | permission">
-                                        <label for="CustomerFilter">{{'Customer' | localize}}</label>
+                                            name="agent"
+                                            [(ngModel)]="filter.agentId"
+                                            (ngModelChange)="getTransactions()">
 
-                                        <autocomplete-user-input
-                                            [isEditMode]="true"
-                                            [(user)]="filter.customer"
-                                            (userChange)="getTransactions()"
-                                            [userRole]="'Customer'"
-                                            >
-                                        </autocomplete-user-input>
+                                        </user-combo>
                                     </div>
+                                    <!-- <div class="col-xl-4"
+                                         *ngIf="'Pages.Users.Customers' | permission">
+                                        <label for="CustomerFilter">{{ 'Customer' | localize }}</label>
+
+                                        <autocomplete-user-input [isEditMode]="true"
+                                                                 [(user)]="filter.customer"
+                                                                 (userChange)="getTransactions()"
+                                                                 [userRole]="'Customer'">
+                                        </autocomplete-user-input>
+                                    </div> -->
                                 </div>
                             </div>
                         </form>
@@ -72,72 +74,73 @@
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th pSortableColumn="name">
-                                            {{'Name' | localize}}
+                                            {{ 'Name' | localize }}
                                             <p-sortIcon field="name"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="status">
-                                            {{'Status' | localize}}
+                                        <th style="width:120px" pSortableColumn="status">
+                                            {{ 'Status' | localize }}
                                             <p-sortIcon field="status"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="type">
-                                            {{'Type' | localize}}
+                                        <th style="width:120px" pSortableColumn="type">
+                                            {{ 'Type' | localize }}
                                             <p-sortIcon field="type"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="customer.name">
-                                            {{'Customer' | localize}}
+                                        <!-- <th pSortableColumn="customer.name">
+                                            {{ 'Customer' | localize }}
                                             <p-sortIcon field="customer.name"></p-sortIcon>
-                                        </th>
-                                        <th pSortableColumn="agent.name">
-                                            {{'Agent' | localize}}
+                                        </th> -->
+                                        <th style="width:150px" pSortableColumn="agent.name">
+                                            {{ 'Agent' | localize }}
                                             <p-sortIcon field="agent.name"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="created">
-                                            {{'Created' | localize}}
-                                            <p-sortIcon field="created"></p-sortIcon>
+                                        <th style="width:150px" pSortableColumn="lastModificationTime">
+                                            {{ 'Updated' | localize }}
+                                            <p-sortIcon field="lastModificationTime"></p-sortIcon>
                                         </th>
-                                        <th width="100px">
-                                            {{'Actions' | localize}}
+                                        <th style="width:100px">
+                                            {{ 'Actions' | localize }}
                                         </th>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body"
                                              let-record="$implicit">
-                                    <tr>
+                                    <tr (click)="selectEditItem(record)">
                                         <td>
-                                            <span class="ui-column-title">{{'Name' | localize}}</span>
-                                            {{record.name}}
+                                            <span class="ui-column-title">{{ 'Name' | localize }}</span>
+                                            {{ record.name }}
                                         </td>
-                                        <td>
+                                        <td style="width:120px">
                                             <span class="ui-column-title">{{'Status' | localize}}</span>
                                             {{ getStatusDescription(record.status) }}
                                         </td>
-                                        <td>
+                                        <td style="width:120px">
                                             <span class="ui-column-title">{{'Type' | localize}}</span>
                                             {{ getTypeDescription(record.type) }}
                                         </td>
-                                        <td>
-                                            <span class="ui-column-title">{{'Customer' | localize}}</span>
-                                            {{record.customer}}
+                                        <!-- <td>
+                                            <span class="ui-column-title">{{ 'Customer' | localize }}</span>
+                                            {{ record.customer }}
+                                        </td> -->
+                                        <td style="width:150px">
+                                            <span class="ui-column-title">{{ 'Agent' | localize }}</span>
+                                            {{ record.agent }}
                                         </td>
-                                        <td>
-                                            <span class="ui-column-title">{{'Agent' | localize}}</span>
-                                            {{record.agent}}
-                                        </td>
-                                        <td>
-                                            <span class="ui-column-title">{{'Created' | localize}}</span>
-                                            {{record.creationTime | momentFromNow }}
+                                        <td style="width:150px">
+                                            <span class="ui-column-title">{{'Updated' | localize}}</span>
+                                            {{ record.lastModificationTime | momentFromNow }}
                                         </td>
                                         <td class="forms-library-table__actions"
-                                            width="100px">
+                                            style="width:100px">
                                             <span class="ui-column-title">
                                                 {{ 'Actions' | localize }}
                                             </span>
                                             <span class="forms-library-table__actions__block">
-                                                <div class="dot-actions">
+                                                <div class="dot-actions"
+                                                     (click)="$event.stopPropagation()">
                                                     <ui-table-actions class="desktop-actions"
                                                                       [listActions]="actions(record)"
                                                                       [itemId]="record.id"
-                                                                      (selected)="selectOption($event)">
+                                                                      (selected)="selectOption($event, record)">
                                                     </ui-table-actions>
                                                 </div>
                                             </span>
@@ -147,7 +150,7 @@
                             </p-table>
                             <div class="primeng-no-data"
                                  *ngIf="primengTableHelper.totalRecordsCount == 0">
-                                {{'NoData' | localize}}
+                                {{ 'NoData' | localize }}
                             </div>
                             <div class="primeng-paging-container">
                                 <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
@@ -157,7 +160,7 @@
                                              [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
                                 </p-paginator>
                                 <span class="total-records-count">
-                                    {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                                    {{ 'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount }}
                                 </span>
                             </div>
                         </div>
@@ -168,3 +171,5 @@
         </div>
     </div>
 </div>
+
+<duplicate-transaction-modal #duplicateTransactionModal></duplicate-transaction-modal>

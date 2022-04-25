@@ -1,0 +1,15 @@
+<select class="form-control"
+        [disabled]="disabled"
+        [(ngModel)]="selectedValue"
+        (ngModelChange)="selectedValueChange.emit($event)">
+    <option *ngIf="undefinedLabel !== undefined"
+            value=""
+            selected="true">
+        {{ undefinedLabel }}
+    </option>
+    <option *ngFor="let item of values"
+            [disabled]="item.disabled"
+            [value]="item.value">
+        {{ item.label }}
+    </option>
+</select>

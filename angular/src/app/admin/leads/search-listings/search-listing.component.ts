@@ -1,95 +1,70 @@
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Component, ElementRef, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { CheckListItem } from '@app/admin/shared/general-combo.component';
+import { AfterViewInit, Component, EventEmitter, HostBinding, Injector, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { GetListingInput, ListingResposeDto, ListingServiceProxy } from '@shared/service-proxies/service-proxies';
+import { GetListingInput, LeadEditDto, ListingListResponse, ListingResposeDto, ListingServiceProxy } from '@shared/service-proxies/service-proxies';
+import { cloneDeep } from 'lodash';
 import * as moment from 'moment';
 import { Paginator } from 'primeng/paginator';
 import { LazyLoadEvent } from 'primeng/public_api';
 import { Table } from 'primeng/table';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ListingCities } from '../listing.cities';
+import { LeadListingDetailService } from '../components/lead-listing-detail/services/lead-listing-detail.service';
 
 @Component({
     selector: 'search-listings',
     templateUrl: './search-listing.component.html',
-    styleUrls: ['search-listing.component.less']
 })
-export class SearchListingComponent extends AppComponentBase implements OnInit {
-    @Input() selectedListingIds: Array<string>;
-    @Output() selectedListingIdsChange = new EventEmitter<string[]>();
+export class SearchListingComponent extends AppComponentBase implements OnInit, AfterViewInit, OnChanges {
+
+    @HostBinding('class.search-listings') class = true;
 
     @ViewChild('dataTable') dataTable: Table;
     @ViewChild('paginator') paginator: Paginator;
-    @ViewChild('citiesFilterInput') fruitInput: ElementRef<HTMLInputElement>;
-    @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
-    cities = ListingCities.cities;
+    @Input() selectedListingIds: Array<string>;
+    @Input() cloneLead: LeadEditDto = new LeadEditDto();
+
+    @Output() selectedListingIdsChange = new EventEmitter<string[]>();
+
     input: GetListingInput = new GetListingInput();
-    citiesShown: boolean;
-    advancedFiltersAreShown: boolean;
-    saving: boolean;
-    active: boolean;
-    cityCtrl = new FormControl();
-    filteredCities: Observable<string[]>;
-    selectedCities: string[] = [];
-    citiesStrings: string[];
-    separatorKeysCodes: number[] = [ENTER, COMMA];
-    citiefFilters: CheckListItem[] = [];
-    petsFilters: CheckListItem[] = [new CheckListItem('cat', 'Cats Allowed', false), new CheckListItem('dog', 'Dogs Allowed', false)];
-    mediaFilters: CheckListItem[] = [new CheckListItem('photos', 'Photos', false), new CheckListItem('tours', 'Virtual Tours', false)];
-    statusFilters: CheckListItem[] = [new CheckListItem('ONMARKET', 'On Market', false), new CheckListItem('APP', 'Pending', false), new CheckListItem('OFFMARKET', 'Off Market', false)];
+    lead: LeadEditDto = new LeadEditDto();
+    availableFrom!: moment.Moment | undefined;
+    availableTo!: moment.Moment | undefined;
+    advancedFiltersAreShown = true;
+    // petsFilters: CheckListItem[] = [new CheckListItem('cat', 'Cats Allowed', false), new CheckListItem('dog', 'Dogs Allowed', false)];
+    // mediaFilters: CheckListItem[] = [new CheckListItem('photos', 'Photos', false), new CheckListItem('tours', 'Virtual Tours', false)];
+    // statusFilters: CheckListItem[] = [new CheckListItem('ONMARKET', 'On Market', false), new CheckListItem('APP', 'Pending', false), new CheckListItem('OFFMARKET', 'Off Market', false)];
 
     constructor(
         injector: Injector,
-        private _listingService: ListingServiceProxy
+        private _listingService: ListingServiceProxy,
+        private _leadListingDetailService: LeadListingDetailService,
     ) {
         super(injector);
     }
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.cloneLead && this.cloneLead) {
+            this.lead = cloneDeep(this.cloneLead);
+            this.getListings(undefined);
+        }
+    }
+
     ngOnInit(): void {
-        let array = new Array();
-
-        for (var i in this.cities.items) {
-            var subarray = Object.keys(this.cities.items[i]);
-            array.push(...subarray);
-        }
-
-        this.citiefFilters = array.map(a => new CheckListItem(a, a, false));
-        this.citiesStrings = array;
-        this.filteredCities = this.cityCtrl.valueChanges.pipe(
-            map((city: string | null) => city ? this._filter(city) : this.citiesStrings.slice()));
+        this._leadListingDetailService.listingResposeId = undefined;
+        this._leadListingDetailService.showDetail = false;
+        this.advancedFiltersAreShown = true;
     }
 
-    private _filter(value: string): string[] {
-        console.log(value);
-        const filterValue = value.toLowerCase();
-        return this.citiesStrings.filter(city => city.toLowerCase().indexOf(filterValue) === 0);
+    ngAfterViewInit(): void {
+        this.getListings(undefined);
     }
 
-    add(event: MatChipInputEvent): void {
-        const input = event.input;
-        const value = event.value;
-
-        // Add our fruit
-        if ((value || '').trim()) {
-            this.selectedCities.push(value.trim());
-        }
-
-        // Reset the input value
-        if (input) {
-            input.value = '';
-        }
-
-        this.cityCtrl.setValue(null);
-        console.log(event);
+    public selectItem(item: ListingResposeDto): void {
+        this._leadListingDetailService.showDetail = true;
+        this._leadListingDetailService.listingResposeId = item.id;
+        this._leadListingDetailService.yGlId = true;
     }
 
-    getListings(event?: LazyLoadEvent) {
+    public getListings(event?: LazyLoadEvent): void {
         if (this.dataTable === undefined) {
             return;
         }
@@ -100,46 +75,48 @@ export class SearchListingComponent extends AppComponentBase implements OnInit {
             return;
         }
 
-        this.input.pets = this.petsFilters.filter(a => a.checked).map(b => b.value);
-        this.input.status = this.statusFilters.filter(a => a.checked).map(b => b.value);
-        this.input.media = this.mediaFilters.filter(a => a.checked).map(b => b.value);
-        this.input.sorting = this.primengTableHelper.getSorting(this.dataTable);
-        this.input.maxResultCount = this.primengTableHelper.getMaxResultCount(this.paginator, event);
-        this.input.skipCount = this.primengTableHelper.getSkipCount(this.paginator, event);
-        this._listingService.getListing(this.input).subscribe(res => {
-            this.primengTableHelper.records = res.listing.map(l => {
-                l['isChecked'] = this.selectedListingIds && this.selectedListingIds.indexOf(l.id) >= 0;
+        const input = this._setInput();
+        input.sorting = this.primengTableHelper.getSorting(this.dataTable);
+        input.maxResultCount = this.primengTableHelper.getMaxResultCount(this.paginator, event);
+        input.skipCount = this.primengTableHelper.getSkipCount(this.paginator, event);
+        this._listingService.getListing(input)
+            .subscribe((result: ListingListResponse) => {
+                this.primengTableHelper.records = [];
+                this.primengTableHelper.records = result.listing
+                    ? result.listing.map((item) => {
+                        item['isChecked'] = this.selectedListingIds
+                            && this.selectedListingIds.indexOf(item.id) >= 0;
 
-                return l;
+                        return item;
+                    })
+                    : [];
+
+                this.primengTableHelper.totalRecordsCount = result.totalCount;
             });
-            this.primengTableHelper.totalRecordsCount = res.totalCount;
-        });
     }
 
-    clearFilters() {
+    public clearFilters(): void {
         this.input = new GetListingInput();
+        this.lead.streetName = '';
+        this.lead.streetNumber = '';
+        this.lead.cities = [];
+        this.lead.bathrooms = [];
+        this.lead.bedrooms = [];
+        this.lead.minRent = undefined;
+        this.lead.maxRent = undefined;
+        this.lead.zip = undefined;
+        this.lead.moveFrom = undefined;
+        this.lead.moveTo = undefined;
+
+        this.getListings();
     }
 
-    fromNow(date: moment.Moment): string {
+    public fromNow(date: moment.Moment): string {
         return moment(date).fromNow();
     }
 
-    selectCity(event: MatAutocompleteSelectedEvent) {
-        this.selectedCities.push(event.option.viewValue);
-        this.fruitInput.nativeElement.value = '';
-        this.cityCtrl.setValue(null);
-    }
-
-    removeCity(city: any) {
-        const index = this.selectedCities.indexOf(city);
-
-        if (index >= 0) {
-            this.selectedCities.splice(index, 1);
-        }
-    }
-
-    onLisingSelectionToggle(record: ListingResposeDto) {
-        this.selectedListingIds = this.selectedListingIds || new Array()
+    public onLisingSelectionToggle(record: ListingResposeDto): void {
+        this.selectedListingIds = this.selectedListingIds || new Array();
 
         if (record['isChecked'] === true) {
             const index = this.selectedListingIds.indexOf(record.id, 0);
@@ -152,5 +129,22 @@ export class SearchListingComponent extends AppComponentBase implements OnInit {
 
         record['isChecked'] = !record['isChecked'];
         this.selectedListingIdsChange.emit(this.selectedListingIds);
+    }
+
+    private _setInput(): GetListingInput {
+        const input = new GetListingInput();
+        input.pets = this.lead.pets;
+        input.zip = this.lead.zip;
+        input.streetName = this.lead.streetName;
+        input.bathrooms = this.lead.bathrooms;
+        input.bedrooms = this.lead.bedrooms;
+        input.cities = this.lead.cities;
+        input.minimalRent = this.lead.minRent;
+        input.streetNumber = this.lead.streetNumber;
+        input.maximalRent = this.lead.maxRent;
+        input.availableFrom = this.lead.moveFrom;
+        input.availableTo = this.lead.moveTo;
+
+        return input;
     }
 }

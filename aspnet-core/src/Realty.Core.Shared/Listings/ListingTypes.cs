@@ -5,4 +5,11 @@
         Manual,
         YGL
     }
+
+    public enum RequestTourTime
+    {
+        Morning = 0,
+        Afternoon = 1,
+        Evening = 2
+    }
 }

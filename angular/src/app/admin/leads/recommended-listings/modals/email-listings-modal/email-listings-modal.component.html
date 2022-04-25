@@ -1,0 +1,84 @@
+<div appBsModal
+     #emailListingsModal="bs-modal"
+     class="modal fade"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="emailListingsModal"
+     aria-hidden="true"
+     [config]="{backdrop: 'static'}">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form *ngIf="active"
+                  #emailListingsModal="ngForm"
+                  novalidate
+                  class="form form-label-right">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span>Email Listings</span>
+                    </h5>
+                    <button type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-hidden="true"
+                            (click)="close()">
+                        <i aria-hidden="true"
+                           class="ki ki-close"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>To</label>
+                        <input id="FormName"
+                               #formName="ngModel"
+                               class="form-control"
+                               type="text"
+                               name="ToName"
+                               [(ngModel)]="name"
+                               required
+                               maxlength="64">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DefaultFileUploadFileInput">File</label>
+                        <p-fileUpload id="DefaultFileUploadFileInput"
+                                      name="DefaultFileUploadFileInput"
+                                      [url]="uploadUrl"
+                                      [auto]="true"
+                                      mode="basic"
+                                      accept="application/pdf"
+                                      maxFileSize="20000000"
+                                      styleClass="file-choose-control"
+                                      [chooseLabel]="getChooseLabel"
+                                      [chooseIcon]="getChooseIcon"
+                                      (onUpload)="onUpload($event)"
+                                      (onBeforeUpload)="onBeforeUpload($event)">
+                        </p-fileUpload>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving"
+                            type="button"
+                            class="btn btn-light-primary font-weight-bold"
+                            (click)="close()">
+                        {{ 'Cancel' | localize }}
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-primary font-weight-bold save-button"
+                            (click)="save()"
+                            [disabled]="!emailListingsModal.valid || !uploadedFileId"
+                            [buttonBusy]="saving"
+                            [busyText]="'ProcessingWithThreeDot' | localize">
+                        <i class="fa fa-arrow-circle-right"></i>
+                        {{ 'Save' | localize }}
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

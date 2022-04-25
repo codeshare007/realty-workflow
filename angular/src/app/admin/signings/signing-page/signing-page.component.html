@@ -1,74 +1,310 @@
 <div [@routerTransition]>
     <div class="content d-flex flex-column flex-column-fluid">
-        <sub-header [title]="'Signing'" [breadcrumbs]="breadcrumbs">
-            <div class="py-2 py-lg-4 subheader subheader-solid" *ngIf="signing">
-                <div class="align-items-center container-fluid d-flex flex-sm-nowrap flex-wrap justify-content-between">
-                    <div class="d-flex align-items-center flex-wrap mr-2">
-                        <h5 class="font-weight-bold mb-2 mr-5 mt-2 text-dark">Signing: 1949 Commonwealth Avenue, Apt 57, Brighton MA 0213</h5>
-                    </div>
-                    <div class="d-flex align-items-center"></div>
-                </div>
-            </div>
+        <sub-header [title]="'Signing'"
+                    [breadcrumbs]="breadcrumbs">
         </sub-header>
-        <div class="container-fluid" *ngIf="signing">
-            <signing-general-info-section 
-                [(signing)]="signing"
-                [(isEditMode)]="isEditMode"
-                >
+        <div class="container-fluid"
+             *ngIf="signing">
+            <signing-general-info-section [(signing)]="signing"
+                                          [(isEditMode)]="isEditMode">
             </signing-general-info-section>
 
-            <div class="card card-custom gutter-b" *ngIf="signing && signing.id">
+            <div class="card card-custom gutter-b"
+                 *ngIf="signing && signing.id && signing.status === signingStatus.Wizard">
                 <div class="card-header">
                     <div class="w-100 d-flex align-items-center">
                         <div class="w-100 d-flex justify-content-between">
-                            <h4 class="card-label mb-0 d-flex align-items-center">Participants</h4>
+                            <h4 class="card-label mb-0 d-flex align-items-center">
+                                {{ 'Participants' | localize }}
+                            </h4>
                             <div>
-                                <a class="card-header-button" (click)="signingContacts.createNewContact()">
-                                    <i class="la la-plus"></i>
-                                </a>
-                                <a class="card-header-button chevron" (click)="accordionOptions.participantsOpened = !accordionOptions.participantsOpened">
-                                    <i class="pi pi-fw pi-chevron-up" 
-                                        [ngClass]="{'closed': !accordionOptions.participantsOpened }"></i>
+                                <div class="btn-group mr-3"
+                                     dropdown
+                                     #dropdown
+                                     *ngIf="signing.status === signingStatus.Wizard">
+
+                                    <button id="button-basic"
+                                            #dropdownToggleRef
+                                            dropdownToggle
+                                            type="button"
+                                            class="btn btn-primary dropdown-toggle"
+                                            aria-controls="dropdown-basic">
+                                        <i class="fa fa-plus"></i>
+                                        {{ 'AddParticipant' | localize }}
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul id="dropdown-basic"
+                                        *dropdownMenu
+                                        class="dropdown-menu"
+                                        role="menu"
+                                        aria-labelledby="button-basic">
+                                        <li role="menuitem">
+                                            <a class="dropdown-item"
+                                               (click)="signingContacts.createNewContact()"
+                                               href="javascript:void(0)">
+                                                {{ 'CreateNewParticipant' | localize }}
+                                            </a>
+                                        </li>
+                                        <li role="menuitem">
+                                            <a class="dropdown-item"
+                                               *ngIf="signing.transactionId"
+                                               (click)="signingContacts.addFromTransaction(signing.transactionId);"
+                                               href="javascript:void(0)">
+                                                {{ 'AddFromTransaction' | localize }}
+                                            </a>
+                                        </li>
+                                        <li role="menuitem">
+                                            <a class="dropdown-item"
+                                               (click)="signingContacts.addYourself();"
+                                               href="javascript:void(0)">
+                                                {{ 'AddYourself' | localize }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <a class="card-header-button chevron"
+                                   (click)="accordionOptions.participantsOpened = !accordionOptions.participantsOpened">
+                                    <i class="pi pi-fw pi-chevron-up"
+                                       [ngClass]="{'closed': !accordionOptions.participantsOpened }"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card-body py-0" [hidden]="!accordionOptions.participantsOpened">
-                    <signing-contacts 
-                        #signingContacts 
-                        [signingId]="signing.id"
-                        >
-                    </signing-contacts>
+                <div class="card-body py-0"
+                     [hidden]="!accordionOptions.participantsOpened">
+                    <signing-participants #signingContacts
+                                          [allowEdit]="signing.status === signingStatus.Wizard"
+                                          [signingId]="signing.id">
+                    </signing-participants>
                 </div>
             </div>
-            
-            <div class="card card-custom gutter-b" *ngIf="signing && signing.id">
+
+            <div class="card card-custom gutter-b"
+                 *ngIf="signing && signing.id && signing.status !== signingStatus.Wizard">
                 <div class="card-header">
                     <div class="w-100 d-flex align-items-center">
                         <div class="w-100 d-flex justify-content-between">
-                            <h4 class="card-label mb-0 d-flex align-items-center">Documents</h4>
+                            <h4 class="card-label mb-0 d-flex align-items-center">
+                                {{ 'Participants' | localize }}
+                            </h4>
                             <div>
-                                <a class="card-header-button" (click)="signingFormsTable.openModal()">
-                                    <i class="la la-plus"></i>
-                                </a>
-                                <a class="card-header-button chevron" (click)="accordionOptions.documentsOpened = !accordionOptions.documentsOpened">
-                                    <i class="pi pi-fw pi-chevron-up" 
-                                        [ngClass]="{'closed': !accordionOptions.documentsOpened }"></i>
+                                <a class="card-header-button chevron"
+                                   (click)="accordionOptions.participantsOpened = !accordionOptions.participantsOpened">
+                                    <i class="pi pi-fw pi-chevron-up"
+                                       [ngClass]="{'closed': !accordionOptions.participantsOpened }"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card-body py-0 mb-3" [hidden]="!accordionOptions.documentsOpened">
-                    <signing-forms-table 
-                        #signingFormsTable
-                        [signingId]="signing.id"
-                        >
+                <div class="card-body py-0"
+                     [hidden]="!accordionOptions.participantsOpened">
+                    <signing-participant-requests [signingId]="signing.id">
+                    </signing-participant-requests>
+                </div>
+            </div>
+
+            <div class="card card-custom gutter-b"
+                 *ngIf="signing && signing.id">
+                <div class="card-header">
+                    <div class="w-100 d-flex align-items-center">
+                        <div class="w-100 d-flex justify-content-between">
+                            <h4 class="card-label mb-0 d-flex align-items-center">
+                                {{ 'Documents' | localize }}
+                            </h4>
+                            <div>
+                                <div class="d-flex justify-content-end pb-3">
+                                    <ng-container *ngIf="signing.status === signingStatus.Wizard">
+                                        <div class="btn-group mr-3"
+                                             dropdown
+                                             #dropdown>
+
+                                            <button id="button-basic"
+                                                    #dropdownToggleRef
+                                                    dropdownToggle
+                                                    type="button"
+                                                    class="btn btn-primary dropdown-toggle save-button"
+                                                    aria-controls="dropdown-basic"
+                                                    [buttonBusy]="updateFormListenerService.isLoading"
+                                                    [busyText]="'SavingWithThreeDot' |localize">
+                                                <i class="fa fa-plus"></i>
+                                                {{ 'AddDocument' | localize }}
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul id="dropdown-basic"
+                                                *dropdownMenu
+                                                class="dropdown-menu"
+                                                role="menu"
+                                                aria-labelledby="button-basic">
+                                                <li role="menuitem"><a class="dropdown-item"
+                                                       (click)="signingFormsTable.openModal();"
+                                                       href="javascript:void(0)">{{ 'Create_New_Form' | localize }}</a>
+                                                </li>
+                                                <li role="menuitem"><a class="dropdown-item"
+                                                       (click)="formLibraryModal.show();"
+                                                       href="javascript:void(0)">{{ 'Add_Form_From_Library' | localize }}</a>
+                                                </li>
+                                                <li role="menuitem"><a class="dropdown-item"
+                                                       *ngIf="signing && signing.transactionId"
+                                                       (click)="transactionFormModal.show();"
+                                                       href="javascript:void(0)">{{ 'Add_Form_From_Transaction' | localize }}</a>
+                                                </li>
+                                                <li role="menuitem"><a class="dropdown-item"
+                                                       *ngIf="signing"
+                                                       (click)="anotherTransactionFormModal.show();"
+                                                       href="javascript:void(0)">{{ 'Add_Form_From_Another_Transaction' | localize }}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </ng-container>
+
+                                    <button class="btn btn-primary mr-3 save-button"
+                                            *ngIf="!isEditMode && signing.documentsCount > 0 && signing && signing.status === signingStatus.Wizard"
+                                            title="Design"
+                                            [routerLink]="['/app/admin/signings/' + signing.id + '/design']"
+                                            [buttonBusy]="updateFormListenerService.isLoading"
+                                            [busyText]="'SavingWithThreeDot' | localize">
+                                        <i class="far fa-object-group"></i>
+                                        {{ 'DesignPage' | localize }}
+                                    </button>
+
+                                    <button class="btn btn-primary mr-3 save-button"
+                                            *ngIf="!isEditMode && signing.documentsCount > 0 && signing && signing.status === signingStatus.Wizard"
+                                            [buttonBusy]="updateFormListenerService.isLoading"
+                                            [busyText]="'SavingWithThreeDot' | localize"
+                                            (click)="duplicateSigning()"
+                                            href="javascript:void(0)">{{ 'Duplicate' | localize }}
+                                    </button>
+
+                                    <div class="btn-group mr-3"
+                                         dropdown
+                                         #dropdown
+                                         *ngIf="signing.status !== signingStatus.Wizard">
+
+                                        <button id="button-basic"
+                                                #dropdownToggleRefActions
+                                                dropdownToggle
+                                                type="button"
+                                                class="btn btn-primary dropdown-toggle save-button"
+                                                aria-controls="dropdown-basic"
+                                                [buttonBusy]="updateFormListenerService.isLoading"
+                                                [busyText]="'SavingWithThreeDot' | localize">
+                                            <i class="fa fa-plus"></i>
+                                            {{ 'Actions' | localize }}
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul id="dropdown-basic"
+                                            *dropdownMenu
+                                            class="dropdown-menu"
+                                            role="menu"
+                                            aria-labelledby="button-basic">
+                                            <li role="menuitem">
+                                                <a class="dropdown-item"
+                                                   *ngIf="signing.documentsCount > 0"
+                                                   [routerLink]="['/app/admin/signings/' + signing.id + '/view']"
+                                                   href="javascript:void(0)">
+                                                    {{ 'View' | localize }}
+                                                </a>
+                                            </li>
+                                            <li role="menuitem">
+                                                <a class="dropdown-item"
+                                                   *ngIf="signing && signing.status !== signingStatus.Rejected && !signing.signedFileGenerated"
+                                                   (click)="resetSigning()"
+                                                   href="javascript:void(0)">
+                                                    {{ 'Reset' | localize }}
+                                                </a>
+                                            </li>
+                                            <li role="menuitem">
+                                                <a class="dropdown-item"
+                                                   *ngIf="signing"
+                                                   (click)="duplicateSigning()"
+                                                   href="javascript:void(0)">
+                                                    {{ 'Duplicate' | localize }}
+                                                </a>
+                                            </li>
+                                            <li role="menuitem">
+                                                <a class="dropdown-item"
+                                                   *ngIf="signing && signing.signedFileGenerated"
+                                                   (click)="duplicateForNextSigning()"
+                                                   href="javascript:void(0)">
+                                                    {{ 'DuplicateForNextSigning' | localize }}
+                                                </a>
+                                            </li>
+                                            <!-- <li role="menuitem"><a class="dropdown-item"
+                                                    (click)="downloadReport()"
+                                                    *ngIf="signing && signing.status == 2 && signing.signedFileGenerated"
+                                                    href="javascript:void(0)">{{ 'DownloadFinalDocument' | localize }}</a>
+                                            </li> -->
+                                        </ul>
+                                    </div>
+
+                                    <button class="btn btn-primary mr-3 save-button"
+                                            (click)="downloadReport()"
+                                            *ngIf="signing && signing.status === signingStatus.Completed && signing.signedFileGenerated"
+                                            href="javascript:void(0)"
+                                            [buttonBusy]="updateFormListenerService.isLoading"
+                                            [busyText]="'SavingWithThreeDot' | localize">
+                                        {{ 'DownloadFinalDocument' | localize }}
+                                    </button>
+
+                                    <a class="card-header-button chevron"
+                                       (click)="accordionOptions.documentsOpened = !accordionOptions.documentsOpened">
+                                        <i class="pi pi-fw pi-chevron-up"
+                                           [ngClass]="{'closed': !accordionOptions.documentsOpened }"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body py-0 mb-3"
+                     [hidden]="!accordionOptions.documentsOpened">
+                    <signing-forms-table #signingFormsTable
+                                         [allowEdit]="signing.status == 0"
+                                         [signingCompleted]="signing.signedFileGenerated"
+                                         [signingId]="signing.id"
+                                         [signingName]="signing.name"
+                                         (recordsCount)="signing.documentsCount = $event">
                     </signing-forms-table>
                 </div>
             </div>
 
+            <div class="card card-custom gutter-b"
+                 *ngIf="signing && signing.id">
+                <div class="card-header">
+                    <div class="w-100 d-flex align-items-center">
+                        <div class="w-100 d-flex justify-content-between">
+                            <h4 class="card-label mb-0 d-flex align-items-center">Attachments</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body py-0 mb-3 pt-5"
+                     [hidden]="!accordionOptions.documentsOpened">
+                    <signing-attachments-table #signingFormsTable
+                                               [signingId]="signing.id">
+                    </signing-attachments-table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<select-form-transaction-modal #transactionFormModal
+                               [transactionId]="signing.transactionId"
+                               (onSelectMany)="addTransactionForms($event)"
+                               (onSelect)="addTransactionForm($event, signing.transactionId)">
+</select-form-transaction-modal>
+
+<select-form-another-transaction-modal #anotherTransactionFormModal
+                                       (onSelect)="addTransactionForm($event.form.id, $event.transactionId)">
+</select-form-another-transaction-modal>
+
+<select-form-library-modal #formLibraryModal
+                           [libraryId]="libraryId"
+                           (onSelectMany)="addFromLibraries($event)"
+                           (onSelect)="addFromLibrary($event)">
+</select-form-library-modal>
+
+<duplicate-signing-modal #duplicateSigningModal></duplicate-signing-modal>

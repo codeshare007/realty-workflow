@@ -1,0 +1,49 @@
+<div appBsModal #sendRecommendedListingsModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="sendRecommendedListingsModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #contactForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("SendRecommendedListings")}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')" [disabled]="saving">
+                         <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group mb-2 col-lg-12">
+                            <label for="Email">{{"EmailAddress" | localize}} *</label>
+                            <input id="Email" class="form-control" type="text" name="EmailAddress" [(ngModel)]="input.emailAddress" required maxlength="64">
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <ui-multi-select [title]="'CC Emails'"
+                                        [uiList]="contacts"
+                                        [model]="input.ccEmailAddresses"
+                                        (selected)="onSelectedCcEmailAddresses($event)">
+                        </ui-multi-select>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group w-100 mb-2 col-lg-12">
+                            <label for="EmailSubject">{{"EmailSubject" | localize}} *</label>
+                            <input id="EmailSubject" class="form-control" type="text" name="EmailSubject" [(ngModel)]="input.subject" required maxlength="64">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            <label for="EmailBody">{{"EmailBody" | localize}} *</label>
+                            <p-editor [(ngModel)]="input.body" name="EmailBody" [style]="{'height':'300px'}"></p-editor>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold save-button" (click)="close()">{{"Cancel" | localize}}</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!contactForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{"Sand" | localize}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

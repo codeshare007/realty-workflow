@@ -1,0 +1,253 @@
+.initial-page-modal {
+
+    &__continue {
+        position: relative;
+
+        i {
+            position: absolute;
+            top: 1px;
+            right: -4px;
+        }
+    }
+
+    &__dropdown__list {
+        margin-bottom: 0;
+        max-height: unset;
+
+        &__item {
+            cursor: default;
+            display: flex;
+            align-items: center;
+            padding: 4px 0;
+
+            &:hover {
+                background-color: transparent;
+            }
+
+            &__badge {
+                width: 24px;
+                height: 24px;
+            }
+
+            &__name {
+                font-size: 16px;
+
+            }
+
+            &__remove {
+                cursor: pointer;
+                margin-left: 8px;
+                color: @main-color-grey;
+                transition: transform 0.2s ease-in;
+
+                &:hover {
+                    color: @main-black-second;
+                    transform: scale(1.2);
+                }
+            }
+        }
+    }
+
+    &__wrapper {
+        display: flex;
+        margin-bottom: 0;
+
+        &__form {
+            display: contents;
+        }
+
+        &__item {
+            width: 50%;
+
+            &:first-child {
+                margin-right: 8px;
+            }
+
+            &:last-child {
+                margin-left: 8px;
+            }
+
+            &__title {
+                margin-right: 16px;
+                color: @main-black-second;
+                font-size: 18px;
+                font-weight: 500;
+            }
+
+            &__label {
+                display: block;
+                color: @main-black-second;
+                font-size: 16px;
+                font-weight: 500;
+            }
+        }
+    }
+
+    &__actions {
+        display: flex;
+        margin-bottom: 10px;
+        color: @main-color;
+        font-size: 16px;
+        font-weight: 500;
+
+        &__title {
+            margin-right: 16px;
+            color: @main-black-second;
+            font-size: 18px;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &__block {
+            display: flex;
+            margin: 0 24px 6px 0;
+
+            &.document-actions {
+                margin-bottom: 0;
+            }
+
+            &:last-child {
+                margin: 0;
+            }
+
+            &__radio {
+                label {
+                    cursor: pointer;
+                    position: relative;
+
+                    [type="checkbox"]:not(.checked)+span,
+                    [type="checkbox"].checked+span {
+                        margin: 0 14px 0 0;
+                    }
+
+                    [type="checkbox"] {
+                        +span {
+                            display: inline;
+                        }
+                    } 
+                }
+            }
+
+            &__checkbox {
+
+                &.all-participant {
+                    label {
+                        font-size: 18px;
+                        font-weight: 500;
+
+                        .checkmark:after {
+                            left: 9px;
+                        }
+                    }
+
+                    .checkmark {
+                        height: 22px;
+                        width: 22px;
+                    }
+                }
+
+                label {
+                    cursor: pointer;
+                    position: relative;
+                    display: block;
+                    margin-bottom: 0;
+                    padding-left: 28px;
+                    font-size: 16px;
+                    transition: all 0.2s ease-in;
+
+                    input {
+                        &[type="checkbox"] {
+                            cursor: pointer;
+                            position: absolute;
+                            height: 0;
+                            width: 0;
+                            opacity: 0;
+                        }
+
+                        &:checked~.checkmark {
+                            background-color: @main-color;
+
+                            &:after {
+                                display: block;
+                            }
+                        }
+                    }
+
+                    &:hover input~.checkmark {
+                        opacity: 0.85;
+                    }
+
+                    .checkmark:after {
+                        left: 8px;
+                        top: 4px;
+                        width: 5px;
+                        height: 10px;
+                        border: solid @main-white;
+                        border-width: 0 3px 3px 0;
+                        transform: rotate(45deg);
+                    }
+                }
+
+                .checkmark {
+                    position: absolute;
+                    top: 2px;
+                    left: 0;
+                    height: 20px;
+                    width: 20px;
+                    background-color: @disabled-color-second;
+                    border-radius: 4px;
+
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        display: none;
+                    }
+                }
+
+                &__document {
+                    font-size: 16px;
+
+                    .form-group {
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+                        margin: 3px 0 0;
+
+                        input {
+                            font-size: 16px;
+                        }
+
+                        i {
+                            position: absolute;
+                            top: -18px;
+                            right: -10px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .participant__select__action {
+        margin-bottom: 2px;
+
+        input {
+            padding-left: 10px;
+        }
+    }
+
+    input {
+        &.ng-invalid {
+            border-color: @main-status-error;
+        }
+
+        &[disabled] {
+            cursor: not-allowed;
+            color: @disabled-color;
+            background-color: @disabled-color-second;
+            border-color: @disabled-color;
+        }
+    }
+}

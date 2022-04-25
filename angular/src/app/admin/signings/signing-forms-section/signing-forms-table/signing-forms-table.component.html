@@ -1,4 +1,4 @@
-<div>
+<div [busyIf]="loading">
     <div class="d-flex justify-content-end pb-3">
         <button *ngIf="'Pages.Signing.Create' | permission"
                 type="button"
@@ -9,16 +9,27 @@
         </button>
     </div>
 
-    <div>
+    <div [ngClass]="{'row-action-click': allowEdit}">
         <forms-table #formTable
-            [items]="items"
-            [totalCount]="totalCount"
-            (onGetAll)="getAll($event)"
-            (onDelete)="delete($event)"></forms-table>
+                     [items]="items"
+                     [signingId]="signingId"
+                     [signingCompleted]="signingCompleted"
+                     [dndEnabled]="allowEdit"
+                     [options]="options"
+                     [totalCount]="totalCount"
+                     [allowEdit]="allowEdit"
+                     (onGetAll)="getAll($event)"
+                     (onDelete)="delete($event)"
+                     (onDownloadOriginalDocument)="onDownloadOriginalDocument($event)"
+                     (onDownloadSignedDocument)="onDownloadSignedDocument($event)"
+                     [showDownloadOriginal]="true"
+                     [doNotShowMulti]="true"
+                     >
+        </forms-table>
     </div>
 </div>
 
 <upload-document-modal #uploadDocumentRef
-                        [signingId]="signingId"
-                       (modalSave)="fileSaved($event)">
+                       [signingId]="signingId"
+                       (modalSave)="reload($event)">
 </upload-document-modal>

@@ -5,6 +5,7 @@ import { DynamicEntityPropertyValueComponent } from '@app/admin/dynamic-properti
 import { DynamicPropertyComponent } from '@app/admin/dynamic-properties/dynamic-property.component';
 import { AuditLogsComponent } from './audit-logs/audit-logs.component';
 import { CommunicationsComponent } from './communications/communications.component';
+import { ContactsPageComponent } from './contacts/page/contacts-page.component';
 import { CustomersPageComponent } from './customers/customers-page.component';
 import { ManageCustomersComponent } from './customers/manage-customers.component';
 import { HostDashboardComponent } from './dashboard/host-dashboard.component';
@@ -40,10 +41,12 @@ import { WebhookSubscriptionComponent } from './webhook-subscription/webhook-sub
                     { path: 'leads', component: LeadsComponent, data: { permission: 'Pages.Leads' } },
                     { path: 'lead/create', component: LeadDetailComponent, data: { permission: 'Pages.Leads', isCreate: true } },
                     { path: 'lead/:id', component: LeadDetailComponent, data: { permission: 'Pages.Leads' } },
+                    { path: 'lead/:id/search-listings', component: LeadDetailComponent, data: { permission: 'Pages.Leads', searchListings: true } },
                     { path: 'customers', component: CustomersPageComponent, data: { permission: 'Pages.Users.Customers', userRole: 'Customer', userRoleName: 'Customer' } },
                     { path: 'listings', component: TransactionsComponent, data: { permission: 'Pages.Listings' } },
                     { path: 'communications', component: CommunicationsComponent, data: { permission: 'Pages.Communications' } },
                     { path: 'invoices', component: TransactionsComponent, data: { permission: 'Pages.Invoices' } },
+                    { path: 'contacts', component: ContactsPageComponent },
                     // TODO: jaerbi => permission: Pages.FormsLibrary
                     //  data: { permission: ' ... ', preload: true}
                     {
@@ -83,8 +86,8 @@ import { WebhookSubscriptionComponent } from './webhook-subscription/webhook-sub
                     { path: 'tenantSettings', component: TenantSettingsComponent, data: { permission: 'Pages.Administration.Tenant.Settings' } },
                     { path: 'hostDashboard', component: HostDashboardComponent, data: { permission: 'Pages.Administration.Host.Dashboard' } },
                     { path: 'demo-ui-components', component: DemoUiComponentsComponent, data: { permission: 'Pages.DemoUiComponents' } },
-                    { path: 'install', component: InstallComponent },
-                    { path: 'ui-customization', component: UiCustomizationComponent },
+                    //{ path: 'install', component: InstallComponent },
+                    //{ path: 'ui-customization', component: UiCustomizationComponent },
                     { path: 'webhook-subscriptions', component: WebhookSubscriptionComponent, data: { permission: 'Pages.Administration.WebhookSubscription' } },
                     { path: 'webhook-subscriptions-detail', component: WebhookSubscriptionDetailComponent, data: { permission: 'Pages.Administration.WebhookSubscription.Detail' } },
                     { path: 'webhook-event-detail', component: WebhookEventDetailComponent, data: { permission: 'Pages.Administration.WebhookSubscription.Detail' } },
